@@ -10,14 +10,14 @@ class AuthClass {
     'https://www.googleapis.com/auth/contacts.readonly',
   ];
 
-  GoogleSignIn _googleSignIn = GoogleSignIn(
+  final GoogleSignIn _googleSignIn = GoogleSignIn(
     // Optional clientId
     // clientId: 'your-client_id.apps.googleusercontent.com',
     scopes: scopes,
   );
 
   FirebaseAuth auth = FirebaseAuth.instance;
-  final storage = new FlutterSecureStorage();
+  final storage = const FlutterSecureStorage();
 
   Future<void> googleSignIn(BuildContext context) async {
     try {
@@ -37,14 +37,14 @@ class AuthClass {
           storeTokenAndData(userCredential);
           Navigator.pushAndRemoveUntil(
               context,
-              MaterialPageRoute(builder: (builder) => HomePage()),
+              MaterialPageRoute(builder: (builder) => const HomePage()),
               (route) => false);
         } catch (e) {
           final snackbar = SnackBar(content: Text(e.toString()));
           ScaffoldMessenger.of(context).showSnackBar(snackbar);
         }
       } else {
-        final snackbar =
+        const snackbar =
             SnackBar(content: Text("Unable to sign in. Try again."));
         ScaffoldMessenger.of(context).showSnackBar(snackbar);
       }

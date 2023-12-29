@@ -16,8 +16,8 @@ class SignIn extends StatefulWidget {
 
 class _SignInState extends State<SignIn> {
   firebase_auth.FirebaseAuth firebaseAuth = firebase_auth.FirebaseAuth.instance;
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _pwdController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _pwdController = TextEditingController();
   bool circular = false;
   AuthClass authClass = AuthClass();
 
@@ -151,7 +151,7 @@ class _SignInState extends State<SignIn> {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
           gradient: LinearGradient(
-            colors: [
+            colors: const [
               Colors.deepPurple,
               Colors.white,
               Colors.deepPurple,
@@ -162,7 +162,7 @@ class _SignInState extends State<SignIn> {
           child: circular
               ? CircularProgressIndicator()
               : Text(
-                  "Sign Up",
+                  "Sign In",
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 20,
@@ -178,7 +178,7 @@ class _SignInState extends State<SignIn> {
       onTap: () async {
         await authClass.googleSignIn(context);
       },
-      child: Container(
+      child: SizedBox(
         width: MediaQuery.of(context).size.width - 60,
         height: 60,
         child: Card(

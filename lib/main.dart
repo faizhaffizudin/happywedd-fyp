@@ -126,16 +126,16 @@
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:happywedd1/pages/home.dart';
-import 'package:happywedd1/pages/signIn.dart';
 import 'package:happywedd1/pages/signUp.dart';
 import 'package:happywedd1/services/auth.dart';
+import 'package:happywedd1/pages/splashScreen.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
-    options: FirebaseOptions(
+    options: const FirebaseOptions(
       apiKey: 'AIzaSyBskSo1I_C-O3FntgB0dl-WYxD0J7ExwH8',
       appId: '1:280550490177:web:a028bc4128d9e2b87206c0',
       messagingSenderId: '280550490177',
@@ -166,7 +166,7 @@ class _MyAppState extends State<MyApp> {
   //   }
   // }
 
-  Widget currentPage = SignUp();
+  Widget currentPage = const SplashScreen();
   AuthClass authClass = AuthClass();
 
   @override
@@ -180,7 +180,7 @@ class _MyAppState extends State<MyApp> {
     String? token = await authClass.getToken();
     if (token != null) {
       setState(() {
-        currentPage = HomePage();
+        currentPage = const HomePage();
       });
     }
   }
