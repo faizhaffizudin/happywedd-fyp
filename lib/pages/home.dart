@@ -3,7 +3,7 @@ import 'package:happywedd1/pages/signUp.dart';
 import 'package:happywedd1/services/auth.dart';
 
 class HomePage extends StatefulWidget {
-  HomePage({super.key});
+  const HomePage({super.key});
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -22,7 +22,7 @@ class _HomePageState extends State<HomePage> {
               await authClass.logOut();
               Navigator.pushAndRemoveUntil(
                   context,
-                  MaterialPageRoute(builder: (builder) => SignUp()),
+                  MaterialPageRoute(builder: (builder) => const SignUp()),
                   (route) => false);
             })
       ]),
