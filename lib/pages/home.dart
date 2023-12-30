@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:happywedd1/pages/profile.dart';
 import 'package:happywedd1/pages/signUp.dart';
+import 'package:happywedd1/pages/toSanding/toSanding.dart';
+import 'package:happywedd1/pages/toSanding/toSandingAdd.dart';
 import 'package:happywedd1/services/auth.dart';
 
 class HomePage extends StatefulWidget {
@@ -26,6 +29,81 @@ class _HomePageState extends State<HomePage> {
                   (route) => false);
             })
       ]),
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        backgroundColor: Colors.black87,
+        items: [
+          //navbar home
+          BottomNavigationBarItem(
+              label: 'Home',
+              icon: InkWell(
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (builder) => HomePage()));
+                },
+                child: Icon(
+                  Icons.home,
+                  size: 32,
+                  color: Colors.white,
+                ),
+              )),
+
+          //navbar home
+          BottomNavigationBarItem(
+              label: 'To Sanding',
+              icon: InkWell(
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (builder) => ToSanding()));
+                },
+                child: Icon(
+                  Icons.settings,
+                  size: 32,
+                  color: Colors.white,
+                ),
+              )),
+
+          //navbar add
+          BottomNavigationBarItem(
+            label: 'To Nikah',
+            icon: InkWell(
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (builder) => ToSandingAdd()));
+              },
+              // child: Container(
+              //   height: 52,
+              //   width: 52,
+              //   decoration: BoxDecoration(
+              //       shape: BoxShape.circle,
+              //       gradient: LinearGradient(colors: [
+              //         Colors.indigoAccent,
+              //         Colors.purple,
+              //       ])),
+              child: Icon(
+                Icons.add,
+                size: 32,
+                color: Colors.white,
+              ),
+            ),
+          ),
+
+          //navbar profile
+          BottomNavigationBarItem(
+              label: 'Profile',
+              icon: InkWell(
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (builder) => const Profile()));
+                },
+                child: Icon(
+                  Icons.settings,
+                  size: 32,
+                  color: Colors.white,
+                ),
+              )),
+        ],
+      ),
     );
   }
 }

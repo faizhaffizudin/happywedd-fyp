@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:happywedd1/pages/home.dart';
 import 'package:happywedd1/pages/listCard.dart';
-import 'package:happywedd1/pages/toSandingAdd.dart';
-import 'package:happywedd1/pages/toSandingView.dart';
+import 'package:happywedd1/pages/profile.dart';
+import 'package:happywedd1/pages/toSanding/toSandingAdd.dart';
+import 'package:happywedd1/pages/toSanding/toSandingView.dart';
 import 'package:happywedd1/services/auth.dart';
 
 class ToSanding extends StatefulWidget {
@@ -58,17 +60,68 @@ class _ToSandingState extends State<ToSanding> {
             preferredSize: Size.fromHeight(35),
           ),
         ),
+
+        //bottom navigation bar
         bottomNavigationBar: BottomNavigationBar(
+          type: BottomNavigationBarType.fixed,
           backgroundColor: Colors.black87,
           items: [
+            //navbar home
             BottomNavigationBarItem(
-              label: 'Some String',
-              icon: Icon(
-                Icons.home,
-                size: 32,
-                color: Colors.white,
+                label: 'Home',
+                icon: InkWell(
+                  onTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (builder) => HomePage()));
+                  },
+                  child: Icon(
+                    Icons.home,
+                    size: 32,
+                    color: Colors.white,
+                  ),
+                )),
+
+            //navbar home
+            BottomNavigationBarItem(
+                label: 'To Sanding',
+                icon: InkWell(
+                  onTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (builder) => HomePage()));
+                  },
+                  child: Icon(
+                    Icons.settings,
+                    size: 32,
+                    color: Colors.white,
+                  ),
+                )),
+
+            //navbar add
+            BottomNavigationBarItem(
+              label: 'To Nikah',
+              icon: InkWell(
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (builder) => ToSandingAdd()));
+                },
+                // child: Container(
+                //   height: 52,
+                //   width: 52,
+                //   decoration: BoxDecoration(
+                //       shape: BoxShape.circle,
+                //       gradient: LinearGradient(colors: [
+                //         Colors.indigoAccent,
+                //         Colors.purple,
+                //       ])),
+                child: Icon(
+                  Icons.add,
+                  size: 32,
+                  color: Colors.white,
+                ),
               ),
             ),
+
+            //navbar profile
             BottomNavigationBarItem(
                 label: 'Some String',
                 icon: InkWell(
@@ -76,32 +129,14 @@ class _ToSandingState extends State<ToSanding> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (builder) => ToSandingAdd()));
+                            builder: (builder) => const Profile()));
                   },
-                  child: Container(
-                    height: 52,
-                    width: 52,
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        gradient: LinearGradient(colors: [
-                          Colors.indigoAccent,
-                          Colors.purple,
-                        ])),
-                    child: Icon(
-                      Icons.add,
-                      size: 32,
-                      color: Colors.white,
-                    ),
+                  child: Icon(
+                    Icons.settings,
+                    size: 32,
+                    color: Colors.white,
                   ),
                 )),
-            BottomNavigationBarItem(
-              label: 'Some String',
-              icon: Icon(
-                Icons.settings,
-                size: 32,
-                color: Colors.white,
-              ),
-            ),
           ],
         ),
         body: StreamBuilder(
