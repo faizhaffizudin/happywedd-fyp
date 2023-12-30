@@ -130,6 +130,8 @@ import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:happywedd1/pages/home.dart';
 import 'package:happywedd1/pages/signIn.dart';
 import 'package:happywedd1/pages/signUp.dart';
+import 'package:happywedd1/pages/toSanding.dart';
+import 'package:happywedd1/pages/toSandingAdd.dart';
 import 'package:happywedd1/services/auth.dart';
 
 void main() async {
@@ -188,7 +190,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: currentPage,
+      home: ToSanding(),
     );
   }
 
