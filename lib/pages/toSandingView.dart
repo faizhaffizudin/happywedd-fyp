@@ -61,17 +61,32 @@ class _ToSandingViewState extends State<ToSandingView> {
                             color: Colors.white,
                             size: 28,
                           )),
-                      IconButton(
-                          onPressed: () {
-                            setState(() {
-                              edit = !edit;
-                            });
-                          },
-                          icon: Icon(
-                            Icons.edit,
-                            color: edit ? Colors.red : Colors.white,
-                            size: 28,
-                          )),
+                      Row(children: [
+                        IconButton(
+                            onPressed: () {
+                              setState(() {
+                                edit = !edit;
+                              });
+                            },
+                            icon: Icon(
+                              Icons.edit,
+                              color: edit ? Colors.red : Colors.white,
+                              size: 28,
+                            )),
+                        IconButton(
+                            onPressed: () {
+                              FirebaseFirestore.instance
+                                  .collection("toSanding")
+                                  .doc(widget.id)
+                                  .delete()
+                                  .then((value) => {Navigator.pop(context)});
+                            },
+                            icon: Icon(
+                              Icons.delete,
+                              color: edit ? Colors.red : Colors.white,
+                              size: 28,
+                            )),
+                      ]),
                     ]),
                 Padding(
                   padding:

@@ -7,6 +7,8 @@ class ListCard extends StatefulWidget {
   final IconData iconData;
   final Color iconColor;
   final Color iconBgColor;
+  final Function onChange;
+  final int index;
 
   const ListCard({
     super.key,
@@ -16,6 +18,8 @@ class ListCard extends StatefulWidget {
     required this.iconData,
     required this.iconColor,
     required this.iconBgColor,
+    required this.onChange,
+    required this.index,
   });
 
   @override
@@ -46,7 +50,9 @@ class _ListCardState extends State<ListCard> {
                 activeColor: Color(0xff6cf8a9),
                 checkColor: Color(0xff0e3e26),
                 value: widget.check,
-                onChanged: (bool? value) {},
+                onChanged: (bool? value) {
+                  widget.onChange(widget.index);
+                },
               ),
             ),
             data: ThemeData(

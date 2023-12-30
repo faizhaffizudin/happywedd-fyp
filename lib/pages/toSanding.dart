@@ -16,6 +16,7 @@ class _ToSandingState extends State<ToSanding> {
   AuthClass authClass = AuthClass();
   final Stream<QuerySnapshot> _stream =
       FirebaseFirestore.instance.collection("toSanding").snapshots();
+  List<Select> selected = [];
 
   @override
   Widget build(BuildContext context) {
@@ -146,8 +147,8 @@ class _ToSandingState extends State<ToSanding> {
                       iconColor = Colors.red;
                   }
 
-                  // ToSandingView toSandingView =
-                  //     ToSandingView(document: document);
+                  selected.add(Select(
+                      id: snapshot.data!.docs[index].id, checkValue: false));
 
                   return InkWell(
                     onTap: () {
@@ -162,10 +163,12 @@ class _ToSandingState extends State<ToSanding> {
                     child: ListCard(
                       title: document["title"],
                       time: "10 AM",
-                      check: true,
+                      check: selected[index].checkValue,
                       iconData: iconData,
                       iconColor: iconColor,
                       iconBgColor: Colors.white,
+                      index: index,
+                      onChange: onChange,
                     ),
                   );
                 },
@@ -178,4 +181,17 @@ class _ToSandingState extends State<ToSanding> {
               //     child: Column(
             }));
   }
+
+  void onChange(int index) {
+    setState(() {
+      selected[index].checkValue = !selected[index].checkValue;
+    });
+  }
+}
+
+class Select {
+  String id;
+  bool checkValue = false;
+
+  Select({required this.id, required this.checkValue});
 }
