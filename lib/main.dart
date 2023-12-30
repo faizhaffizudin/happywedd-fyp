@@ -133,7 +133,6 @@ import 'package:happywedd1/pages/toSandingAdd.dart';
 import 'package:happywedd1/services/auth.dart';
 import 'package:happywedd1/pages/splashScreen.dart';
 
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(

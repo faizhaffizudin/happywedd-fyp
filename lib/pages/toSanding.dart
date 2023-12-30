@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:happywedd1/pages/listCard.dart';
 import 'package:happywedd1/pages/toSandingAdd.dart';
@@ -12,6 +13,8 @@ class ToSanding extends StatefulWidget {
 
 class _ToSandingState extends State<ToSanding> {
   AuthClass authClass = AuthClass();
+  final Stream<QuerySnapshot> _stream =
+      FirebaseFirestore.instance.collection("toSanding").snapshots();
 
   @override
   Widget build(BuildContext context) {
@@ -99,22 +102,65 @@ class _ToSandingState extends State<ToSanding> {
             ),
           ],
         ),
-        body: SingleChildScrollView(
-            child: Container(
-                height: MediaQuery.of(context).size.height,
-                width: MediaQuery.of(context).size.width,
-                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                child: Column(
-                  children: [
-                    ListCard(
-                      title: "Success",
-                      time: "10 AM",
-                      check: true,
-                      iconData: Icons.alarm,
-                      iconColor: Colors.white,
-                      iconBgColor: Colors.red,
-                    ),
-                  ],
-                ))));
+        body: StreamBuilder(
+            stream: _stream,
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) {
+                return Center(child: CircularProgressIndicator());
+              }
+              return ListView.builder(
+                itemCount: snapshot.data?.docs.length,
+                itemBuilder: (context, index) {
+                  IconData iconData;
+                  Color iconColor;
+                  Map<String, dynamic> document =
+                      snapshot.data?.docs[index].data() as Map<String, dynamic>;
+                  switch (document["category"]) {
+                    case "Venue":
+                      iconData = Icons.home;
+                      iconColor = Colors.blue;
+                      break;
+                    case "Caterer":
+                      iconData = Icons.restaurant;
+                      iconColor = Colors.brown;
+                      break;
+                    case "Vendors":
+                      iconData = Icons.fastfood;
+                      iconColor = Colors.deepOrange;
+                      break;
+                    case "Guest List":
+                      iconData = Icons.groups_2;
+                      iconColor = Colors.blueGrey;
+                      break;
+                    case "Invitation Card":
+                      iconData = Icons.rsvp;
+                      iconColor = Colors.purple;
+                      break;
+                    case "Precautionary Measures":
+                      iconData = Icons.healing;
+                      iconColor = Colors.amber;
+                      break;
+                    default:
+                      iconData = Icons.home;
+                      iconColor = Colors.red;
+                  }
+
+                  return ListCard(
+                    title: document["title"],
+                    time: "10 AM",
+                    check: true,
+                    iconData: iconData,
+                    iconColor: iconColor,
+                    iconBgColor: Colors.white,
+                  );
+                },
+              );
+
+              // child: Container(
+              //     height: MediaQuery.of(context).size.height,
+              //     width: MediaQuery.of(context).size.width,
+              //     padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+              //     child: Column(
+            }));
   }
 }

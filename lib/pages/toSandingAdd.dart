@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:happywedd1/pages/toSanding.dart';
@@ -10,6 +11,11 @@ class ToSandingAdd extends StatefulWidget {
 }
 
 class _ToSandState extends State<ToSandingAdd> {
+  TextEditingController _titleController = TextEditingController();
+  TextEditingController _notesController = TextEditingController();
+  String target = "";
+  String category = "";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,8 +37,7 @@ class _ToSandState extends State<ToSandingAdd> {
                 ),
                 IconButton(
                     onPressed: () {
-                      // Navigator.push(context,
-                      //     MaterialPageRoute(builder: (builder) => ToSanding()));
+                      Navigator.pop(context);
                     },
                     icon: Icon(
                       CupertinoIcons.arrow_left,
@@ -99,21 +104,55 @@ class _ToSandState extends State<ToSandingAdd> {
                       SizedBox(
                         height: 30,
                       ),
-                      label("Task Type"),
+                      label("For"),
                       SizedBox(
                         height: 12,
                       ),
-                      Row(
+                      Wrap(
                         children: [
-                          chipData("Groom", 0xffff6d6e),
+                          targetChip("Groom", 0xffff6d6e),
                           SizedBox(
                             width: 20,
                           ),
-                          chipData("Bride", 0xffff6d6e),
+                          targetChip("Bride", 0xffff6d6e),
                           SizedBox(
                             width: 20,
                           ),
-                          chipData("Both", 0xffff6d6e),
+                          targetChip("Both", 0xffff6d6e),
+                        ],
+                      ),
+
+                      SizedBox(
+                        height: 30,
+                      ),
+                      label("Category"),
+                      SizedBox(
+                        height: 12,
+                      ),
+                      Wrap(
+                        runSpacing: 10,
+                        children: [
+                          categoryChip("Venue", 0xffff6d6e),
+                          SizedBox(
+                            width: 20,
+                          ),
+                          categoryChip("Caterer", 0xffff6d6e),
+                          SizedBox(
+                            width: 20,
+                          ),
+                          categoryChip("Vendors", 0xffff6d6e),
+                          SizedBox(
+                            width: 20,
+                          ),
+                          categoryChip("Guest List", 0xffff6d6e),
+                          SizedBox(
+                            width: 20,
+                          ),
+                          categoryChip("Invitation Card", 0xffff6d6e),
+                          SizedBox(
+                            width: 20,
+                          ),
+                          categoryChip("Precautionary Measures", 0xffff6d6e),
                         ],
                       ),
 
@@ -132,22 +171,32 @@ class _ToSandState extends State<ToSandingAdd> {
   }
 
   Widget submitBtn() {
-    return Container(
-        height: 56,
-        width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            gradient: RadialGradient(colors: [
-              Colors.lightBlue,
-              Colors.lightGreen,
-            ])),
-        child: Center(
-            child: Text("Add Todo",
-                style: TextStyle(
-                  fontSize: 18,
-                  color: Colors.white,
-                  fontWeight: FontWeight.w600,
-                ))));
+    return InkWell(
+        onTap: () {
+          FirebaseFirestore.instance.collection("toSanding").add({
+            "title": _titleController.text,
+            "notes": _notesController.text,
+            "target": target,
+            "category": category
+          });
+          Navigator.pop(context);
+        },
+        child: Container(
+            height: 56,
+            width: MediaQuery.of(context).size.width,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                gradient: RadialGradient(colors: [
+                  Colors.lightBlue,
+                  Colors.lightGreen,
+                ])),
+            child: Center(
+                child: Text("Add Todo",
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                    )))));
   }
 
   Widget notes() {
@@ -159,6 +208,7 @@ class _ToSandState extends State<ToSandingAdd> {
         borderRadius: BorderRadius.circular(15),
       ),
       child: TextFormField(
+        controller: _notesController,
         style: TextStyle(
           color: Colors.grey,
           fontSize: 17,
@@ -179,25 +229,58 @@ class _ToSandState extends State<ToSandingAdd> {
     );
   }
 
-  Widget chipData(String label, int color) {
-    return Chip(
-      backgroundColor: Color(color),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10),
-      ),
-      label: Text(
-        label,
-        style: TextStyle(
-          fontSize: 15,
-          color: Colors.white,
-          fontWeight: FontWeight.w600,
-        ),
-      ),
-      labelPadding: EdgeInsets.symmetric(
-        horizontal: 17,
-        vertical: 3.8,
-      ),
-    );
+  Widget targetChip(String label, int color) {
+    return InkWell(
+        onTap: () {
+          setState(() {
+            target = label;
+          });
+        },
+        child: Chip(
+          backgroundColor: target == label ? Colors.white : Color(color),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          label: Text(
+            label,
+            style: TextStyle(
+              fontSize: 15,
+              color: target == label ? Colors.black : Colors.white,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          labelPadding: EdgeInsets.symmetric(
+            horizontal: 17,
+            vertical: 3.8,
+          ),
+        ));
+  }
+
+  Widget categoryChip(String label, int color) {
+    return InkWell(
+        onTap: () {
+          setState(() {
+            category = label;
+          });
+        },
+        child: Chip(
+          backgroundColor: category == label ? Colors.white : Color(color),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          label: Text(
+            label,
+            style: TextStyle(
+              fontSize: 15,
+              color: category == label ? Colors.black : Colors.white,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          labelPadding: EdgeInsets.symmetric(
+            horizontal: 17,
+            vertical: 3.8,
+          ),
+        ));
   }
 
   Widget title() {
@@ -209,6 +292,7 @@ class _ToSandState extends State<ToSandingAdd> {
         borderRadius: BorderRadius.circular(15),
       ),
       child: TextFormField(
+        controller: _titleController,
         style: TextStyle(
           color: Colors.grey,
           fontSize: 17,
