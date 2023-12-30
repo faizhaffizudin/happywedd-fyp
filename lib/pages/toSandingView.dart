@@ -3,18 +3,32 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:happywedd1/pages/toSanding.dart';
 
-class ToSandingAdd extends StatefulWidget {
-  ToSandingAdd({super.key});
+class ToSandingView extends StatefulWidget {
+  final Map<String, dynamic> document;
+  final String id;
+
+  ToSandingView({super.key, required this.document, required this.id});
 
   @override
-  _ToSandingAddState createState() => _ToSandingAddState();
+  _ToSandingViewState createState() => _ToSandingViewState();
 }
 
-class _ToSandingAddState extends State<ToSandingAdd> {
-  TextEditingController _titleController = TextEditingController();
-  TextEditingController _notesController = TextEditingController();
+class _ToSandingViewState extends State<ToSandingView> {
+  late TextEditingController _titleController;
+  late TextEditingController _notesController;
   String target = "";
   String category = "";
+  bool edit = false;
+
+  @override
+  void initState() {
+    super.initState();
+    String title = widget.document["title"] ?? "Hey there";
+    _titleController = TextEditingController(text: title);
+    _notesController = TextEditingController(text: widget.document["notes"]);
+    target = widget.document["target"];
+    category = widget.document["category"];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,15 +49,30 @@ class _ToSandingAddState extends State<ToSandingAdd> {
                 SizedBox(
                   height: 30,
                 ),
-                IconButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    icon: Icon(
-                      CupertinoIcons.arrow_left,
-                      color: Colors.white,
-                      size: 28,
-                    )),
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      IconButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          icon: Icon(
+                            CupertinoIcons.arrow_left,
+                            color: Colors.white,
+                            size: 28,
+                          )),
+                      IconButton(
+                          onPressed: () {
+                            setState(() {
+                              edit = !edit;
+                            });
+                          },
+                          icon: Icon(
+                            Icons.edit,
+                            color: edit ? Colors.red : Colors.white,
+                            size: 28,
+                          )),
+                    ]),
                 Padding(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 25, vertical: 5),
@@ -51,7 +80,7 @@ class _ToSandingAddState extends State<ToSandingAdd> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "To Sanding",
+                        edit ? "Editing" : "To Sanding",
                         style: TextStyle(
                           fontSize: 33,
                           color: Colors.white,
@@ -159,7 +188,7 @@ class _ToSandingAddState extends State<ToSandingAdd> {
                       SizedBox(
                         height: 50,
                       ),
-                      submitBtn(),
+                      edit ? submitBtn() : Container(),
                       SizedBox(
                         height: 30,
                       ),
@@ -173,7 +202,10 @@ class _ToSandingAddState extends State<ToSandingAdd> {
   Widget submitBtn() {
     return InkWell(
         onTap: () {
-          FirebaseFirestore.instance.collection("toSanding").add({
+          FirebaseFirestore.instance
+              .collection("toSanding")
+              .doc(widget.id)
+              .update({
             "title": _titleController.text,
             "notes": _notesController.text,
             "target": target,
@@ -191,7 +223,7 @@ class _ToSandingAddState extends State<ToSandingAdd> {
                   Colors.lightGreen,
                 ])),
             child: Center(
-                child: Text("Add Todo",
+                child: Text("Update Todo",
                     style: TextStyle(
                       fontSize: 18,
                       color: Colors.white,
@@ -209,6 +241,7 @@ class _ToSandingAddState extends State<ToSandingAdd> {
       ),
       child: TextFormField(
         controller: _notesController,
+        enabled: edit,
         style: TextStyle(
           color: Colors.grey,
           fontSize: 17,
@@ -231,11 +264,13 @@ class _ToSandingAddState extends State<ToSandingAdd> {
 
   Widget targetChip(String label, int color) {
     return InkWell(
-        onTap: () {
-          setState(() {
-            target = label;
-          });
-        },
+        onTap: edit
+            ? () {
+                setState(() {
+                  target = label;
+                });
+              }
+            : null,
         child: Chip(
           backgroundColor: target == label ? Colors.white : Color(color),
           shape: RoundedRectangleBorder(
@@ -258,11 +293,13 @@ class _ToSandingAddState extends State<ToSandingAdd> {
 
   Widget categoryChip(String label, int color) {
     return InkWell(
-        onTap: () {
-          setState(() {
-            category = label;
-          });
-        },
+        onTap: edit
+            ? () {
+                setState(() {
+                  category = label;
+                });
+              }
+            : null,
         child: Chip(
           backgroundColor: category == label ? Colors.white : Color(color),
           shape: RoundedRectangleBorder(
@@ -293,6 +330,7 @@ class _ToSandingAddState extends State<ToSandingAdd> {
       ),
       child: TextFormField(
         controller: _titleController,
+        enabled: edit,
         style: TextStyle(
           color: Colors.grey,
           fontSize: 17,

@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:happywedd1/pages/listCard.dart';
 import 'package:happywedd1/pages/toSandingAdd.dart';
+import 'package:happywedd1/pages/toSandingView.dart';
 import 'package:happywedd1/services/auth.dart';
 
 class ToSanding extends StatefulWidget {
@@ -145,13 +146,27 @@ class _ToSandingState extends State<ToSanding> {
                       iconColor = Colors.red;
                   }
 
-                  return ListCard(
-                    title: document["title"],
-                    time: "10 AM",
-                    check: true,
-                    iconData: iconData,
-                    iconColor: iconColor,
-                    iconBgColor: Colors.white,
+                  // ToSandingView toSandingView =
+                  //     ToSandingView(document: document);
+
+                  return InkWell(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (builder) => ToSandingView(
+                                    document: document,
+                                    id: snapshot.data!.docs[index].id,
+                                  )));
+                    },
+                    child: ListCard(
+                      title: document["title"],
+                      time: "10 AM",
+                      check: true,
+                      iconData: iconData,
+                      iconColor: iconColor,
+                      iconBgColor: Colors.white,
+                    ),
                   );
                 },
               );
