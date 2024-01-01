@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
@@ -126,8 +127,32 @@ class _SignUpState extends State<SignUp> {
               MaterialPageRoute(builder: (builder) => HomePage()),
               (route) => false);
         } catch (e) {
-          final snackbar = SnackBar(content: Text(e.toString()));
+          String errorMessage =
+              "An error occurred during sign up. Please try again.";
+
+          if (e is firebase_auth.FirebaseAuthException) {
+            // Handle specific Firebase Authentication errors
+            switch (e.code) {
+              case "email-already-in-use":
+                errorMessage =
+                    "The email address is already in use by another account. Please try again.";
+                break;
+              case "invalid-email":
+                errorMessage = "The email address is not valid.";
+                break;
+              case "weak-password":
+                errorMessage =
+                    "The password provided is too weak. Minimum length of password is 7. Please try again.";
+                break;
+              // Add more cases as needed for other error codes
+              default:
+                break;
+            }
+          }
+
+          final snackbar = SnackBar(content: Text(errorMessage));
           ScaffoldMessenger.of(context).showSnackBar(snackbar);
+
           setState(() {
             circular = false;
           });

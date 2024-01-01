@@ -1,11 +1,13 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:happywedd1/pages/home.dart';
 import 'package:happywedd1/pages/signUp.dart';
 import 'package:happywedd1/services/auth.dart';
+import 'package:happywedd1/services/forgotPwd.dart';
 
 class SignIn extends StatefulWidget {
   const SignIn({super.key});
@@ -55,14 +57,21 @@ class _SignInState extends State<SignIn> {
             SizedBox(
               height: 15,
             ),
-            Text(
-              "Forgot password?",
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
-              ),
-            ), // password
+            InkWell(
+                onTap: () {
+                  Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(builder: (builder) => ForgotPwd()),
+                      (route) => false);
+                },
+                child: Text(
+                  "Forgot password?",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                  ),
+                )), // password
 
             SizedBox(
               height: 15,
@@ -138,8 +147,32 @@ class _SignInState extends State<SignIn> {
               MaterialPageRoute(builder: (builder) => HomePage()),
               (route) => false);
         } catch (e) {
-          final snackbar = SnackBar(content: Text(e.toString()));
+          String errorMessage =
+              "An error occurred during sign in. Please try again.";
+
+          if (e is firebase_auth.FirebaseAuthException) {
+            // Handle specific Firebase Authentication errors
+            switch (e.code) {
+              case "user-not-found":
+                errorMessage =
+                    "No user found with this email address. Please try again.";
+                break;
+              case "wrong-password":
+                errorMessage = "Incorrect password. Please try again.";
+                break;
+              case "invalid-email":
+                errorMessage =
+                    "The email address is not valid. Please try again.";
+                break;
+              // Add more cases as needed for other error codes
+              default:
+                break;
+            }
+          }
+
+          final snackbar = SnackBar(content: Text(errorMessage));
           ScaffoldMessenger.of(context).showSnackBar(snackbar);
+
           setState(() {
             circular = false;
           });
