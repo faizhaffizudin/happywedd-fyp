@@ -58,6 +58,7 @@
 // }
 
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class DetailsPage extends StatefulWidget {
   @override
@@ -68,8 +69,22 @@ class _DetailsPageState extends State<DetailsPage> {
   final _formKey = GlobalKey<FormState>();
 
   String _name = '';
-  String _date = '';
-  String _location = '';
+  DateTime? _selectedDate;
+  LatLng? _selectedLocation;
+
+  GoogleMapController? _mapController;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedLocation = LatLng(37.42796133580664, -122.085749655962);
+  }
+
+  void _onMapCreated(GoogleMapController controller) {
+    setState(() {
+      _mapController = controller;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -100,36 +115,23 @@ class _DetailsPageState extends State<DetailsPage> {
                 },
               ),
               SizedBox(height: 20.0),
-              TextFormField(
-                decoration: InputDecoration(
-                  labelText: 'Date',
-                  border: OutlineInputBorder(),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a date';
-                  }
-                  return null;
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => MapSelectionScreen(),
+                    ),
+                  ).then((selectedLocation) {
+                    if (selectedLocation != null) {
+                      setState(() {
+                        _selectedLocation = selectedLocation;
+                        // Perform any operations with the selected location
+                      });
+                    }
+                  });
                 },
-                onSaved: (value) {
-                  _date = value!;
-                },
-              ),
-              SizedBox(height: 20.0),
-              TextFormField(
-                decoration: InputDecoration(
-                  labelText: 'Location',
-                  border: OutlineInputBorder(),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a location';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  _location = value!;
-                },
+                child: Text('Select Location'),
               ),
               SizedBox(height: 20.0),
               ElevatedButton(
@@ -137,7 +139,7 @@ class _DetailsPageState extends State<DetailsPage> {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
                     // Process form data
-                    // Use _name, _date, _location variables
+                    // Use _name, _selectedDate, _selectedLocation variables
                   }
                 },
                 child: Text('Submit'),
@@ -149,4 +151,49 @@ class _DetailsPageState extends State<DetailsPage> {
     );
   }
 }
+
+class MapSelectionScreen extends StatefulWidget {
+  @override
+  _MapSelectionScreenState createState() => _MapSelectionScreenState();
+}
+
+class _MapSelectionScreenState extends State<MapSelectionScreen> {
+  GoogleMapController? _mapController;
+  CameraPosition? _currentCameraPosition;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Select Location'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.check),
+            onPressed: () {
+              // Pass back the selected location to the previous screen
+              Navigator.pop(context, _currentCameraPosition!.target);
+            },
+          ),
+        ],
+      ),
+      body: GoogleMap(
+        onMapCreated: (controller) {
+          setState(() {
+            _mapController = controller;
+          });
+        },
+        initialCameraPosition: CameraPosition(
+          target: LatLng(37.42796133580664, -122.085749655962),
+          zoom: 15.0,
+        ),
+        onTap: (LatLng latLng) {
+          _mapController?.animateCamera(
+            CameraUpdate.newLatLng(latLng),
+          );
+        },
+      ),
+    );
+  }
+}
+
 
