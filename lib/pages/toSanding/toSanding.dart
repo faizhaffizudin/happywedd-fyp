@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:happywedd1/pages/home.dart';
 import 'package:happywedd1/pages/listCard.dart';
@@ -16,9 +17,20 @@ class ToSanding extends StatefulWidget {
 
 class _ToSandingState extends State<ToSanding> {
   AuthClass authClass = AuthClass();
-  final Stream<QuerySnapshot> _stream =
-      FirebaseFirestore.instance.collection("toSanding").snapshots();
+  late String userId;
+  late Stream<QuerySnapshot> _stream;
   List<Select> selected = [];
+
+  @override
+  void initState() {
+    super.initState();
+    userId = FirebaseAuth.instance.currentUser?.uid ?? "default_user_id";
+    _stream = FirebaseFirestore.instance
+        .collection("users")
+        .doc(userId)
+        .collection("tosanding")
+        .snapshots();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -143,11 +155,16 @@ class _ToSandingState extends State<ToSanding> {
             stream: _stream,
             builder: (context, snapshot) {
               if (!snapshot.hasData) {
-                return Center(child: CircularProgressIndicator());
+                return Text("No data yet...",
+                    style: TextStyle(color: Colors.white));
+                // return Center(child: CircularProgressIndicator());
               }
+              print("Data: ${snapshot.data?.docs}");
+
               return ListView.builder(
                 itemCount: snapshot.data?.docs.length,
                 itemBuilder: (context, index) {
+                  print("Document data: ${snapshot.data?.docs[index].data()}");
                   IconData iconData;
                   Color iconColor;
                   Map<String, dynamic> document =
