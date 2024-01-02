@@ -163,7 +163,7 @@ class _DetailsPageState extends State<DetailsPage> {
                     Container(
                       height: 300.0,
                       child: GoogleMap(
-                        onMapCreated: _onMapCreated,
+                        // onMapCreated: _onMapCreated,
                         initialCameraPosition: CameraPosition(
                           target: _selectedLocation!,
                           zoom: 15.0,
