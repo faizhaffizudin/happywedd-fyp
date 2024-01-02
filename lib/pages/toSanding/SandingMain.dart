@@ -68,7 +68,8 @@ class _ToSandingState extends State<ToSanding> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => SandingItinerary()),
+                            builder: (context) =>
+                                SandingItinerary(userId: userId)),
                       );
                     },
                     style: ElevatedButton.styleFrom(
@@ -179,12 +180,20 @@ class _ToSandingState extends State<ToSanding> {
                 ),
               ),
             ),
-            StreamBuilder(
+            Center(
+                child: StreamBuilder(
               stream: _stream,
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
-                  return Text("No data yet...",
-                      style: TextStyle(color: Colors.black54));
+                  return Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                      child: Text("No checklist made yet...",
+                          style: TextStyle(
+                            color: Colors.black54,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w400,
+                          )));
                 }
                 return ListView.builder(
                   shrinkWrap: true,
@@ -253,7 +262,7 @@ class _ToSandingState extends State<ToSanding> {
                   },
                 );
               },
-            ),
+            )),
           ],
         ));
   }

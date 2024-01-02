@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:happywedd1/pages/home.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AuthClass {
   static const List<String> scopes = <String>[
@@ -11,8 +12,6 @@ class AuthClass {
   ];
 
   final GoogleSignIn _googleSignIn = GoogleSignIn(
-    // Optional clientId
-    // clientId: 'your-client_id.apps.googleusercontent.com',
     scopes: scopes,
   );
 
@@ -34,6 +33,10 @@ class AuthClass {
         try {
           UserCredential userCredential =
               await auth.signInWithCredential(credential);
+
+          // Store user data in Firestore
+          await storeUserDataInFirestore(userCredential);
+
           storeTokenAndData(userCredential);
           Navigator.pushAndRemoveUntil(
               context,
@@ -54,13 +57,24 @@ class AuthClass {
     }
   }
 
-  // Future<void> _handleSignIn() async {
-  //   try {
-  //     await _googleSignIn.signIn();
-  //   } catch (error) {
-  //     print(error);
-  //   }
-  // }
+  Future<void> storeUserDataInFirestore(UserCredential userCredential) async {
+    User? user = userCredential.user;
+
+    // Check if the user is already in the 'users' collection
+    DocumentSnapshot<Map<String, dynamic>> userDoc = await FirebaseFirestore
+        .instance
+        .collection("users")
+        .doc(user?.uid)
+        .get();
+
+    if (!userDoc.exists) {
+      // If the user is not in the collection, add their email
+      await FirebaseFirestore.instance.collection("users").doc(user?.uid).set({
+        'email': user?.email,
+        // Add other user details as needed
+      });
+    }
+  }
 
   Future<void> storeTokenAndData(UserCredential userCredential) async {
     await storage.write(
