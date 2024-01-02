@@ -195,7 +195,7 @@ class _SandingItineraryState extends State<SandingItinerary> {
                           children: [
                             Text(
                               itineraryItems[index].time.format(context),
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                              style: TextStyle(fontWeight: FontWeight.w500),
                             ),
                             Text(
                               itineraryItems[index].name,
@@ -260,18 +260,19 @@ class _SandingItineraryState extends State<SandingItinerary> {
             ),
           ),
           content: Container(
-            height: 200, // Adjust the height as needed
+            height: 160, // Adjust the height as needed
             child: Column(
               children: [
                 SizedBox(
                   width: MediaQuery.of(context).size.width - 60,
-                  height: 55,
+                  height: 100,
                   child: TextFormField(
                     controller: _itemNameController,
                     style: TextStyle(
                       fontSize: 17,
                       color: Colors.black,
                     ),
+                    maxLines: null,
                     decoration: InputDecoration(
                       labelText: 'Item Name',
                       labelStyle: const TextStyle(
@@ -349,22 +350,53 @@ class _SandingItineraryState extends State<SandingItinerary> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('Edit Itinerary Item'),
+          title: Text(
+            'Edit Itinerary Item',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
           content: Container(
-            height: 200, // Adjust the height as needed
+            height: 160, // Adjust the height as needed
             child: Column(
               children: [
-                TextField(
-                  controller: _itemNameController,
-                  onChanged: (value) {
-                    // Update item name
-                  },
-                  decoration: InputDecoration(labelText: 'Item Name'),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width - 60,
+                  height: 100,
+                  child: TextFormField(
+                    controller: _itemNameController,
+                    style: TextStyle(
+                      fontSize: 17,
+                      color: Colors.black,
+                    ),
+                    maxLines: null,
+                    decoration: InputDecoration(
+                      labelText: 'Item Name',
+                      labelStyle: const TextStyle(
+                        fontSize: 17,
+                        color: Colors.black,
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15),
+                        borderSide: BorderSide(
+                          width: 1.5,
+                          color: Colors.amber,
+                        ),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15),
+                        borderSide: const BorderSide(
+                          width: 1,
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
                 SizedBox(height: 10),
                 Row(
                   children: [
-                    Text('Select Time: '),
+                    Text('Select Time:  '),
                     ElevatedButton(
                       onPressed: () async {
                         TimeOfDay? selectedTime = await showTimePicker(

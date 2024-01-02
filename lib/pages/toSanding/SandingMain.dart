@@ -8,6 +8,7 @@ import 'package:happywedd1/pages/profile.dart';
 import 'package:happywedd1/pages/toSanding/SandingAdd.dart';
 import 'package:happywedd1/pages/toSanding/SandingItinerary.dart';
 import 'package:happywedd1/pages/toSanding/SandingView.dart';
+import 'package:happywedd1/pages/toSanding/sandingBudget.dart';
 import 'package:happywedd1/services/auth.dart';
 
 class ToSanding extends StatefulWidget {
@@ -102,7 +103,12 @@ class _ToSandingState extends State<ToSanding> {
                   widthFactor: 0.55,
                   child: ElevatedButton(
                     onPressed: () {
-                      // Navigate to "Sanding Budget" page
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                SandingBudget(userId: userId)),
+                      );
                     },
                     style: ElevatedButton.styleFrom(
                       primary: Colors.purple[
