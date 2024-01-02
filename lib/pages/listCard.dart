@@ -67,7 +67,7 @@ class _ListCardState extends State<ListCard> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
-                      color: Color(0xff2a2e3d),
+                      color: Color.fromARGB(255, 53, 41, 95),
                       child: Row(
                         children: [
                           SizedBox(

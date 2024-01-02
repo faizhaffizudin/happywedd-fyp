@@ -10,7 +10,7 @@ import 'package:happywedd1/services/auth.dart';
 import 'package:happywedd1/services/forgotPwd.dart';
 
 class SignIn extends StatefulWidget {
-  const SignIn({super.key});
+  const SignIn({Key? key});
 
   @override
   _SignInState createState() => _SignInState();
@@ -30,39 +30,46 @@ class _SignInState extends State<SignIn> {
         child: Container(
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
-          color: Colors.purple,
-          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-            const Text(
-              "Sign In",
-              style: TextStyle(
-                fontSize: 35,
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Color(0xFF7F4EFF),
+                Color(0xFF5D37F7),
+              ],
+            ),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text(
+                "Sign In",
+                style: TextStyle(
+                  fontSize: 35,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-
-            SizedBox(
-              height: 15,
-            ),
-            textItem("Email", _emailController, false), //email
-
-            SizedBox(
-              height: 15,
-            ),
-            textItem("Password", _pwdController, true), // password
-
-            SizedBox(
-              height: 15,
-            ),
-            InkWell(
+              SizedBox(
+                height: 20,
+              ),
+              SizedBox(
+                height: 15,
+              ),
+              textItem("Email", _emailController, false), //email
+              SizedBox(
+                height: 15,
+              ),
+              textItem("Password", _pwdController, true), // password
+              SizedBox(
+                height: 15,
+              ),
+              InkWell(
                 onTap: () {
                   Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(builder: (builder) => ForgotPwd()),
-                      (route) => false);
+                    context,
+                    MaterialPageRoute(builder: (builder) => ForgotPwd()),
+                    (route) => false,
+                  );
                 },
                 child: Text(
                   "Forgot password?",
@@ -71,58 +78,57 @@ class _SignInState extends State<SignIn> {
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
                   ),
-                )), // password
-
-            SizedBox(
-              height: 15,
-            ),
-            signBtn(), // sign up btn
-
-            SizedBox(
-              height: 20,
-            ),
-            Text(
-              "Or",
-              style: TextStyle(color: Colors.white, fontSize: 18),
-            ),
-
-            SizedBox(
-              height: 15,
-            ),
-            imageBtn(), //google btn
-
-            SizedBox(
-              height: 20,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  "If you do not have an account, ",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                  ),
                 ),
-                InkWell(
-                  onTap: () {
-                    Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(builder: (builder) => SignUp()),
-                        (route) => false);
-                  },
-                  child: Text(
-                    "register",
+              ), // password
+              SizedBox(
+                height: 15,
+              ),
+              signBtn(), // sign up btn
+              SizedBox(
+                height: 20,
+              ),
+              Text(
+                "Or",
+                style: TextStyle(color: Colors.white, fontSize: 18),
+              ),
+              SizedBox(
+                height: 15,
+              ),
+              imageBtn(), //google btn
+              SizedBox(
+                height: 20,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "If you do not have an account, ",
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 18,
-                      fontWeight: FontWeight.bold,
                     ),
                   ),
-                ),
-              ],
-            ),
-          ]),
+                  InkWell(
+                    onTap: () {
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(builder: (builder) => SignUp()),
+                        (route) => false,
+                      );
+                    },
+                    child: Text(
+                      "register",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -137,15 +143,18 @@ class _SignInState extends State<SignIn> {
         try {
           firebase_auth.UserCredential userCredential =
               await firebaseAuth.signInWithEmailAndPassword(
-                  email: _emailController.text, password: _pwdController.text);
+            email: _emailController.text,
+            password: _pwdController.text,
+          );
           print(userCredential.user?.email);
           setState(() {
             circular = false;
           });
           Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(builder: (builder) => HomePage()),
-              (route) => false);
+            context,
+            MaterialPageRoute(builder: (builder) => HomePage()),
+            (route) => false,
+          );
         } catch (e) {
           String errorMessage =
               "An error occurred during sign in. Please try again.";
@@ -268,11 +277,12 @@ class _SignInState extends State<SignIn> {
             color: Colors.white,
           ),
           focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(15),
-              borderSide: BorderSide(
-                width: 1.5,
-                color: Colors.amber,
-              )),
+            borderRadius: BorderRadius.circular(15),
+            borderSide: BorderSide(
+              width: 1.5,
+              color: Colors.amber,
+            ),
+          ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(15),
             borderSide: const BorderSide(
