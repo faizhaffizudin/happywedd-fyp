@@ -61,139 +61,140 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class DetailsPage extends StatefulWidget {
+  const DetailsPage({Key? key}) : super(key: key);
+
   @override
   _DetailsPageState createState() => _DetailsPageState();
 }
 
 class _DetailsPageState extends State<DetailsPage> {
-  final _formKey = GlobalKey<FormState>();
-
-  String _name = '';
-  DateTime? _selectedDate;
+  firebase_auth.FirebaseAuth firebaseAuth = firebase_auth.FirebaseAuth.instance;
+  final TextEditingController _nameBrideController = TextEditingController();
+  final TextEditingController _nameGroomController = TextEditingController();
+  DateTime? _dateNikah;
+  DateTime? _dateSanding;
   LatLng? _selectedLocation;
 
-  GoogleMapController? _mapController;
-
-  @override
-  void initState() {
-    super.initState();
-    _selectedLocation = LatLng(37.42796133580664, -122.085749655962);
-  }
-
-  void _onMapCreated(GoogleMapController controller) {
-    setState(() {
-      _mapController = controller;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Registration Form'),
-      ),
-      body: Padding(
-        padding: EdgeInsets.all(20.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              TextFormField(
-                decoration: InputDecoration(
-                  labelText: 'Name',
-                  border: OutlineInputBorder(),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your name';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  _name = value!;
-                },
+      body: SingleChildScrollView(
+        child: Container(
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          color: Colors.purple,
+          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+            const Text(
+              "Register an Account",
+              style: TextStyle(
+                fontSize: 35,
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
               ),
-              SizedBox(height: 20.0),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => MapSelectionScreen(),
-                    ),
-                  ).then((selectedLocation) {
-                    if (selectedLocation != null) {
-                      setState(() {
-                        _selectedLocation = selectedLocation;
-                        // Perform any operations with the selected location
-                      });
-                    }
-                  });
-                },
-                child: Text('Select Location'),
-              ),
-              SizedBox(height: 20.0),
-              ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    _formKey.currentState!.save();
-                    // Process form data
-                    // Use _name, _selectedDate, _selectedLocation variables
-                  }
-                },
-                child: Text('Submit'),
-              ),
-            ],
+            ),
+          SizedBox(
+            height: 15,
           ),
+          textItem("Name of Bride", _nameBrideController, false),
+          SizedBox(
+            height: 15,
+          ),
+          textItem("Name of Groom", _nameGroomController, false),
+          SizedBox(
+            height: 15,
+          ),
+          dateItem("Date of Nikah", _dateNikah),
+          SizedBox(
+            height: 15,
+          ),
+          dateItem("Date of Sanding", _dateSanding),
+          SizedBox(
+            height: 15,
+          ),
+          locationItem(), // Location field using Google Maps
+
+          // Remaining code...
         ),
       ),
     );
   }
-}
 
-class MapSelectionScreen extends StatefulWidget {
-  @override
-  _MapSelectionScreenState createState() => _MapSelectionScreenState();
-}
-
-class _MapSelectionScreenState extends State<MapSelectionScreen> {
-  GoogleMapController? _mapController;
-  CameraPosition? _currentCameraPosition;
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Select Location'),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.check),
-            onPressed: () {
-              // Pass back the selected location to the previous screen
-              Navigator.pop(context, _currentCameraPosition!.target);
-            },
-          ),
-        ],
+  Widget dateItem(String labelText, DateTime? date) {
+    return SizedBox(
+      width: MediaQuery.of(context).size.width - 60,
+      height: 55,
+      child: ListTile(
+        title: Text(
+          labelText,
+          style: TextStyle(color: Colors.white),
+        ),
+        subtitle: date != null
+            ? Text(
+                '${date.day}/${date.month}/${date.year}',
+                style: TextStyle(color: Colors.white),
+              )
+            : null,
+        onTap: () {
+          _selectDate(context, labelText);
+        },
       ),
-      body: GoogleMap(
-        onMapCreated: (controller) {
+    );
+  }
+
+  Future<void> _selectDate(BuildContext context, String labelText) async {
+    DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2101),
+    );
+
+    if (pickedDate != null) {
+      setState(() {
+        if (labelText == "Date of Nikah") {
+          _dateNikah = pickedDate;
+        } else if (labelText == "Date of Sanding") {
+          _dateSanding = pickedDate;
+        }
+      });
+    }
+  }
+
+  Widget locationItem() {
+    return InkWell(
+      onTap: () async {
+        LatLng? selectedLocation = await Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => MapSelectionScreen()),
+        );
+
+        if (selectedLocation != null) {
           setState(() {
-            _mapController = controller;
+            _selectedLocation = selectedLocation;
           });
-        },
-        initialCameraPosition: CameraPosition(
-          target: LatLng(37.42796133580664, -122.085749655962),
-          zoom: 15.0,
+        }
+      },
+      child: SizedBox(
+        width: MediaQuery.of(context).size.width - 60,
+        height: 55,
+        child: ListTile(
+          title: Text(
+            'Select Location',
+            style: TextStyle(color: Colors.white),
+          ),
+          subtitle: _selectedLocation != null
+              ? Text(
+                  'Latitude: ${_selectedLocation!.latitude}, Longitude: ${_selectedLocation!.longitude}',
+                  style: TextStyle(color: Colors.white),
+                )
+              : null,
         ),
-        onTap: (LatLng latLng) {
-          _mapController?.animateCamera(
-            CameraUpdate.newLatLng(latLng),
-          );
-        },
       ),
     );
   }
+
+  // Remaining code...
 }
+
 
 
