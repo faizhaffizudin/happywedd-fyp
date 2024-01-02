@@ -5,6 +5,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:happywedd1/pages/home.dart';
 
 class DetailsPage extends StatefulWidget {
+  const DetailsPage({Key? key}) : super(key: key);
+
   @override
   _DetailsPageState createState() => _DetailsPageState();
 }
@@ -20,20 +22,6 @@ class _DetailsPageState extends State<DetailsPage> {
   DateTime? _nikahDate;
   DateTime? _sandingDate;
   LatLng? _selectedLocation;
-
-  GoogleMapController? _mapController;
-
-  @override
-  void initState() {
-    super.initState();
-    _selectedLocation = LatLng(37.42796133580664, -122.085749655962);
-  }
-
-  void _onMapCreated(GoogleMapController controller) {
-    setState(() {
-      _mapController = controller;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -175,7 +163,7 @@ class _DetailsPageState extends State<DetailsPage> {
                     Container(
                       height: 300.0,
                       child: GoogleMap(
-                        onMapCreated: _onMapCreated,
+                        // onMapCreated: _onMapCreated,
                         initialCameraPosition: CameraPosition(
                           target: _selectedLocation!,
                           zoom: 15.0,
