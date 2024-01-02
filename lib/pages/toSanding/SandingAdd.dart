@@ -1,11 +1,11 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:happywedd1/pages/toSanding/toSanding.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:happywedd1/pages/toSanding/SandingMain.dart';
 
 class ToSandingAdd extends StatefulWidget {
-  ToSandingAdd({super.key});
+  ToSandingAdd({Key? key}) : super(key: key);
 
   @override
   _ToSandingAddState createState() => _ToSandingAddState();
@@ -24,10 +24,12 @@ class _ToSandingAddState extends State<ToSandingAdd> {
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
-          gradient: LinearGradient(colors: [
-            Color(0xff1d1e26),
-            Color(0xff252041),
-          ]),
+          gradient: LinearGradient(
+            colors: [
+              Color(0xFF7F4EFF),
+              Color(0xFF5D37F7),
+            ],
+          ),
         ),
         child: SingleChildScrollView(
           child: Column(
@@ -53,7 +55,7 @@ class _ToSandingAddState extends State<ToSandingAdd> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "To Sanding",
+                      "Adding",
                       style: TextStyle(
                         fontSize: 33,
                         color: Colors.white,
@@ -61,8 +63,14 @@ class _ToSandingAddState extends State<ToSandingAdd> {
                         letterSpacing: 4,
                       ),
                     ),
-                    SizedBox(
-                      height: 8,
+                    Text(
+                      "To Sanding",
+                      style: TextStyle(
+                        fontSize: 33,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 4,
+                      ),
                     ),
                     Text(
                       "Checklist",
@@ -97,16 +105,17 @@ class _ToSandingAddState extends State<ToSandingAdd> {
                       height: 12,
                     ),
                     Wrap(
+                      runSpacing: 10,
                       children: [
-                        targetChip("Groom", 0xffff6d6e),
+                        targetChip("Groom", 0xFFFF6D6E, Icons.face),
                         SizedBox(
                           width: 20,
                         ),
-                        targetChip("Bride", 0xffff6d6e),
+                        targetChip("Bride", 0xFFFF6D6E, Icons.face_3),
                         SizedBox(
                           width: 20,
                         ),
-                        targetChip("Both", 0xffff6d6e),
+                        targetChip("Both", 0xFFFF6D6E, Icons.people),
                       ],
                     ),
                     SizedBox(
@@ -119,27 +128,28 @@ class _ToSandingAddState extends State<ToSandingAdd> {
                     Wrap(
                       runSpacing: 10,
                       children: [
-                        categoryChip("Venue", 0xffff6d6e),
+                        categoryChip("Venue", 0xFFFF6D6E, Icons.home),
                         SizedBox(
                           width: 20,
                         ),
-                        categoryChip("Caterer", 0xffff6d6e),
+                        categoryChip("Caterer", 0xFFFF6D6E, Icons.restaurant),
                         SizedBox(
                           width: 20,
                         ),
-                        categoryChip("Vendors", 0xffff6d6e),
+                        categoryChip("Vendors", 0xFFFF6D6E, Icons.fastfood),
                         SizedBox(
                           width: 20,
                         ),
-                        categoryChip("Guest List", 0xffff6d6e),
+                        categoryChip("Guest List", 0xFFFF6D6E, Icons.groups_2),
                         SizedBox(
                           width: 20,
                         ),
-                        categoryChip("Invitation Card", 0xffff6d6e),
+                        categoryChip("Invitation Card", 0xFFFF6D6E, Icons.rsvp),
                         SizedBox(
                           width: 20,
                         ),
-                        categoryChip("Precautionary Measures", 0xffff6d6e),
+                        categoryChip("Precautionary Measures", 0xFFFF6D6E,
+                            Icons.healing),
                       ],
                     ),
                     SizedBox(
@@ -175,7 +185,7 @@ class _ToSandingAddState extends State<ToSandingAdd> {
           "title": _titleController.text,
           "notes": _notesController.text,
           "target": target,
-          "category": category
+          "category": category,
         });
 
         Navigator.pop(context);
@@ -185,10 +195,7 @@ class _ToSandingAddState extends State<ToSandingAdd> {
         width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
-          gradient: RadialGradient(colors: [
-            Colors.lightBlue,
-            Colors.lightGreen,
-          ]),
+          color: Colors.deepPurple,
         ),
         child: Center(
           child: Text(
@@ -209,7 +216,7 @@ class _ToSandingAddState extends State<ToSandingAdd> {
       height: 150,
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
-        color: Color(0xff2a2e3d),
+        color: Color(0xFF2A2E3D),
         borderRadius: BorderRadius.circular(15),
       ),
       child: TextFormField(
@@ -221,7 +228,7 @@ class _ToSandingAddState extends State<ToSandingAdd> {
         maxLines: null,
         decoration: InputDecoration(
           border: InputBorder.none,
-          hintText: "Task Title",
+          hintText: "Task Notes",
           hintStyle: TextStyle(
             color: Colors.grey,
             fontSize: 17,
@@ -235,7 +242,7 @@ class _ToSandingAddState extends State<ToSandingAdd> {
     );
   }
 
-  Widget targetChip(String label, int color) {
+  Widget targetChip(String label, int color, IconData iconData) {
     return InkWell(
       onTap: () {
         setState(() {
@@ -247,23 +254,34 @@ class _ToSandingAddState extends State<ToSandingAdd> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),
-        label: Text(
-          label,
-          style: TextStyle(
-            fontSize: 15,
-            color: target == label ? Colors.black : Colors.white,
-            fontWeight: FontWeight.w600,
-          ),
+        label: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              iconData,
+              color: target == label ? Colors.black : Colors.white,
+            ),
+            SizedBox(width: 7), // Adjust spacing between icon and label
+            Text(
+              label,
+              style: TextStyle(
+                fontSize: 15,
+                color: target == label ? Colors.black : Colors.white,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ],
         ),
         labelPadding: EdgeInsets.symmetric(
-          horizontal: 17,
-          vertical: 3.8,
+          horizontal: 8,
+          vertical: 3,
         ),
       ),
     );
   }
 
-  Widget categoryChip(String label, int color) {
+  Widget categoryChip(String label, int color, IconData iconData) {
     return InkWell(
       onTap: () {
         setState(() {
@@ -275,17 +293,28 @@ class _ToSandingAddState extends State<ToSandingAdd> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),
-        label: Text(
-          label,
-          style: TextStyle(
-            fontSize: 15,
-            color: category == label ? Colors.black : Colors.white,
-            fontWeight: FontWeight.w600,
-          ),
+        label: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              iconData,
+              color: category == label ? Colors.black : Colors.white,
+            ),
+            SizedBox(width: 8), // Adjust spacing between icon and label
+            Text(
+              label,
+              style: TextStyle(
+                fontSize: 15,
+                color: category == label ? Colors.black : Colors.white,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ],
         ),
         labelPadding: EdgeInsets.symmetric(
-          horizontal: 17,
-          vertical: 3.8,
+          horizontal: 8,
+          vertical: 3,
         ),
       ),
     );
@@ -296,7 +325,7 @@ class _ToSandingAddState extends State<ToSandingAdd> {
       height: 55,
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
-        color: Color(0xff2a2e3d),
+        color: Color(0xFF2A2E3D),
         borderRadius: BorderRadius.circular(15),
       ),
       child: TextFormField(

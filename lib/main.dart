@@ -128,8 +128,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:happywedd1/pages/home.dart';
 import 'package:happywedd1/pages/signUp.dart';
-import 'package:happywedd1/pages/toSanding/toSanding.dart';
-import 'package:happywedd1/pages/toSanding/toSandingAdd.dart';
+import 'package:happywedd1/pages/toSanding/SandingMain.dart';
+import 'package:happywedd1/pages/toSanding/SandingAdd.dart';
 import 'package:happywedd1/services/auth.dart';
 import 'package:happywedd1/pages/splashScreen.dart';
 
@@ -189,7 +189,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: ToSanding(),
+      home: SplashScreen(),
       debugShowCheckedModeBanner: false, //buang debug
     );
   }

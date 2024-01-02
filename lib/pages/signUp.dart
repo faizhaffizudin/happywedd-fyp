@@ -10,7 +10,7 @@ import 'package:happywedd1/pages/signIn.dart';
 import 'package:happywedd1/services/auth.dart';
 
 class SignUp extends StatefulWidget {
-  const SignUp({super.key});
+  const SignUp({Key? key});
 
   @override
   _SignUpState createState() => _SignUpState();
@@ -30,80 +30,84 @@ class _SignUpState extends State<SignUp> {
         child: Container(
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
-          color: Colors.purple,
-          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-            const Text(
-              "Register an Account",
-              style: TextStyle(
-                fontSize: 35,
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-              ),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Color(0xFF7F4EFF),
+                Color(0xFF5D37F7),
+              ],
             ),
-            SizedBox(
-              height: 20,
-            ),
-
-            SizedBox(
-              height: 15,
-            ),
-            textItem("Email", _emailController, false), //email
-
-            SizedBox(
-              height: 15,
-            ),
-            textItem("Password", _pwdController, true), // password
-
-            SizedBox(
-              height: 15,
-            ),
-            signBtn(), // sign up btn
-
-            SizedBox(
-              height: 20,
-            ),
-            Text(
-              "Or",
-              style: TextStyle(color: Colors.white, fontSize: 18),
-            ),
-
-            SizedBox(
-              height: 15,
-            ),
-            imageBtn(), //google btn
-
-            SizedBox(
-              height: 20,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  "If you already have an account, ",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                  ),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text(
+                "Register an Account",
+                style: TextStyle(
+                  fontSize: 35,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
                 ),
-                InkWell(
-                  onTap: () {
-                    Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(builder: (builder) => SignIn()),
-                        (route) => false);
-                  },
-                  child: Text(
-                    "login",
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              SizedBox(
+                height: 15,
+              ),
+              textItem("Email", _emailController, false), //email
+              SizedBox(
+                height: 15,
+              ),
+              textItem("Password", _pwdController, true), // password
+              SizedBox(
+                height: 15,
+              ),
+              signBtn(), // sign up btn
+              SizedBox(
+                height: 20,
+              ),
+              Text(
+                "Or",
+                style: TextStyle(color: Colors.white, fontSize: 18),
+              ),
+              SizedBox(
+                height: 15,
+              ),
+              imageBtn(), //google btn
+              SizedBox(
+                height: 20,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "If you already have an account, ",
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 18,
-                      fontWeight: FontWeight.bold,
                     ),
                   ),
-                ),
-              ],
-            ),
-          ]),
+                  InkWell(
+                    onTap: () {
+                      Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(builder: (builder) => SignIn()),
+                          (route) => false);
+                    },
+                    child: Text(
+                      "login",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -257,11 +261,12 @@ class _SignUpState extends State<SignUp> {
             color: Colors.white,
           ),
           focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(15),
-              borderSide: BorderSide(
-                width: 1.5,
-                color: Colors.amber,
-              )),
+            borderRadius: BorderRadius.circular(15),
+            borderSide: BorderSide(
+              width: 1.5,
+              color: Colors.amber,
+            ),
+          ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(15),
             borderSide: const BorderSide(
