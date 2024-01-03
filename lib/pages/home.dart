@@ -36,8 +36,45 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+     return MaterialApp(
+      theme: ThemeData(
+        primaryColor: Colors.purple,
+       colorScheme: ColorScheme.fromSwatch().copyWith(secondary: Colors.purpleAccent),
+        scaffoldBackgroundColor: Colors.white,
+        appBarTheme: AppBarTheme(
+          backgroundColor: Colors.purple,
+        ),
+        textTheme: TextTheme(
+          headline6: TextStyle(
+            color: Colors.purple,
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+          ),
+          subtitle1: TextStyle(
+            color: Colors.purple,
+            fontSize: 18,
+          ),
+          // Add more text styles as needed
+        ),
+      ),
+      home: Scaffold(
+       backgroundColor: const Color.fromARGB(255, 239, 226, 255),
       appBar: AppBar(
+        backgroundColor: Colors.purple[700],
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              "Home",
+              style: TextStyle(
+                fontSize: 28,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+            SizedBox(width: 16),
+          ],
+        ),
         actions: [
           IconButton(
             icon: const Icon(Icons.logout),
@@ -53,11 +90,12 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
       bottomNavigationBar: BottomNavBar(currentIndex: 0),
-      body: _buildHomeContent(),
-    );
+      body: _buildHomeContent(context),
+    ),
+     );
   }
 
-  Widget _buildHomeContent() {
+  Widget _buildHomeContent(BuildContext context) {
     return FutureBuilder<DocumentSnapshot>(
       future: FirebaseFirestore.instance.collection("users").doc(userId).get(),
       builder: (context, snapshot) {
@@ -86,7 +124,42 @@ class _HomePageState extends State<HomePage> {
         return Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            CountdownWidget(targetDate: nikahDate),
+             Center(
+              child: Text(
+                "Countdowns",
+                style: TextStyle(
+                  fontSize: 32,
+                  fontWeight: FontWeight.bold,
+                  color: Color.fromARGB(255, 53, 41, 95),
+                ),
+              ),
+            ),
+            _buildCountdownBox(
+              context,
+              title: "Nikah Date",
+              countdown: CountdownWidget(targetDate: nikahDate),
+            ),
+            SizedBox(height: 20),
+             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Expanded(
+              child: _buildCountdownBox(
+              context,
+              title: "Bride Sanding Date",
+              countdown: CountdownWidget(targetDate: nikahDate),
+            ),
+                ),
+            SizedBox(height: 20),
+             Expanded(
+              child: _buildCountdownBox(
+              context,
+              title: "Groom Sanding Date",
+              countdown: CountdownWidget(targetDate: nikahDate),
+            ),
+             ),
+              ],
+             ),
             SizedBox(height: 20),
             // ChecklistCompletionWidget(percentage: 60.0),
           ],
@@ -95,6 +168,38 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
+
+Widget _buildCountdownBox(BuildContext context,
+{required String title, required Widget countdown}) {
+    return Container(
+      padding: EdgeInsets.all(20),
+      margin: EdgeInsets.symmetric(vertical: 10),
+      decoration: BoxDecoration(
+        color: Colors.purple.shade50,
+        border: Border.all(color: Colors.purple),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(
+            title,
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.headline6,
+            // style: TextStyle(
+            //   fontSize: 24,
+            //   fontWeight: FontWeight.bold,
+            //   color: Colors.purple[700],
+            // ),
+          ),
+          SizedBox(height: 10),
+          countdown,
+        ],
+      ),
+    );
+  }
+
+
 
 class CountdownWidget extends StatelessWidget {
   final DateTime targetDate;
@@ -108,41 +213,30 @@ class CountdownWidget extends StatelessWidget {
     int months = (countdownDuration.inDays % 365) ~/ 30;
     int days = countdownDuration.inDays % 30;
 
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            "Countdown to Nikah Date",
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-              color: Colors.purple[700],
-            ),
+    return Column(
+      children: [
+        Text(
+          "${years}y ${months}m ${days}d",
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 32,
+            fontWeight: FontWeight.bold,
+            color: Colors.purple,
           ),
-          SizedBox(height: 10),
-          Text(
-            "${years}y ${months}m ${days}d",
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 32,
-              fontWeight: FontWeight.bold,
-              color: Colors.purple[700],
-            ),
-          ),
+        ),
           SizedBox(height: 10),
           Text(
             DateFormat('yyyy-MM-dd').format(targetDate),
             textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 18,
-              color: Colors.purple[700],
-            ),
+            style: Theme.of(context).textTheme.subtitle1,
+            // style: TextStyle(
+            //   fontSize: 18,
+            //   color: Colors.purple[700],
+            // ),
           ),
+          SizedBox(height: 10),
         ],
-      ),
-    );
+      );
   }
 }
 

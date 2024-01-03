@@ -93,7 +93,7 @@ class _DetailsPageState extends State<DetailsPage> {
                       lastDate: DateTime(DateTime.now().year + 1),
                     );
 
-                    if (pickedDate != null) {
+if (pickedDate != null) {
                       setState(() {
                         _nikahDate = pickedDate;
                         _nikahDateController.text =
