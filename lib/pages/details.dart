@@ -28,6 +28,7 @@ class _DetailsPageState extends State<DetailsPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Registration Form'),
+        backgroundColor: Color(0xFF7F4EFF),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -43,6 +44,7 @@ class _DetailsPageState extends State<DetailsPage> {
                     labelText: 'Name of the Bride',
                     border: OutlineInputBorder(),
                   ),
+                  style: TextStyle(color: Colors.white),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter the bride\'s name';
@@ -57,6 +59,7 @@ class _DetailsPageState extends State<DetailsPage> {
                     labelText: 'Name of the Groom',
                     border: OutlineInputBorder(),
                   ),
+                  style: TextStyle(color: Colors.white),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter the groom\'s name';
@@ -71,6 +74,7 @@ class _DetailsPageState extends State<DetailsPage> {
                     labelText: 'Nikah Date',
                     border: OutlineInputBorder(),
                   ),
+                  style: TextStyle(color: Colors.white),
                   onTap: () async {
                     DateTime? pickedDate = await showDatePicker(
                       context: context,
@@ -95,6 +99,7 @@ class _DetailsPageState extends State<DetailsPage> {
                     labelText: 'Sanding Date',
                     border: OutlineInputBorder(),
                   ),
+                  style: TextStyle(color: Colors.white),
                   onTap: () async {
                     DateTime? pickedDate = await showDatePicker(
                       context: context,
@@ -148,6 +153,7 @@ class _DetailsPageState extends State<DetailsPage> {
                     );
                   },
                   child: Text('Submit'),
+                  
                 ),
                 SizedBox(height: 20.0),
                 Column(
@@ -158,11 +164,14 @@ class _DetailsPageState extends State<DetailsPage> {
                         // Handle map-related action if needed
                       },
                       child: Text('Custom Map Action'),
+                      style: ElevatedButton.styleFrom(
+                    primary: Colors.black,
+                  ),
                     ),
                     SizedBox(height: 20.0),
                     Container(
                       height: 300.0,
-                      child: GoogleMap(
+                      child: _selectedLocation != null ? GoogleMap(
                         // onMapCreated: _onMapCreated,
                         initialCameraPosition: CameraPosition(
                           target: _selectedLocation!,
@@ -171,7 +180,7 @@ class _DetailsPageState extends State<DetailsPage> {
                         onTap: (LatLng latLng) {
                           // Handle map tap events if needed
                         },
-                      ),
+                      ) 
                     ),
                   ],
                 ),
@@ -180,6 +189,7 @@ class _DetailsPageState extends State<DetailsPage> {
           ),
         ),
       ),
+      backgroundColor: Color(0xFF7F4EFF),
     );
   }
 }
