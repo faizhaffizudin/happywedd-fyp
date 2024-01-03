@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:happywedd1/pages/home.dart';
 
 class DetailsPage extends StatefulWidget {
@@ -21,13 +20,28 @@ class _DetailsPageState extends State<DetailsPage> {
 
   DateTime? _nikahDate;
   DateTime? _sandingDate;
-  LatLng? _selectedLocation;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Registration Form'),
+        backgroundColor: Colors.purple[700],
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              "Fill In Your Details",
+              style: TextStyle(
+                fontSize: 28,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+            SizedBox(width: 16),
+          ],
+        ),
+        centerTitle: true,
+        toolbarHeight: 80,
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -148,32 +162,6 @@ class _DetailsPageState extends State<DetailsPage> {
                     );
                   },
                   child: Text('Submit'),
-                ),
-                SizedBox(height: 20.0),
-                Column(
-                  children: [
-                    SizedBox(height: 20.0),
-                    ElevatedButton(
-                      onPressed: () async {
-                        // Handle map-related action if needed
-                      },
-                      child: Text('Custom Map Action'),
-                    ),
-                    SizedBox(height: 20.0),
-                    Container(
-                      height: 300.0,
-                      child: GoogleMap(
-                        // onMapCreated: _onMapCreated,
-                        initialCameraPosition: CameraPosition(
-                          target: _selectedLocation!,
-                          zoom: 15.0,
-                        ),
-                        onTap: (LatLng latLng) {
-                          // Handle map tap events if needed
-                        },
-                      ),
-                    ),
-                  ],
                 ),
               ],
             ),
