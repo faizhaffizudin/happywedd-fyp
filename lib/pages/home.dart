@@ -7,6 +7,7 @@ import 'package:happywedd1/pages/signUp.dart';
 import 'package:happywedd1/pages/toSanding/SandingMain.dart';
 import 'package:happywedd1/pages/toSanding/SandingAdd.dart';
 import 'package:happywedd1/services/auth.dart';
+import 'package:intl/intl.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -57,15 +58,40 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildHomeContent() {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          CountdownWidget(targetDate: DateTime(2023, 12, 31)),
-          SizedBox(height: 20),
-          ChecklistCompletionWidget(percentage: 60.0),
-        ],
-      ),
+    return FutureBuilder<DocumentSnapshot>(
+      future: FirebaseFirestore.instance.collection("users").doc(userId).get(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return CircularProgressIndicator();
+        }
+
+        if (snapshot.hasError) {
+          return Text("Error: ${snapshot.error}");
+        }
+
+        DateTime nikahDate = DateTime.now(); // Default value
+
+        if (snapshot.hasData) {
+          var userData = snapshot.data!.data() as Map<String, dynamic>;
+          if (userData.containsKey("nikahDate")) {
+            nikahDate = (userData["nikahDate"] as Timestamp).toDate();
+          }
+        }
+
+        Duration countdownDuration = nikahDate.difference(DateTime.now());
+        int years = countdownDuration.inDays ~/ 365;
+        int months = (countdownDuration.inDays % 365) ~/ 30;
+        int days = countdownDuration.inDays % 30;
+
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CountdownWidget(targetDate: nikahDate),
+            SizedBox(height: 20),
+            // ChecklistCompletionWidget(percentage: 60.0),
+          ],
+        );
+      },
     );
   }
 }
@@ -78,28 +104,44 @@ class CountdownWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Duration countdownDuration = targetDate.difference(DateTime.now());
-    int days = countdownDuration.inDays;
+    int years = countdownDuration.inDays ~/ 365;
+    int months = (countdownDuration.inDays % 365) ~/ 30;
+    int days = countdownDuration.inDays % 30;
 
-    return Column(
-      children: [
-        Text(
-          "Countdown to Wedding",
-          style: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-            color: Colors.purple[700],
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            "Countdown to Nikah Date",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              color: Colors.purple[700],
+            ),
           ),
-        ),
-        SizedBox(height: 10),
-        Text(
-          "$days days",
-          style: TextStyle(
-            fontSize: 32,
-            fontWeight: FontWeight.bold,
-            color: Colors.purple[700],
+          SizedBox(height: 10),
+          Text(
+            "${years}y ${months}m ${days}d",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 32,
+              fontWeight: FontWeight.bold,
+              color: Colors.purple[700],
+            ),
           ),
-        ),
-      ],
+          SizedBox(height: 10),
+          Text(
+            DateFormat('yyyy-MM-dd').format(targetDate),
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 18,
+              color: Colors.purple[700],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -112,26 +154,32 @@ class ChecklistCompletionWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Text(
-          "Checklist Completion",
-          style: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-            color: Colors.purple[700],
+    return Center(
+      // Wrap in Center widget
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            "Checklist Completion",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              color: Colors.purple[700],
+            ),
           ),
-        ),
-        SizedBox(height: 10),
-        Text(
-          "$percentage% completed",
-          style: TextStyle(
-            fontSize: 32,
-            fontWeight: FontWeight.bold,
-            color: Colors.purple[700],
+          SizedBox(height: 10),
+          Text(
+            "$percentage% completed",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 32,
+              fontWeight: FontWeight.bold,
+              color: Colors.purple[700],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

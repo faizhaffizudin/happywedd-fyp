@@ -16,16 +16,16 @@ class BudgetItem {
   });
 }
 
-class SandingBudget extends StatefulWidget {
+class NikahBudget extends StatefulWidget {
   final String userId;
 
-  const SandingBudget({Key? key, required this.userId}) : super(key: key);
+  const NikahBudget({Key? key, required this.userId}) : super(key: key);
 
   @override
-  _SandingBudgetState createState() => _SandingBudgetState();
+  _NikahBudgetState createState() => _NikahBudgetState();
 }
 
-class _SandingBudgetState extends State<SandingBudget> {
+class _NikahBudgetState extends State<NikahBudget> {
   List<BudgetItem> budgetItems = [];
   List<BudgetItem> filteredBudgetItems = [];
   TextEditingController _categoryController =
@@ -51,7 +51,7 @@ class _SandingBudgetState extends State<SandingBudget> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "Sanding Budget",
+                "Nikah Budget",
                 style: TextStyle(
                   fontSize: 28,
                   fontWeight: FontWeight.bold,
@@ -64,7 +64,7 @@ class _SandingBudgetState extends State<SandingBudget> {
           centerTitle: true,
           toolbarHeight: 80,
         ),
-        bottomNavigationBar: BottomNavBar(currentIndex: 2),
+        bottomNavigationBar: BottomNavBar(currentIndex: 1),
         body: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
@@ -255,7 +255,7 @@ class _SandingBudgetState extends State<SandingBudget> {
       QuerySnapshot<Map<String, dynamic>> budgetQuery = await _firestore
           .collection("users")
           .doc(widget.userId)
-          .collection("sandingbudget")
+          .collection("nikahbudget")
           .get();
 
       setState(() {
@@ -282,7 +282,7 @@ class _SandingBudgetState extends State<SandingBudget> {
       CollectionReference<Map<String, dynamic>> budgetCollection = _firestore
           .collection("users")
           .doc(widget.userId)
-          .collection("sandingbudget");
+          .collection("nikahbudget");
 
       await budgetCollection.add({
         "category": _categoryController.text,
@@ -307,7 +307,7 @@ class _SandingBudgetState extends State<SandingBudget> {
       await _firestore
           .collection("users")
           .doc(widget.userId)
-          .collection("sandingbudget")
+          .collection("nikahbudget")
           .doc(itemId)
           .delete();
 
