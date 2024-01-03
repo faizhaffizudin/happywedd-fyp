@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:happywedd1/bottomNavBar.dart';
 
 class BudgetItem {
   String id;
@@ -25,67 +27,119 @@ class SandingBudget extends StatefulWidget {
 
 class _SandingBudgetState extends State<SandingBudget> {
   List<BudgetItem> budgetItems = [];
-  TextEditingController _categoryController = TextEditingController();
+  List<BudgetItem> filteredBudgetItems = [];
+  TextEditingController _categoryController =
+      TextEditingController(text: "All");
   TextEditingController _itemNameController = TextEditingController();
   TextEditingController _budgetController = TextEditingController();
+  late FirebaseFirestore _firestore;
+
+  @override
+  void initState() {
+    super.initState();
+    _firestore = FirebaseFirestore.instance;
+    _loadBudgetItems();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Sanding Budget"),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Your Sanding Budget',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
+        backgroundColor: const Color.fromARGB(255, 239, 226, 255),
+        appBar: AppBar(
+          backgroundColor: Colors.purple[700],
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                "Sanding Budget",
+                style: TextStyle(
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
               ),
-            ),
-            SizedBox(height: 20),
-            _buildCategoryDropdown(),
-            SizedBox(height: 10),
-            _buildBudgetItemList(),
-          ],
+              SizedBox(width: 16),
+            ],
+          ),
+          centerTitle: true,
+          toolbarHeight: 80,
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          _showAddItemDialog();
-        },
-        child: Icon(Icons.add),
-      ),
-    );
+        bottomNavigationBar: BottomNavBar(currentIndex: 2),
+        body: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: 20),
+              _buildCategoryDropdown(),
+              SizedBox(height: 10),
+              _buildBudgetItemList(),
+            ],
+          ),
+        ),
+        floatingActionButton: SizedBox(
+            width: 150, // Adjust the width as needed
+            child: FloatingActionButton(
+                onPressed: () {
+                  _showAddItemDialog();
+                },
+                backgroundColor: Colors.purple,
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.add, color: Colors.white),
+                      Text(
+                        "Add Budget",
+                        style: TextStyle(fontSize: 12, color: Colors.white),
+                      )
+                    ]))));
   }
 
   Widget _buildCategoryDropdown() {
-    return DropdownButtonFormField<String>(
-      value: budgetItems.isEmpty ? null : budgetItems.first.category,
-      items: budgetItems.map((item) {
-        return DropdownMenuItem<String>(
-          value: item.category,
-          child: Text(item.category),
-        );
-      }).toList(),
-      onChanged: (value) {
-        // Handle category change
-      },
-      decoration: InputDecoration(
-        labelText: 'Select Category',
-        border: OutlineInputBorder(),
-      ),
+    List<String> categoryList =
+        budgetItems.map((item) => item.category).toSet().toList();
+    categoryList.insert(0, "All");
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        DropdownButtonFormField<String>(
+          value: _categoryController.text,
+          items: categoryList.map((item) {
+            return DropdownMenuItem<String>(
+              value: item,
+              child: Text(item),
+            );
+          }).toList(),
+          onChanged: (value) {
+            setState(() {
+              _categoryController.text = value!;
+              _filterBudgetItemsByCategory(value);
+            });
+          },
+          decoration: InputDecoration(
+            labelText: 'Select Category',
+            border: OutlineInputBorder(),
+          ),
+        ),
+        SizedBox(height: 10),
+        Center(
+          child: Text(
+            'Sum of Budget: RM${_getSumOfBudgetInCategory(_categoryController.text).toStringAsFixed(2)}',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+      ],
     );
   }
 
   Widget _buildBudgetItemList() {
     return Expanded(
       child: ListView.builder(
-        itemCount: budgetItems.length,
+        itemCount: filteredBudgetItems.length,
         itemBuilder: (context, index) {
           return Card(
             elevation: 3,
@@ -95,18 +149,18 @@ class _SandingBudgetState extends State<SandingBudget> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    budgetItems[index].itemName,
+                    filteredBudgetItems[index].itemName,
                     style: TextStyle(fontWeight: FontWeight.w500),
                   ),
                   Text(
-                    'Budget: \$${budgetItems[index].budget.toStringAsFixed(2)}',
+                    'Budget: RM${filteredBudgetItems[index].budget.toStringAsFixed(2)}',
                   ),
                 ],
               ),
               trailing: IconButton(
                 icon: Icon(Icons.delete),
                 onPressed: () {
-                  _deleteBudgetItem(budgetItems[index].id);
+                  _deleteBudgetItem(filteredBudgetItems[index].id);
                 },
               ),
             ),
@@ -114,6 +168,23 @@ class _SandingBudgetState extends State<SandingBudget> {
         },
       ),
     );
+  }
+
+  void _filterBudgetItemsByCategory(String category) {
+    setState(() {
+      if (category == "All") {
+        filteredBudgetItems = budgetItems;
+      } else {
+        filteredBudgetItems =
+            budgetItems.where((item) => item.category == category).toList();
+      }
+    });
+  }
+
+  double _getSumOfBudgetInCategory(String category) {
+    return budgetItems
+        .where((item) => category == "All" || item.category == category)
+        .fold(0, (sum, item) => sum + item.budget);
   }
 
   void _showAddItemDialog() {
@@ -132,7 +203,7 @@ class _SandingBudgetState extends State<SandingBudget> {
             ),
           ),
           content: Container(
-            height: 200,
+            height: 250, // Adjust the height as needed
             child: Column(
               children: [
                 TextFormField(
@@ -167,8 +238,8 @@ class _SandingBudgetState extends State<SandingBudget> {
               child: Text('Cancel'),
             ),
             ElevatedButton(
-              onPressed: () {
-                _saveBudgetItem();
+              onPressed: () async {
+                await _saveBudgetItem(); // Save data to Firestore
                 Navigator.pop(context);
               },
               child: Text('Add'),
@@ -179,25 +250,70 @@ class _SandingBudgetState extends State<SandingBudget> {
     );
   }
 
-  void _saveBudgetItem() {
-    // Add your logic to save the budget item
-    // For example, add it to the budgetItems list
-    setState(() {
-      budgetItems.add(
-        BudgetItem(
-          id: DateTime.now().toString(),
-          category: _categoryController.text,
-          itemName: _itemNameController.text,
-          budget: double.parse(_budgetController.text),
-        ),
-      );
-    });
+  void _loadBudgetItems() async {
+    try {
+      QuerySnapshot<Map<String, dynamic>> budgetQuery = await _firestore
+          .collection("users")
+          .doc(widget.userId)
+          .collection("sandingbudget")
+          .get();
+
+      setState(() {
+        budgetItems = budgetQuery.docs.map((doc) {
+          var data = doc.data();
+          return BudgetItem(
+            id: doc.id,
+            category: data["category"],
+            itemName: data["itemName"],
+            budget: data["budget"].toDouble(),
+          );
+        }).toList();
+
+        // Show all items by default when "All" category is selected
+        _filterBudgetItemsByCategory(_categoryController.text);
+      });
+    } catch (e) {
+      print("Error loading Budget Items: $e");
+    }
   }
 
-  void _deleteBudgetItem(String itemId) {
-    // Add your logic to delete the budget item
-    setState(() {
-      budgetItems.removeWhere((item) => item.id == itemId);
-    });
+  Future<void> _saveBudgetItem() async {
+    try {
+      CollectionReference<Map<String, dynamic>> budgetCollection = _firestore
+          .collection("users")
+          .doc(widget.userId)
+          .collection("sandingbudget");
+
+      await budgetCollection.add({
+        "category": _categoryController.text,
+        "itemName": _itemNameController.text,
+        "budget": double.parse(_budgetController.text),
+      });
+
+      setState(() {
+        _categoryController.clear();
+        _itemNameController.clear();
+        _budgetController.clear();
+      });
+
+      _loadBudgetItems(); // Reload budget items after save
+    } catch (e) {
+      print("Error saving Budget Item: $e");
+    }
+  }
+
+  Future<void> _deleteBudgetItem(String itemId) async {
+    try {
+      await _firestore
+          .collection("users")
+          .doc(widget.userId)
+          .collection("sandingbudget")
+          .doc(itemId)
+          .delete();
+
+      _loadBudgetItems(); // Reload budget items after delete
+    } catch (e) {
+      print("Error deleting Budget Item: $e");
+    }
   }
 }
