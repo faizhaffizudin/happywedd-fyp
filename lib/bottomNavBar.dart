@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:happywedd1/pages/home.dart';
 import 'package:happywedd1/pages/profile.dart';
+import 'package:happywedd1/pages/toNikah/nikahMain.dart';
 import 'package:happywedd1/pages/toSanding/SandingMain.dart';
 
 class BottomNavBar extends StatefulWidget {
@@ -41,8 +42,10 @@ class _BottomNavBarState extends State<BottomNavBar> {
             );
             break;
           case 1:
-            // Navigate to To Nikah page
-            break;
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ToNikah()),
+            );
           case 2:
             Navigator.push(
               context,
