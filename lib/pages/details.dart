@@ -57,7 +57,6 @@ class _DetailsPageState extends State<DetailsPage> {
                     labelText: 'Name of the Bride',
                     border: OutlineInputBorder(),
                   ),
-                  style: TextStyle(color: Colors.white),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter the bride\'s name';
@@ -72,7 +71,6 @@ class _DetailsPageState extends State<DetailsPage> {
                     labelText: 'Name of the Groom',
                     border: OutlineInputBorder(),
                   ),
-                  style: TextStyle(color: Colors.white),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter the groom\'s name';
@@ -87,7 +85,6 @@ class _DetailsPageState extends State<DetailsPage> {
                     labelText: 'Nikah Date',
                     border: OutlineInputBorder(),
                   ),
-                  style: TextStyle(color: Colors.white),
                   onTap: () async {
                     DateTime? pickedDate = await showDatePicker(
                       context: context,
@@ -96,7 +93,7 @@ class _DetailsPageState extends State<DetailsPage> {
                       lastDate: DateTime(DateTime.now().year + 1),
                     );
 
-                    if (pickedDate != null) {
+if (pickedDate != null) {
                       setState(() {
                         _nikahDate = pickedDate;
                         _nikahDateController.text =
@@ -112,7 +109,6 @@ class _DetailsPageState extends State<DetailsPage> {
                     labelText: 'Sanding Date',
                     border: OutlineInputBorder(),
                   ),
-                  style: TextStyle(color: Colors.white),
                   onTap: () async {
                     DateTime? pickedDate = await showDatePicker(
                       context: context,
@@ -166,40 +162,12 @@ class _DetailsPageState extends State<DetailsPage> {
                     );
                   },
                   child: Text('Submit'),
-                  
-                ),
-                SizedBox(height: 20.0),
-                Column(
-                  children: [
-                    SizedBox(height: 20.0),
-                    ElevatedButton(
-                      onPressed: () async {
-                        // Handle map-related action if needed
-                      },
-                      child: Text('Custom Map Action'),
-                    ),
-                    SizedBox(height: 20.0),
-                    Container(
-                      height: 300.0,
-                      child: GoogleMap(
-                        // onMapCreated: _onMapCreated,
-                        initialCameraPosition: CameraPosition(
-                          target: _selectedLocation!,
-                          zoom: 15.0,
-                        ),
-                        onTap: (LatLng latLng) {
-                          // Handle map tap events if needed
-                        },
-                      ),
-                    ),
-                  ],
                 ),
               ],
             ),
           ),
         ),
       ),
-      backgroundColor: Color(0xFF7F4EFF),
     );
   }
 }
