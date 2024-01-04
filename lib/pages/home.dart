@@ -15,19 +15,18 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   AuthClass authClass = AuthClass();
   late String userId;
-  late Stream<QuerySnapshot> _stream;
+  // late Stream<QuerySnapshot> _stream;
   List<Select> selected = [];
-  int _currentIndex = 0; // Set the default index to Home
 
   @override
   void initState() {
     super.initState();
     userId = FirebaseAuth.instance.currentUser?.uid ?? "default_user_id";
-    _stream = FirebaseFirestore.instance
-        .collection("users")
-        .doc(userId)
-        .collection("tosanding")
-        .snapshots();
+    // _stream = FirebaseFirestore.instance
+    //     .collection("users")
+    //     .doc(userId)
+    //     .collection("tosanding")
+    //     .snapshots();
   }
 
   @override
@@ -87,19 +86,24 @@ class _HomePageState extends State<HomePage> {
           return Text("Error: ${snapshot.error}");
         }
 
-        DateTime nikahDate = DateTime.now(); // Default value
+        DateTime dateNikah = DateTime.now(); // Default value
+        DateTime dateSandingBride = DateTime.now(); // Default value
+        DateTime dateSandingGroom = DateTime.now(); // Default value
 
         if (snapshot.hasData) {
           var userData = snapshot.data!.data() as Map<String, dynamic>;
-          if (userData.containsKey("nikahDate")) {
-            nikahDate = (userData["nikahDate"] as Timestamp).toDate();
+          if (userData.containsKey("dateNikah")) {
+            dateNikah = (userData["dateNikah"] as Timestamp).toDate();
+          }
+          if (userData.containsKey("dateSandingBride")) {
+            dateSandingBride =
+                (userData["dateSandingBride"] as Timestamp).toDate();
+          }
+          if (userData.containsKey("dateSandingGroom")) {
+            dateSandingGroom =
+                (userData["dateSandingGroom"] as Timestamp).toDate();
           }
         }
-
-        Duration countdownDuration = nikahDate.difference(DateTime.now());
-        int years = countdownDuration.inDays ~/ 365;
-        int months = (countdownDuration.inDays % 365) ~/ 30;
-        int days = countdownDuration.inDays % 30;
 
         return Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -117,9 +121,9 @@ class _HomePageState extends State<HomePage> {
             _buildCountdownBox(
               context,
               title: "Nikah Date",
-              countdown: CountdownWidget(targetDate: nikahDate),
+              countdown: CountdownWidget(targetDate: dateNikah),
             ),
-            SizedBox(height: 20),
+            // SizedBox(height: 2),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -127,15 +131,15 @@ class _HomePageState extends State<HomePage> {
                   child: _buildCountdownBox(
                     context,
                     title: "Bride Sanding Date",
-                    countdown: CountdownWidget(targetDate: nikahDate),
+                    countdown: CountdownWidget(targetDate: dateSandingBride),
                   ),
                 ),
-                SizedBox(height: 20),
+                SizedBox(width: 5),
                 Expanded(
                   child: _buildCountdownBox(
                     context,
                     title: "Groom Sanding Date",
-                    countdown: CountdownWidget(targetDate: nikahDate),
+                    countdown: CountdownWidget(targetDate: dateSandingGroom),
                   ),
                 ),
               ],
@@ -199,18 +203,19 @@ class CountdownWidget extends StatelessWidget {
           style: TextStyle(
             fontSize: 32,
             fontWeight: FontWeight.bold,
-            color: Colors.purple,
+            color: Colors.deepOrange,
           ),
         ),
         SizedBox(height: 10),
         Text(
-          DateFormat('yyyy-MM-dd').format(targetDate),
+          "to " + DateFormat('dd MMM yyyy').format(targetDate),
           textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.subtitle1,
-          // style: TextStyle(
-          //   fontSize: 18,
-          //   color: Colors.purple[700],
-          // ),
+          // style: Theme.of(context).textTheme.subtitle1,
+          style: TextStyle(
+            fontSize: 18,
+            color: Colors.purple,
+            fontWeight: FontWeight.w700,
+          ),
         ),
         SizedBox(height: 10),
       ],

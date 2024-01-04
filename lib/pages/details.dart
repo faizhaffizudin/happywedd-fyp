@@ -15,13 +15,13 @@ class _DetailsPageState extends State<DetailsPage> {
 
   TextEditingController _nameBrideController = TextEditingController();
   TextEditingController _nameGroomController = TextEditingController();
-  TextEditingController _nikahDateController = TextEditingController();
-  TextEditingController _bridesandingDateController = TextEditingController();
-  TextEditingController _groomsandingDateController = TextEditingController();
+  TextEditingController _dateNikahController = TextEditingController();
+  TextEditingController _dateSandingBrideController = TextEditingController();
+  TextEditingController _dateSandingGroomController = TextEditingController();
 
-  DateTime? _nikahDate;
-  DateTime? _bridesandingDate;
-  DateTime? _groomsandingDate;
+  DateTime? _dateNikah;
+  DateTime? _dateSandingBride;
+  DateTime? _dateSandingGroom;
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +82,7 @@ class _DetailsPageState extends State<DetailsPage> {
                 ),
                 SizedBox(height: 20.0),
                 TextFormField(
-                  controller: _nikahDateController,
+                  controller: _dateNikahController,
                   decoration: InputDecoration(
                     labelText: 'Nikah Date',
                     border: OutlineInputBorder(),
@@ -95,18 +95,18 @@ class _DetailsPageState extends State<DetailsPage> {
                       lastDate: DateTime(DateTime.now().year + 1),
                     );
 
-if (pickedDate != null) {
+                    if (pickedDate != null) {
                       setState(() {
-                        _nikahDate = pickedDate;
-                        _nikahDateController.text =
-                            "${_nikahDate!.day}/${_nikahDate!.month}/${_nikahDate!.year}";
+                        _dateNikah = pickedDate;
+                        _dateNikahController.text =
+                            "${_dateNikah!.day}/${_dateNikah!.month}/${_dateNikah!.year}";
                       });
                     }
                   },
                 ),
                 SizedBox(height: 20.0),
                 TextFormField(
-                  controller: _bridesandingDateController,
+                  controller: _dateSandingBrideController,
                   decoration: InputDecoration(
                     labelText: 'Bride Sanding Date',
                     border: OutlineInputBorder(),
@@ -121,16 +121,16 @@ if (pickedDate != null) {
 
                     if (pickedDate != null) {
                       setState(() {
-                        _bridesandingDate = pickedDate;
-                        _bridesandingDateController.text =
-                            "${_bridesandingDate!.day}/${_bridesandingDate!.month}/${_bridesandingDate!.year}";
+                        _dateSandingBride = pickedDate;
+                        _dateSandingBrideController.text =
+                            "${_dateSandingBride!.day}/${_dateSandingBride!.month}/${_dateSandingBride!.year}";
                       });
                     }
                   },
                 ),
                 SizedBox(height: 20.0),
                 TextFormField(
-                  controller: _groomsandingDateController,
+                  controller: _dateSandingGroomController,
                   decoration: InputDecoration(
                     labelText: 'Groom Sanding Date',
                     border: OutlineInputBorder(),
@@ -145,9 +145,9 @@ if (pickedDate != null) {
 
                     if (pickedDate != null) {
                       setState(() {
-                        _groomsandingDate = pickedDate;
-                        _groomsandingDateController.text =
-                            "${_groomsandingDate!.day}/${_groomsandingDate!.month}/${_groomsandingDate!.year}";
+                        _dateSandingGroom = pickedDate;
+                        _dateSandingGroomController.text =
+                            "${_dateSandingGroom!.day}/${_dateSandingGroom!.month}/${_dateSandingGroom!.year}";
                       });
                     }
                   },
@@ -160,16 +160,16 @@ if (pickedDate != null) {
                         "default_user_id";
 
                     // Convert DateTime to Timestamp for Firestore
-                    Timestamp nikahTimestamp = _nikahDate != null
-                        ? Timestamp.fromDate(_nikahDate!)
+                    Timestamp nikahTimestamp = _dateNikah != null
+                        ? Timestamp.fromDate(_dateNikah!)
                         : Timestamp.now();
 
-                    Timestamp bridesandingTimestamp = _bridesandingDate != null
-                        ? Timestamp.fromDate(_bridesandingDate!)
+                    Timestamp bridesandingTimestamp = _dateSandingBride != null
+                        ? Timestamp.fromDate(_dateSandingBride!)
                         : Timestamp.now();
 
-                    Timestamp groomsandingTimestamp = _groomsandingDate != null
-                        ? Timestamp.fromDate(_groomsandingDate!)
+                    Timestamp groomsandingTimestamp = _dateSandingGroom != null
+                        ? Timestamp.fromDate(_dateSandingGroom!)
                         : Timestamp.now();
 
                     // Store data directly in the "users" collection
@@ -179,9 +179,9 @@ if (pickedDate != null) {
                         .set({
                       "nameBride": _nameBrideController.text,
                       "nameGroom": _nameGroomController.text,
-                      "nikahDate": nikahTimestamp,
-                      "bridesandingDate": bridesandingTimestamp,
-                      "groomsandingDate": groomsandingTimestamp,
+                      "dateNikah": nikahTimestamp,
+                      "dateSandingBride": bridesandingTimestamp,
+                      "dateSandingGroom": groomsandingTimestamp,
                       // Add more fields as needed
                     }, SetOptions(merge: true));
 
