@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:happywedd1/pages/signUp.dart';
+import 'package:happywedd1/pages/signIn.dart';
 
 class SplashScreen extends StatefulWidget {
   // final Widget? child;
@@ -14,7 +14,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     Future.delayed(const Duration(seconds: 3), () {
       Navigator.pushAndRemoveUntil(context,
-          MaterialPageRoute(builder: (builder) => SignUp()), (route) => false);
+          MaterialPageRoute(builder: (builder) => SignIn()), (route) => false);
     });
 
     super.initState();

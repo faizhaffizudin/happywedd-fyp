@@ -43,7 +43,7 @@ class _GreetScreenState extends State<GreetScreen> {
               ),
               SizedBox(height: 20),
               Text(
-                'Creating your Account...',
+                'Preparing your Account...',
                 style: TextStyle(
                   fontStyle: FontStyle.italic,
                   color: Colors.white,

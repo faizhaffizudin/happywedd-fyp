@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
+import 'package:happywedd1/pages/GreetScreen.dart';
 import 'package:happywedd1/pages/home.dart';
 import 'package:happywedd1/pages/signUp.dart';
 import 'package:happywedd1/services/auth.dart';
@@ -152,7 +153,7 @@ class _SignInState extends State<SignIn> {
           });
           Navigator.pushAndRemoveUntil(
             context,
-            MaterialPageRoute(builder: (builder) => HomePage()),
+            MaterialPageRoute(builder: (builder) => GreetScreen()),
             (route) => false,
           );
         } catch (e) {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:happywedd1/pages/GreetScreen.dart';
 import 'package:happywedd1/pages/home.dart';
 
 class DetailsPage extends StatefulWidget {
@@ -188,7 +189,7 @@ class _DetailsPageState extends State<DetailsPage> {
                     // Navigate to HomePage and remove all previous routes
                     Navigator.pushAndRemoveUntil(
                       context,
-                      MaterialPageRoute(builder: (builder) => HomePage()),
+                      MaterialPageRoute(builder: (builder) => GreetScreen()),
                       (route) => false,
                     );
                   },
