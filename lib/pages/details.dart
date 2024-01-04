@@ -16,10 +16,12 @@ class _DetailsPageState extends State<DetailsPage> {
   TextEditingController _nameBrideController = TextEditingController();
   TextEditingController _nameGroomController = TextEditingController();
   TextEditingController _nikahDateController = TextEditingController();
-  TextEditingController _sandingDateController = TextEditingController();
+  TextEditingController _bridesandingDateController = TextEditingController();
+  TextEditingController _groomsandingDateController = TextEditingController();
 
   DateTime? _nikahDate;
-  DateTime? _sandingDate;
+  DateTime? _bridesandingDate;
+  DateTime? _groomsandingDate;
 
   @override
   Widget build(BuildContext context) {
@@ -104,9 +106,9 @@ if (pickedDate != null) {
                 ),
                 SizedBox(height: 20.0),
                 TextFormField(
-                  controller: _sandingDateController,
+                  controller: _bridesandingDateController,
                   decoration: InputDecoration(
-                    labelText: 'Sanding Date',
+                    labelText: 'Bride Sanding Date',
                     border: OutlineInputBorder(),
                   ),
                   onTap: () async {
@@ -119,9 +121,33 @@ if (pickedDate != null) {
 
                     if (pickedDate != null) {
                       setState(() {
-                        _sandingDate = pickedDate;
-                        _sandingDateController.text =
-                            "${_sandingDate!.day}/${_sandingDate!.month}/${_sandingDate!.year}";
+                        _bridesandingDate = pickedDate;
+                        _bridesandingDateController.text =
+                            "${_bridesandingDate!.day}/${_bridesandingDate!.month}/${_bridesandingDate!.year}";
+                      });
+                    }
+                  },
+                ),
+                SizedBox(height: 20.0),
+                TextFormField(
+                  controller: _groomsandingDateController,
+                  decoration: InputDecoration(
+                    labelText: 'Groom Sanding Date',
+                    border: OutlineInputBorder(),
+                  ),
+                  onTap: () async {
+                    DateTime? pickedDate = await showDatePicker(
+                      context: context,
+                      initialDate: DateTime.now(),
+                      firstDate: DateTime.now(),
+                      lastDate: DateTime(DateTime.now().year + 1),
+                    );
+
+                    if (pickedDate != null) {
+                      setState(() {
+                        _groomsandingDate = pickedDate;
+                        _groomsandingDateController.text =
+                            "${_groomsandingDate!.day}/${_groomsandingDate!.month}/${_groomsandingDate!.year}";
                       });
                     }
                   },
@@ -138,8 +164,12 @@ if (pickedDate != null) {
                         ? Timestamp.fromDate(_nikahDate!)
                         : Timestamp.now();
 
-                    Timestamp sandingTimestamp = _sandingDate != null
-                        ? Timestamp.fromDate(_sandingDate!)
+                    Timestamp bridesandingTimestamp = _bridesandingDate != null
+                        ? Timestamp.fromDate(_bridesandingDate!)
+                        : Timestamp.now();
+
+                    Timestamp groomsandingTimestamp = _groomsandingDate != null
+                        ? Timestamp.fromDate(_groomsandingDate!)
                         : Timestamp.now();
 
                     // Store data directly in the "users" collection
@@ -150,7 +180,8 @@ if (pickedDate != null) {
                       "nameBride": _nameBrideController.text,
                       "nameGroom": _nameGroomController.text,
                       "nikahDate": nikahTimestamp,
-                      "sandingDate": sandingTimestamp,
+                      "bridesandingDate": bridesandingTimestamp,
+                      "groomsandingDate": groomsandingTimestamp,
                       // Add more fields as needed
                     }, SetOptions(merge: true));
 
