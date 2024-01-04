@@ -16,21 +16,22 @@ class BudgetItem {
   });
 }
 
-class SandingBudget extends StatefulWidget {
+class SandingGroomBudget extends StatefulWidget {
   final String userId;
 
-  const SandingBudget({Key? key, required this.userId}) : super(key: key);
+  const SandingGroomBudget({Key? key, required this.userId}) : super(key: key);
 
   @override
-  _SandingBudgetState createState() => _SandingBudgetState();
+  _SandingGroomBudgetState createState() => _SandingGroomBudgetState();
 }
 
-class _SandingBudgetState extends State<SandingBudget> {
+class _SandingGroomBudgetState extends State<SandingGroomBudget> {
   List<BudgetItem> budgetItems = [];
   TextEditingController _categoryController = TextEditingController();
   TextEditingController _itemNameController = TextEditingController();
   TextEditingController _budgetController = TextEditingController();
   late FirebaseFirestore _firestore;
+  String selectedFilter = "All";
 
   @override
   void initState() {
@@ -96,35 +97,137 @@ class _SandingBudgetState extends State<SandingBudget> {
   }
 
   Widget _buildBudgetItemList() {
+    List<String> filterCategories = [
+      "All",
+      "Venue",
+      "Vendors",
+      "Caterer",
+      "Invitation Card",
+      "Safety",
+      "Others"
+    ];
+
+    // Calculate the sum of the budget for the selected category
+    double sumOfBudget = 0;
+    for (var item in budgetItems) {
+      if (selectedFilter == "All" || item.category == selectedFilter) {
+        sumOfBudget += item.budget;
+      }
+    }
+
     return Expanded(
-      child: ListView.builder(
-        itemCount: budgetItems.length,
-        itemBuilder: (context, index) {
-          return Card(
-            elevation: 3,
-            margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-            child: ListTile(
-              title: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    budgetItems[index].itemName,
-                    style: TextStyle(fontWeight: FontWeight.w500),
-                  ),
-                  Text(
-                    'Budget: RM${budgetItems[index].budget.toStringAsFixed(2)}',
-                  ),
-                ],
-              ),
-              trailing: IconButton(
-                icon: Icon(Icons.delete),
-                onPressed: () {
-                  _deleteBudgetItem(budgetItems[index].id);
-                },
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          // Filter dropdown with box-like appearance
+          Container(
+            width: MediaQuery.of(context).size.width - 60,
+            padding: EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(15),
+              border: Border.all(
+                width: 1,
+                color: Colors.grey,
               ),
             ),
-          );
-        },
+            child: Row(
+              children: [
+                Text(
+                  'Category:',
+                  style: TextStyle(
+                    fontSize: 17,
+                    color: Colors.black,
+                  ),
+                ),
+                SizedBox(width: 10),
+                // Dropdown to filter by categories
+                DropdownButton<String>(
+                  isDense: true,
+                  value: selectedFilter,
+                  items: filterCategories.map((category) {
+                    return DropdownMenuItem<String>(
+                      value: category,
+                      child: Text(
+                        category,
+                        style: TextStyle(
+                          fontSize: 17,
+                          color: Colors.black,
+                        ),
+                      ),
+                    );
+                  }).toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      selectedFilter = value!;
+                    });
+                  },
+                  style: TextStyle(
+                    fontSize: 17,
+                    color: Colors.black,
+                  ),
+                  dropdownColor: Colors.white,
+                  icon: Icon(
+                    Icons.arrow_drop_down,
+                    color: Colors.black,
+                  ),
+                  underline: Container(
+                    height: 1.5,
+                    color: Colors.transparent,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: 20),
+          // Display the sum of the budget
+          Text(
+            'Sum of Budget: RM${sumOfBudget.toStringAsFixed(2)}',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          SizedBox(height: 20),
+          // List of budget items based on the selected filter
+          Expanded(
+            child: ListView.builder(
+              itemCount: budgetItems.length,
+              itemBuilder: (context, index) {
+                // Check if the item should be displayed based on the selected filter
+                if (selectedFilter == "All" ||
+                    budgetItems[index].category == selectedFilter) {
+                  return Card(
+                    elevation: 3,
+                    margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                    child: ListTile(
+                      title: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            budgetItems[index].itemName,
+                            style: TextStyle(fontWeight: FontWeight.w500),
+                          ),
+                          Text(
+                            'Budget: RM${budgetItems[index].budget.toStringAsFixed(2)}',
+                          ),
+                        ],
+                      ),
+                      trailing: IconButton(
+                        icon: Icon(Icons.delete),
+                        onPressed: () {
+                          _deleteBudgetItem(budgetItems[index].id);
+                        },
+                      ),
+                    ),
+                  );
+                } else {
+                  // Return an empty container for items that should be filtered out
+                  return Container();
+                }
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -138,7 +241,7 @@ class _SandingBudgetState extends State<SandingBudget> {
       "Vendors",
       "Caterer",
       "Invitation Card",
-      "Precautionary Measure",
+      "Safety",
       "Others",
     ];
 
@@ -155,15 +258,18 @@ class _SandingBudgetState extends State<SandingBudget> {
               fontWeight: FontWeight.bold,
             ),
           ),
+          backgroundColor: Colors.purple[50],
           content: SingleChildScrollView(
             child: Container(
+              width: 100,
               height: 250, // Adjust the height as needed
               child: Column(
                 children: [
                   SizedBox(
-                    width: MediaQuery.of(context).size.width - 60,
+                    width: 150,
                     height: 70,
                     child: DropdownButtonFormField<String>(
+                      isExpanded: true, // Set isExpanded to true
                       value: selectedCategory,
                       items: categories.map((category) {
                         return DropdownMenuItem<String>(
@@ -196,7 +302,18 @@ class _SandingBudgetState extends State<SandingBudget> {
                             color: Colors.grey,
                           ),
                         ),
+                        filled:
+                            true, // Set to true to enable filling the background
+                        fillColor: Colors.white,
                       ),
+                      // Set a fixed width for the dropdown button
+                      isDense: true,
+                      style: TextStyle(
+                          fontSize: 17,
+                          color: Colors.black,
+                          fontWeight:
+                              FontWeight.w500), // Set text color when closed
+                      dropdownColor: Colors.white,
                     ),
                   ),
                   SizedBox(height: 20),
@@ -297,7 +414,7 @@ class _SandingBudgetState extends State<SandingBudget> {
       QuerySnapshot<Map<String, dynamic>> budgetQuery = await _firestore
           .collection("users")
           .doc(widget.userId)
-          .collection("sandingbudget")
+          .collection("sandinggroomBudget")
           .get();
 
       setState(() {
@@ -321,7 +438,7 @@ class _SandingBudgetState extends State<SandingBudget> {
       CollectionReference<Map<String, dynamic>> budgetCollection = _firestore
           .collection("users")
           .doc(widget.userId)
-          .collection("sandingbudget");
+          .collection("sandinggroomBudget");
 
       await budgetCollection.add({
         "category": category,
@@ -345,7 +462,7 @@ class _SandingBudgetState extends State<SandingBudget> {
       await _firestore
           .collection("users")
           .doc(widget.userId)
-          .collection("sandingbudget")
+          .collection("sandinggroomBudget")
           .doc(itemId)
           .delete();
 

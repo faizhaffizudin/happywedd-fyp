@@ -10,16 +10,17 @@ class ItineraryItem {
   ItineraryItem({required this.id, required this.name, required this.time});
 }
 
-class SandingItinerary extends StatefulWidget {
+class SandingBrideItinerary extends StatefulWidget {
   final String userId;
 
-  const SandingItinerary({Key? key, required this.userId}) : super(key: key);
+  const SandingBrideItinerary({Key? key, required this.userId})
+      : super(key: key);
 
   @override
-  _SandingItineraryState createState() => _SandingItineraryState();
+  _SandingBrideItineraryState createState() => _SandingBrideItineraryState();
 }
 
-class _SandingItineraryState extends State<SandingItinerary> {
+class _SandingBrideItineraryState extends State<SandingBrideItinerary> {
   late String userId;
   DateTime? sandingDate;
   List<ItineraryItem> itineraryItems = [];
@@ -57,7 +58,7 @@ class _SandingItineraryState extends State<SandingItinerary> {
           await FirebaseFirestore.instance
               .collection("users")
               .doc(widget.userId)
-              .collection("sandingitinerary")
+              .collection("sandingbrideItinerary")
               .get();
 
       setState(() {
@@ -90,7 +91,7 @@ class _SandingItineraryState extends State<SandingItinerary> {
           FirebaseFirestore.instance
               .collection("users")
               .doc(widget.userId)
-              .collection("sandingitinerary");
+              .collection("sandingbrideItinerary");
 
       if (_selectedItemId.isEmpty) {
         // Create
@@ -123,7 +124,7 @@ class _SandingItineraryState extends State<SandingItinerary> {
       await FirebaseFirestore.instance
           .collection("users")
           .doc(widget.userId)
-          .collection("sandingitinerary")
+          .collection("sandingbrideItinerary")
           .doc(itemId)
           .delete();
 
@@ -162,18 +163,11 @@ class _SandingItineraryState extends State<SandingItinerary> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Text(
-              //   'Your Sanding Itinerary',
-              //   style: TextStyle(
-              //     fontSize: 24,
-              //     fontWeight: FontWeight.bold,
-              //   ),
-              // ),
               SizedBox(height: 20),
               sandingDate != null
                   ? Center(
                       child: Text(
-                        'Sanding Date: ${sandingDate!.toLocal().toString().split(' ')[0]}',
+                        'Bride Sanding Date: ${sandingDate!.toLocal().toString().split(' ')[0]}',
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -259,6 +253,7 @@ class _SandingItineraryState extends State<SandingItinerary> {
               fontWeight: FontWeight.bold,
             ),
           ),
+          backgroundColor: Colors.purple[50],
           content: Container(
             height: 160, // Adjust the height as needed
             child: Column(

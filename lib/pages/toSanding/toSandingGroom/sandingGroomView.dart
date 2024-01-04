@@ -1,21 +1,36 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:happywedd1/pages/toSanding/SandingMain.dart';
 
-class ToSandingAdd extends StatefulWidget {
-  ToSandingAdd({Key? key}) : super(key: key);
+class SandingGroomView extends StatefulWidget {
+  final Map<String, dynamic> document;
+  final String id;
+
+  SandingGroomView({Key? key, required this.document, required this.id})
+      : super(key: key);
 
   @override
-  _ToSandingAddState createState() => _ToSandingAddState();
+  _SandingGroomViewState createState() => _SandingGroomViewState();
 }
 
-class _ToSandingAddState extends State<ToSandingAdd> {
-  TextEditingController _titleController = TextEditingController();
-  TextEditingController _notesController = TextEditingController();
+class _SandingGroomViewState extends State<SandingGroomView> {
+  late TextEditingController _titleController;
+  late TextEditingController _notesController;
   String target = "";
   String category = "";
+  bool edit = false;
+  String userId = FirebaseAuth.instance.currentUser!.uid;
+
+  @override
+  void initState() {
+    super.initState();
+    String title = widget.document["title"] ?? "Hey there";
+    _titleController = TextEditingController(text: title);
+    _notesController = TextEditingController(text: widget.document["notes"]);
+    target = widget.document["target"];
+    category = widget.document["category"];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,15 +53,52 @@ class _ToSandingAddState extends State<ToSandingAdd> {
               SizedBox(
                 height: 30,
               ),
-              IconButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                icon: Icon(
-                  CupertinoIcons.arrow_left,
-                  color: Colors.white,
-                  size: 28,
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    icon: Icon(
+                      CupertinoIcons.arrow_left,
+                      color: Colors.white,
+                      size: 28,
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      IconButton(
+                        onPressed: () {
+                          setState(() {
+                            edit = !edit;
+                          });
+                        },
+                        icon: Icon(
+                          Icons.edit,
+                          color: edit ? Colors.red : Colors.white,
+                          size: 28,
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          FirebaseFirestore.instance
+                              .collection("users")
+                              .doc(userId)
+                              .collection("sandinggroomList")
+                              .doc(widget.id)
+                              .delete()
+                              .then((value) => {Navigator.pop(context)});
+                        },
+                        icon: Icon(
+                          Icons.delete,
+                          color: edit ? Colors.red : Colors.white,
+                          size: 28,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
               Padding(
                 padding:
@@ -55,7 +107,7 @@ class _ToSandingAddState extends State<ToSandingAdd> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Adding",
+                      edit ? "Editing" : "Viewing",
                       style: TextStyle(
                         fontSize: 33,
                         color: Colors.white,
@@ -111,7 +163,7 @@ class _ToSandingAddState extends State<ToSandingAdd> {
                         SizedBox(
                           width: 20,
                         ),
-                        targetChip("Bride", 0xFFFF6D6E, Icons.face_3),
+                        targetChip("Groom", 0xFFFF6D6E, Icons.face_3),
                         SizedBox(
                           width: 20,
                         ),
@@ -155,7 +207,7 @@ class _ToSandingAddState extends State<ToSandingAdd> {
                     SizedBox(
                       height: 50,
                     ),
-                    submitBtn(),
+                    edit ? submitBtn() : Container(),
                     SizedBox(
                       height: 30,
                     ),
@@ -171,23 +223,18 @@ class _ToSandingAddState extends State<ToSandingAdd> {
 
   Widget submitBtn() {
     return InkWell(
-      onTap: () async {
-        // Get the current user's ID
-        String userId =
-            FirebaseAuth.instance.currentUser?.uid ?? "default_user_id";
-
-        // Store data in the "users/tosanding" subcollection
+      onTap: () {
         FirebaseFirestore.instance
             .collection("users")
             .doc(userId)
-            .collection("tosanding")
-            .add({
+            .collection("sandinggroomList")
+            .doc(widget.id)
+            .update({
           "title": _titleController.text,
           "notes": _notesController.text,
           "target": target,
           "category": category,
         });
-
         Navigator.pop(context);
       },
       child: Container(
@@ -199,7 +246,7 @@ class _ToSandingAddState extends State<ToSandingAdd> {
         ),
         child: Center(
           child: Text(
-            "Add Todo",
+            "Update Todo",
             style: TextStyle(
               fontSize: 18,
               color: Colors.white,
@@ -221,6 +268,7 @@ class _ToSandingAddState extends State<ToSandingAdd> {
       ),
       child: TextFormField(
         controller: _notesController,
+        enabled: edit,
         style: TextStyle(
           color: Colors.grey,
           fontSize: 17,
@@ -330,6 +378,7 @@ class _ToSandingAddState extends State<ToSandingAdd> {
       ),
       child: TextFormField(
         controller: _titleController,
+        enabled: edit,
         style: TextStyle(
           color: Colors.grey,
           fontSize: 17,
