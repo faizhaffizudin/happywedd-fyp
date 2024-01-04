@@ -97,59 +97,34 @@ class _ProfileState extends State<Profile> {
               ? (userData?['sandingDate'] as Timestamp).toDate().toString()
               : 'Sanding Date';
 
-          return Column(
-            children: [
-              Text(
-                userData?['email'] ?? 'User',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Color.fromARGB(255, 53, 41, 95),
-                ),
-              ),
-              SizedBox(height: 10),
-              TextFormField(
-                controller: _nameBrideController,
-                style: TextStyle(color: Color.fromARGB(255, 53, 41, 95)),
-                decoration: InputDecoration(
-                  labelText: 'Edit Bride Name',
-                  labelStyle: TextStyle(color: Color.fromARGB(255, 53, 41, 95)),
-                  enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.white),
-                  ),
-                  focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.white),
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  userData?['email'] ?? 'User',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Color.fromARGB(255, 53, 41, 95),
                   ),
                 ),
-              ),
-              SizedBox(height: 10),
-              Text('Bride\'s Name: $brideName'),
-              SizedBox(height: 10),
-              Text('Groom\'s Name: $groomName'),
-              SizedBox(height: 10),
-              Text('Nikah Date: $nikahDate'),
-              SizedBox(height: 10),
-              Text('Sanding Date: $sandingDate'),
-              SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  // Update the user's name in Firestore
-                  FirebaseFirestore.instance
-                      .collection("users")
-                      .doc(userId)
-                      .update({
-                    "nameBride": _nameBrideController.text,
-                    "nameGroom": _nameGroomController.text,
-                    "nikahDate": _nikahDateController,
-                    "sandingDate": _sandingDateController,
-                  });
-                },
-                child: Text('Save Name'),
-              ),
-            ],
+                SizedBox(height: 10),
+                Text('Bride\'s Name: $brideName'),
+                SizedBox(height: 10),
+                Text('Groom\'s Name: $groomName'),
+                SizedBox(height: 10),
+                Text('Nikah Date: $nikahDate'),
+                SizedBox(height: 10),
+                Text('Sanding Date: $sandingDate'),
+                SizedBox(height: 20),
+              ],
+            ),
           );
         } else {
-          return CircularProgressIndicator();
+          return Center(
+            child: CircularProgressIndicator(),
+          );
         }
       },
     );

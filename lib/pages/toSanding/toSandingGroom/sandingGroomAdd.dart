@@ -1,37 +1,20 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:happywedd1/pages/toSanding/SandingMain.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-class ToSandingView extends StatefulWidget {
-  final Map<String, dynamic> document;
-  final String id;
-
-  ToSandingView({Key? key, required this.document, required this.id})
-      : super(key: key);
+class SandingGroomAdd extends StatefulWidget {
+  SandingGroomAdd({Key? key}) : super(key: key);
 
   @override
-  _ToSandingViewState createState() => _ToSandingViewState();
+  _SandingGroomAddState createState() => _SandingGroomAddState();
 }
 
-class _ToSandingViewState extends State<ToSandingView> {
-  late TextEditingController _titleController;
-  late TextEditingController _notesController;
+class _SandingGroomAddState extends State<SandingGroomAdd> {
+  TextEditingController _titleController = TextEditingController();
+  TextEditingController _notesController = TextEditingController();
   String target = "";
   String category = "";
-  bool edit = false;
-  String userId = FirebaseAuth.instance.currentUser!.uid;
-
-  @override
-  void initState() {
-    super.initState();
-    String title = widget.document["title"] ?? "Hey there";
-    _titleController = TextEditingController(text: title);
-    _notesController = TextEditingController(text: widget.document["notes"]);
-    target = widget.document["target"];
-    category = widget.document["category"];
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,52 +37,15 @@ class _ToSandingViewState extends State<ToSandingView> {
               SizedBox(
                 height: 30,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  IconButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    icon: Icon(
-                      CupertinoIcons.arrow_left,
-                      color: Colors.white,
-                      size: 28,
-                    ),
-                  ),
-                  Row(
-                    children: [
-                      IconButton(
-                        onPressed: () {
-                          setState(() {
-                            edit = !edit;
-                          });
-                        },
-                        icon: Icon(
-                          Icons.edit,
-                          color: edit ? Colors.red : Colors.white,
-                          size: 28,
-                        ),
-                      ),
-                      IconButton(
-                        onPressed: () {
-                          FirebaseFirestore.instance
-                              .collection("users")
-                              .doc(userId)
-                              .collection("tosanding")
-                              .doc(widget.id)
-                              .delete()
-                              .then((value) => {Navigator.pop(context)});
-                        },
-                        icon: Icon(
-                          Icons.delete,
-                          color: edit ? Colors.red : Colors.white,
-                          size: 28,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
+              IconButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                icon: Icon(
+                  CupertinoIcons.arrow_left,
+                  color: Colors.white,
+                  size: 28,
+                ),
               ),
               Padding(
                 padding:
@@ -108,7 +54,7 @@ class _ToSandingViewState extends State<ToSandingView> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      edit ? "Editing" : "Viewing",
+                      "Adding",
                       style: TextStyle(
                         fontSize: 33,
                         color: Colors.white,
@@ -208,7 +154,7 @@ class _ToSandingViewState extends State<ToSandingView> {
                     SizedBox(
                       height: 50,
                     ),
-                    edit ? submitBtn() : Container(),
+                    submitBtn(),
                     SizedBox(
                       height: 30,
                     ),
@@ -224,18 +170,23 @@ class _ToSandingViewState extends State<ToSandingView> {
 
   Widget submitBtn() {
     return InkWell(
-      onTap: () {
+      onTap: () async {
+        // Get the current user's ID
+        String userId =
+            FirebaseAuth.instance.currentUser?.uid ?? "default_user_id";
+
+        // Store data in the "users/sandinggroomList" subcollection
         FirebaseFirestore.instance
             .collection("users")
             .doc(userId)
-            .collection("tosanding")
-            .doc(widget.id)
-            .update({
+            .collection("sandinggroomList")
+            .add({
           "title": _titleController.text,
           "notes": _notesController.text,
           "target": target,
           "category": category,
         });
+
         Navigator.pop(context);
       },
       child: Container(
@@ -247,7 +198,7 @@ class _ToSandingViewState extends State<ToSandingView> {
         ),
         child: Center(
           child: Text(
-            "Update Todo",
+            "Add Todo",
             style: TextStyle(
               fontSize: 18,
               color: Colors.white,
@@ -269,7 +220,6 @@ class _ToSandingViewState extends State<ToSandingView> {
       ),
       child: TextFormField(
         controller: _notesController,
-        enabled: edit,
         style: TextStyle(
           color: Colors.grey,
           fontSize: 17,
@@ -379,7 +329,6 @@ class _ToSandingViewState extends State<ToSandingView> {
       ),
       child: TextFormField(
         controller: _titleController,
-        enabled: edit,
         style: TextStyle(
           color: Colors.grey,
           fontSize: 17,
