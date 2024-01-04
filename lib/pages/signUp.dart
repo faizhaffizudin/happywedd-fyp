@@ -42,7 +42,7 @@ class _SignUpState extends State<SignUp> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Text(
-                "Register an Account",
+                "Sign Up an Account",
                 style: TextStyle(
                   fontSize: 35,
                   color: Colors.white,
@@ -96,7 +96,7 @@ class _SignUpState extends State<SignUp> {
                           (route) => false);
                     },
                     child: Text(
-                      "login",
+                      "sign in",
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 18,
