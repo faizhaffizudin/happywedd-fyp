@@ -50,7 +50,7 @@ class _NikahBudgetState extends State<NikahBudget> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              "Sanding Budget",
+              "Nikah Budget",
               style: TextStyle(
                 fontSize: 28,
                 fontWeight: FontWeight.bold,

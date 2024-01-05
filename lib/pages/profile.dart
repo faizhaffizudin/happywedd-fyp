@@ -35,7 +35,7 @@ class _ProfileState extends State<Profile> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              "Profile",
+              "Edit Profile",
               style: TextStyle(
                 fontSize: 28,
                 fontWeight: FontWeight.bold,
