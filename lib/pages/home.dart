@@ -156,6 +156,7 @@ class _HomePageState extends State<HomePage> {
 Widget _buildCountdownBox(BuildContext context,
     {required String title, required Widget countdown}) {
   return Container(
+    width: MediaQuery.of(context).size.width,
     padding: EdgeInsets.all(20),
     margin: EdgeInsets.symmetric(vertical: 10),
     decoration: BoxDecoration(

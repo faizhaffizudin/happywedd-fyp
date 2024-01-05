@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:happywedd1/pages/toNikah/nikahSuggestedTitles.dart';
 import 'package:intl/intl.dart';
 
 class NikahAdd extends StatefulWidget {
@@ -17,13 +18,7 @@ class _NikahAddState extends State<NikahAdd> {
   String target = "";
   String category = "";
   DateTime? dueDate;
-  List<String> suggestedTitles = [
-    "Item 1 Item 4 Item 1 Item 4 Item 1 Item 4 Item 1 Item 4 Item 1 Item 4 Item 1 Item 4 Item 1 Item 4",
-    "Item 1",
-    "Item 2",
-    "Item 3",
-    "Item 4",
-  ];
+  List<String> suggestedTitles = NikahSuggestedTitles.suggestedTitles;
   String? selectedSuggestedTitles;
 
   @override
@@ -56,7 +51,7 @@ class _NikahAddState extends State<NikahAdd> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    for (var title in ["Adding", "To Sanding", "Checklist"])
+                    for (var title in ["Adding", "To Nikah", "Checklist"])
                       Text(
                         title,
                         style: TextStyle(
@@ -77,7 +72,7 @@ class _NikahAddState extends State<NikahAdd> {
                     SizedBox(height: 12),
                     notes(),
                     SizedBox(height: 30),
-                    label("For"),
+                    label("To Be Prepared By"),
                     SizedBox(height: 12),
                     buildTargetChips(),
                     SizedBox(height: 30),
@@ -118,7 +113,7 @@ class _NikahAddState extends State<NikahAdd> {
                     Icon(Icons.format_list_bulleted, color: Colors.white),
                     SizedBox(width: 8),
                     Text(
-                      "Suggested Task",
+                      "Recommended Task",
                       style: TextStyle(color: Colors.white, fontSize: 17),
                     ),
                   ],

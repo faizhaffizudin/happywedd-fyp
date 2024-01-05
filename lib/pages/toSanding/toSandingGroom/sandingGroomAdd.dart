@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:happywedd1/pages/toSanding/sandingSuggestedTitles.dart';
 import 'package:intl/intl.dart';
 
 class SandingGroomAdd extends StatefulWidget {
@@ -17,13 +18,7 @@ class _SandingGroomAddState extends State<SandingGroomAdd> {
   String target = "";
   String category = "";
   DateTime? dueDate;
-  List<String> suggestedTitles = [
-    "Item 1 Item 4 Item 1 Item 4 Item 1 Item 4 Item 1 Item 4 Item 1 Item 4 Item 1 Item 4 Item 1 Item 4",
-    "Item 1",
-    "Item 2",
-    "Item 3",
-    "Item 4",
-  ];
+  List<String> suggestedTitles = SandingSuggestedTitles.suggestedTitles;
   String? selectedSuggestedTitles;
 
   @override
