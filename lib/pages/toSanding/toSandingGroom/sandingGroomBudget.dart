@@ -27,7 +27,7 @@ class SandingGroomBudget extends StatefulWidget {
 
 class _SandingGroomBudgetState extends State<SandingGroomBudget> {
   List<BudgetItem> budgetItems = [];
-  TextEditingController _categoryController = TextEditingController();
+  // TextEditingController _categoryController = TextEditingController();
   TextEditingController _itemNameController = TextEditingController();
   TextEditingController _budgetController = TextEditingController();
   late FirebaseFirestore _firestore;

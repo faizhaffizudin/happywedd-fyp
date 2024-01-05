@@ -172,27 +172,44 @@ class _NikahItineraryState extends State<NikahItinerary> {
             children: [
               SizedBox(height: 20),
               dateNikah != null
-                  ? Center(
-                      child: Column(
-                        children: [
-                          Text(
-                            'Nikah Date:',
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          SizedBox(height: 8),
-                          Text(
-                            dateNikah != null
-                                ? DateFormat('EEEE, dd MMM yyyy')
-                                    .format(dateNikah!)
-                                : 'N/A',
-                            style: TextStyle(
-                              fontSize: 16,
-                            ),
+                  ? Container(
+                      padding: EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: 2,
+                            blurRadius: 5,
+                            offset: Offset(0, 3),
                           ),
                         ],
+                      ),
+                      child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Nikah Date',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Color.fromARGB(255, 77, 0, 110),
+                              ),
+                            ),
+                            SizedBox(height: 8),
+                            Text(
+                              dateNikah != null
+                                  ? DateFormat('EEEE, dd MMM yyyy')
+                                      .format(dateNikah!)
+                                  : 'N/A',
+                              style: TextStyle(
+                                fontSize: 16,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     )
                   : Container(),
@@ -268,10 +285,13 @@ class _NikahItineraryState extends State<NikahItinerary> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text(
-            'Add New Itinerary Item',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
+          title: Center(
+            child: Text(
+              'Add New Itinerary',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Color.fromARGB(255, 77, 0, 110),
+              ),
             ),
           ),
           backgroundColor: Colors.purple[50],
@@ -290,7 +310,7 @@ class _NikahItineraryState extends State<NikahItinerary> {
                     ),
                     maxLines: null,
                     decoration: InputDecoration(
-                      labelText: 'Item Name',
+                      labelText: 'Details',
                       labelStyle: const TextStyle(
                         fontSize: 17,
                         color: Colors.black,
@@ -305,8 +325,8 @@ class _NikahItineraryState extends State<NikahItinerary> {
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(15),
                         borderSide: const BorderSide(
-                          width: 1,
-                          color: Colors.grey,
+                          width: 1.5,
+                          color: Colors.purple,
                         ),
                       ),
                     ),
@@ -329,8 +349,9 @@ class _NikahItineraryState extends State<NikahItinerary> {
                           });
                         }
                       },
-                      child:
-                          Text('${_selectedTime.hour}:${_selectedTime.minute}'),
+                      child: Text(
+                          '${_selectedTime.hour}:${_selectedTime.minute}',
+                          style: TextStyle(color: Colors.white)),
                     ),
                   ],
                 ),
@@ -349,7 +370,7 @@ class _NikahItineraryState extends State<NikahItinerary> {
                 await _saveItineraryItem(); // Save data to Firestore
                 Navigator.pop(context);
               },
-              child: Text('Add'),
+              child: Text('Add', style: TextStyle(color: Colors.white)),
             ),
           ],
         );
@@ -366,10 +387,13 @@ class _NikahItineraryState extends State<NikahItinerary> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text(
-            'Edit Itinerary Item',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
+          title: Center(
+            child: Text(
+              'Edit Itinerary',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Color.fromARGB(255, 77, 0, 110),
+              ),
             ),
           ),
           content: Container(
@@ -387,7 +411,7 @@ class _NikahItineraryState extends State<NikahItinerary> {
                     ),
                     maxLines: null,
                     decoration: InputDecoration(
-                      labelText: 'Item Name',
+                      labelText: 'Details',
                       labelStyle: const TextStyle(
                         fontSize: 17,
                         color: Colors.black,
@@ -426,8 +450,9 @@ class _NikahItineraryState extends State<NikahItinerary> {
                           });
                         }
                       },
-                      child:
-                          Text('${_selectedTime.hour}:${_selectedTime.minute}'),
+                      child: Text(
+                          '${_selectedTime.hour}:${_selectedTime.minute}',
+                          style: TextStyle(color: Colors.white)),
                     ),
                   ],
                 ),
@@ -446,7 +471,7 @@ class _NikahItineraryState extends State<NikahItinerary> {
                 await _saveItineraryItem(); // Save data to Firestore
                 Navigator.pop(context);
               },
-              child: Text('Save'),
+              child: Text('Save', style: TextStyle(color: Colors.white)),
             ),
           ],
         );

@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:happywedd1/pages/GreetScreen.dart';
+import 'package:happywedd1/bottomNavBar.dart';
+import 'package:happywedd1/pages/profile.dart';
+import 'package:intl/intl.dart';
 
-class DetailsPage extends StatefulWidget {
-  const DetailsPage({Key? key}) : super(key: key);
+class ProfileEdit extends StatefulWidget {
+  const ProfileEdit({Key? key}) : super(key: key);
 
   @override
-  _DetailsPageState createState() => _DetailsPageState();
+  _ProfileEditState createState() => _ProfileEditState();
 }
 
-class _DetailsPageState extends State<DetailsPage> {
+class _ProfileEditState extends State<ProfileEdit> {
   final _formKey = GlobalKey<FormState>();
 
   TextEditingController _nameBrideController = TextEditingController();
@@ -24,15 +26,50 @@ class _DetailsPageState extends State<DetailsPage> {
   DateTime? _dateSandingGroom;
 
   @override
+  void initState() {
+    super.initState();
+    // Fetch existing data from Firestore and set it in the controllers
+    _fetchExistingData();
+  }
+
+  // Fetch existing data from Firestore and set it in the controllers
+  void _fetchExistingData() async {
+    String userId = FirebaseAuth.instance.currentUser?.uid ?? "default_user_id";
+    DocumentSnapshot<Map<String, dynamic>> snapshot =
+        await FirebaseFirestore.instance.collection("users").doc(userId).get();
+
+    if (snapshot.exists) {
+      var userData = snapshot.data();
+
+      setState(() {
+        _nameBrideController.text = userData?['nameBride'] ?? '';
+        _nameGroomController.text = userData?['nameGroom'] ?? '';
+        _dateNikahController.text =
+            _formatTimestamp(userData?['dateNikah']?.toDate());
+        _dateSandingBrideController.text =
+            _formatTimestamp(userData?['dateSandingBride']?.toDate());
+        _dateSandingGroomController.text =
+            _formatTimestamp(userData?['dateSandingGroom']?.toDate());
+
+        // Set DateTime values for date pickers
+        _dateNikah = userData?['dateNikah']?.toDate();
+        _dateSandingBride = userData?['dateSandingBride']?.toDate();
+        _dateSandingGroom = userData?['dateSandingGroom']?.toDate();
+      });
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 239, 226, 255),
       appBar: AppBar(
         backgroundColor: Colors.purple[700],
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              "Fill In Your Details",
+              "Sanding Itinerary",
               style: TextStyle(
                 fontSize: 28,
                 fontWeight: FontWeight.bold,
@@ -45,6 +82,7 @@ class _DetailsPageState extends State<DetailsPage> {
         centerTitle: true,
         toolbarHeight: 80,
       ),
+      bottomNavigationBar: BottomNavBar(currentIndex: 3),
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.all(20.0),
@@ -90,7 +128,7 @@ class _DetailsPageState extends State<DetailsPage> {
                   onTap: () async {
                     DateTime? pickedDate = await showDatePicker(
                       context: context,
-                      initialDate: DateTime.now(),
+                      initialDate: _dateNikah ?? DateTime.now(),
                       firstDate: DateTime.now(),
                       lastDate: DateTime(DateTime.now().year + 20),
                     );
@@ -99,7 +137,7 @@ class _DetailsPageState extends State<DetailsPage> {
                       setState(() {
                         _dateNikah = pickedDate;
                         _dateNikahController.text =
-                            "${_dateNikah!.day}/${_dateNikah!.month}/${_dateNikah!.year}";
+                            _formatTimestamp(pickedDate);
                       });
                     }
                   },
@@ -114,7 +152,7 @@ class _DetailsPageState extends State<DetailsPage> {
                   onTap: () async {
                     DateTime? pickedDate = await showDatePicker(
                       context: context,
-                      initialDate: DateTime.now(),
+                      initialDate: _dateSandingBride ?? DateTime.now(),
                       firstDate: DateTime.now(),
                       lastDate: DateTime(DateTime.now().year + 20),
                     );
@@ -123,7 +161,7 @@ class _DetailsPageState extends State<DetailsPage> {
                       setState(() {
                         _dateSandingBride = pickedDate;
                         _dateSandingBrideController.text =
-                            "${_dateSandingBride!.day}/${_dateSandingBride!.month}/${_dateSandingBride!.year}";
+                            _formatTimestamp(pickedDate);
                       });
                     }
                   },
@@ -138,7 +176,7 @@ class _DetailsPageState extends State<DetailsPage> {
                   onTap: () async {
                     DateTime? pickedDate = await showDatePicker(
                       context: context,
-                      initialDate: DateTime.now(),
+                      initialDate: _dateSandingGroom ?? DateTime.now(),
                       firstDate: DateTime.now(),
                       lastDate: DateTime(DateTime.now().year + 20),
                     );
@@ -147,7 +185,7 @@ class _DetailsPageState extends State<DetailsPage> {
                       setState(() {
                         _dateSandingGroom = pickedDate;
                         _dateSandingGroomController.text =
-                            "${_dateSandingGroom!.day}/${_dateSandingGroom!.month}/${_dateSandingGroom!.year}";
+                            _formatTimestamp(pickedDate);
                       });
                     }
                   },
@@ -188,11 +226,19 @@ class _DetailsPageState extends State<DetailsPage> {
                     // Navigate to HomePage and remove all previous routes
                     Navigator.pushAndRemoveUntil(
                       context,
-                      MaterialPageRoute(builder: (builder) => GreetScreen()),
+                      MaterialPageRoute(builder: (builder) => Profile()),
                       (route) => false,
                     );
                   },
-                  child: Text('Submit', style: TextStyle(color: Colors.white)),
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.purple, // Set button color
+                  ),
+                  child: Text(
+                    'Submit',
+                    style: TextStyle(
+                      color: Colors.white, // Set text color
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -200,5 +246,12 @@ class _DetailsPageState extends State<DetailsPage> {
         ),
       ),
     );
+  }
+
+  // Format timestamp to a readable string
+  String _formatTimestamp(DateTime? date) {
+    return date != null
+        ? DateFormat('EEEE, dd MMM yyyy').format(date)
+        : "Select Date";
   }
 }

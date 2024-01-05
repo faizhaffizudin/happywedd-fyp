@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:happywedd1/pages/profileEdit.dart';
 import 'package:intl/intl.dart';
 import 'package:happywedd1/bottomNavBar.dart';
 import 'package:happywedd1/pages/splashScreen.dart';
@@ -15,11 +16,6 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   AuthClass authClass = AuthClass();
-  TextEditingController _nameBrideController = TextEditingController();
-  TextEditingController _nameGroomController = TextEditingController();
-  TextEditingController _dateNikahController = TextEditingController();
-  TextEditingController _dateSandingBrideController = TextEditingController();
-  TextEditingController _dateSandingGroomController = TextEditingController();
   late String userId;
   late Stream<DocumentSnapshot<Map<String, dynamic>>> _stream;
 
@@ -70,17 +66,36 @@ class _ProfileState extends State<Profile> {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              _buildUserDataSection(),
-              // ElevatedButton(
-              //   onPressed: () {
-              //     _showEditDialog();
-              //   },
-              //   child: Text("Edit"),
-              // ),
-            ],
+          child: Container(
+            padding: EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.5),
+                  spreadRadius: 2,
+                  blurRadius: 5,
+                  offset: Offset(0, 3),
+                ),
+              ],
+            ),
+            child: Column(
+              children: [
+                _buildUserDataSection(),
+                ElevatedButton(
+                  onPressed: () {
+                    // Navigate to the ProfileEdit page
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => ProfileEdit()),
+                    );
+                  },
+                  child: Text("Edit Your Profile",
+                      style: TextStyle(color: Colors.white)),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -111,51 +126,43 @@ class _ProfileState extends State<Profile> {
                   (userData?['dateSandingGroom'] as Timestamp).toDate())
               : 'Groom Sanding Date';
 
-          return Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  "Email: " + userData?['email'] ?? 'User',
-                  style: TextStyle(
-                    fontSize: 21,
-                    fontWeight: FontWeight.bold,
-                    color: Color.fromARGB(255, 53, 41, 95),
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Center(
+                child: Container(
+                  padding:
+                      EdgeInsets.all(10), // Add padding for the rectangular box
+                  decoration: BoxDecoration(
+                    color: Color.fromARGB(255, 53, 41, 95), // Background color
+                    borderRadius: BorderRadius.circular(10), // Rounded corners
+                  ),
+                  child: RichText(
+                    text: TextSpan(
+                      style: TextStyle(
+                        color: Colors.white, // Text color
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      children: [
+                        // TextSpan(text: "Email:\n"),
+                        TextSpan(
+                          text: userData?['email'] ?? 'User',
+                          style: TextStyle(fontSize: 24),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-                SizedBox(height: 10),
-                Text(
-                  'Bride\'s Name: $brideName',
-                  style:
-                      TextStyle(fontSize: 15), // Adjust the font size as needed
-                ),
-                SizedBox(height: 10),
-                Text(
-                  'Groom\'s Name: $groomName',
-                  style:
-                      TextStyle(fontSize: 15), // Adjust the font size as needed
-                ),
-                SizedBox(height: 10),
-                Text(
-                  'Nikah Date: $dateNikah',
-                  style:
-                      TextStyle(fontSize: 15), // Adjust the font size as needed
-                ),
-                SizedBox(height: 10),
-                Text(
-                  'Sanding Date: $dateSandingBride',
-                  style:
-                      TextStyle(fontSize: 15), // Adjust the font size as needed
-                ),
-                SizedBox(height: 10),
-                Text(
-                  'Sanding Date: $dateSandingGroom',
-                  style:
-                      TextStyle(fontSize: 15), // Adjust the font size as needed
-                ),
-                SizedBox(height: 10),
-              ],
-            ),
+              ),
+              SizedBox(height: 40),
+              _buildProfileInfo("Name of the Bride", brideName),
+              _buildProfileInfo("Name of the Groom", groomName),
+              _buildProfileInfo("Nikah Date", dateNikah),
+              _buildProfileInfo("Bride Sanding Date", dateSandingBride),
+              _buildProfileInfo("Groom Sanding Date", dateSandingGroom),
+              SizedBox(height: 30),
+            ],
           );
         } else {
           return Center(
@@ -166,72 +173,32 @@ class _ProfileState extends State<Profile> {
     );
   }
 
-  String _formatTimestamp(DateTime date) {
-    // return DateFormat('dd MMM yyyy').format(date);
-    return DateFormat('EEEE, dd MMM yyyy').format(date);
-  }
-
-  void _showEditDialog() {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text('Edit Profile'),
-          content: Column(
-            children: [
-              TextFormField(
-                controller: _nameBrideController,
-                decoration: InputDecoration(labelText: 'Bride\'s Name'),
-              ),
-              TextFormField(
-                controller: _nameGroomController,
-                decoration: InputDecoration(labelText: 'Groom\'s Name'),
-              ),
-              TextFormField(
-                controller: _dateNikahController,
-                decoration: InputDecoration(labelText: 'Nikah Date'),
-              ),
-              TextFormField(
-                controller: _dateSandingBrideController,
-                decoration: InputDecoration(labelText: 'Sanding Date'),
-              ),
-              TextFormField(
-                controller: _dateSandingGroomController,
-                decoration: InputDecoration(labelText: 'Sanding Date'),
-              ),
-            ],
+  Widget _buildProfileInfo(String label, String value) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          label,
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: Color.fromARGB(255, 77, 0, 110),
           ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: Text('Cancel'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                _saveChanges();
-                Navigator.pop(context);
-              },
-              style: ElevatedButton.styleFrom(
-                primary: Colors.purple, // Set your desired color here
-              ),
-              child: Text('Save'),
-            ),
-          ],
-        );
-      },
+        ),
+        SizedBox(height: 5),
+        Text(
+          value,
+          style: TextStyle(
+            fontSize: 16,
+            color: Colors.grey[800],
+          ),
+        ),
+        SizedBox(height: 20),
+      ],
     );
   }
 
-  void _saveChanges() {
-    // Implement the logic to save changes to Firestore
-    FirebaseFirestore.instance.collection("users").doc(userId).update({
-      'nameBride': _nameBrideController.text,
-      'nameGroom': _nameGroomController.text,
-      'dateNikah': _dateNikahController.text,
-      'dateSandingBride': _dateSandingBrideController.text,
-      'dateSandingGroom': _dateSandingGroomController.text,
-    });
+  String _formatTimestamp(DateTime? date) {
+    return DateFormat('EEEE, dd MMM yyyy').format(date!);
   }
 }

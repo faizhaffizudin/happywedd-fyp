@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:happywedd1/pages/toSanding/sandingSuggestedTitles.dart';
 import 'package:intl/intl.dart';
 
 class SandingBrideAdd extends StatefulWidget {
@@ -17,13 +18,7 @@ class _SandingBrideAddState extends State<SandingBrideAdd> {
   String target = "";
   String category = "";
   DateTime? dueDate;
-  List<String> suggestedTitles = [
-    "Item 1 Item 4 Item 1 Item 4 Item 1 Item 4 Item 1 Item 4 Item 1 Item 4 Item 1 Item 4 Item 1 Item 4",
-    "Item 1",
-    "Item 2",
-    "Item 3",
-    "Item 4",
-  ];
+  List<String> suggestedTitles = SandingSuggestedTitles.suggestedTitles;
   String? selectedSuggestedTitles;
 
   @override
@@ -147,9 +142,16 @@ class _SandingBrideAddState extends State<SandingBrideAdd> {
       runSpacing: 10,
       spacing: 10, // Add spacing between items
       children: [
-        for (var targetLabel in ["Groom", "Bride", "Both"])
-          targetChip(targetLabel, 0xFF00008B,
-              targetLabel == "Both" ? Icons.people : Icons.face),
+        for (var targetLabel in ["Bride", "Groom", "Both"])
+          targetChip(
+            targetLabel,
+            0xFF00008B,
+            targetLabel == "Both"
+                ? Icons.people
+                : targetLabel == "Bride"
+                    ? Icons.face_2
+                    : Icons.face,
+          ),
       ],
     );
   }

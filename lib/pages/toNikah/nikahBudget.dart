@@ -27,7 +27,7 @@ class NikahBudget extends StatefulWidget {
 
 class _NikahBudgetState extends State<NikahBudget> {
   List<BudgetItem> budgetItems = [];
-  TextEditingController _categoryController = TextEditingController();
+  // TextEditingController _categoryController = TextEditingController();
   TextEditingController _itemNameController = TextEditingController();
   TextEditingController _budgetController = TextEditingController();
   late FirebaseFirestore _firestore;

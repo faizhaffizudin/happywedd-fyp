@@ -81,7 +81,7 @@ class _SignUpState extends State<SignUp> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "If you already have an account, ",
+                    "Existing User?",
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 18,
@@ -95,7 +95,7 @@ class _SignUpState extends State<SignUp> {
                           (route) => false);
                     },
                     child: Text(
-                      "sign in",
+                      " Sign in",
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 18,
@@ -189,9 +189,9 @@ class _SignUpState extends State<SignUp> {
               : Text(
                   "Sign Up",
                   style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 20,
-                  ),
+                      color: Color.fromARGB(255, 77, 0, 110),
+                      fontSize: 20,
+                      fontWeight: FontWeight.w500),
                 ),
         ),
       ),

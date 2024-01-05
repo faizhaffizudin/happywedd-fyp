@@ -62,7 +62,7 @@ class _ToSandingBrideState extends State<ToSandingBride> {
                   widthFactor: 0.7,
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.push(
+                      Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
@@ -99,7 +99,7 @@ class _ToSandingBrideState extends State<ToSandingBride> {
                   widthFactor: 0.7,
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.push(
+                      Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
@@ -149,7 +149,7 @@ class _ToSandingBrideState extends State<ToSandingBride> {
               widthFactor: 0.5,
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.push(
+                  Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(builder: (context) => SandingBrideAdd()),
                   );
@@ -257,7 +257,7 @@ class _ToSandingBrideState extends State<ToSandingBride> {
 
                       return GestureDetector(
                         onTap: () {
-                          Navigator.push(
+                          Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                               builder: (builder) => SandingBrideView(

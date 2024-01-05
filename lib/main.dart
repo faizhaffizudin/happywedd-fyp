@@ -55,11 +55,11 @@ class _MyAppState extends State<MyApp> {
             backgroundColor: Colors.purple,
           ),
         ),
-        inputDecorationTheme: InputDecorationTheme(
-          // Customize the dropdown theme here
-          filled: true,
-          fillColor: Colors.white,
-        ),
+        // inputDecorationTheme: InputDecorationTheme(
+        //   // Customize the dropdown theme here
+        //   filled: true,
+        //   fillColor: Colors.white,
+        // ),
         // Other theme configurations...
       ),
       home: SplashScreen(),

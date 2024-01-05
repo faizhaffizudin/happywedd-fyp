@@ -31,46 +31,29 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        primaryColor: Colors.purple,
-        colorScheme:
-            ColorScheme.fromSwatch().copyWith(secondary: Colors.purpleAccent),
-        scaffoldBackgroundColor: Colors.white,
-        textTheme: TextTheme(
-          headline6: TextStyle(
-            color: Colors.purple,
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-          ),
-          subtitle1: TextStyle(
-            color: Colors.purple,
-            fontSize: 18,
-          ),
-          // Add more text styles as needed
-        ),
-      ),
-      home: Scaffold(
-        backgroundColor: const Color.fromARGB(255, 239, 226, 255),
-        appBar: AppBar(
-          backgroundColor: Colors.purple[700],
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                "HappyWedd",
-                style: TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
+    return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 239, 226, 255),
+      appBar: AppBar(
+        backgroundColor: Colors.purple[700],
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              "HappyWedd",
+              style: TextStyle(
+                fontSize: 28,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
               ),
-            ],
-          ),
+            ),
+            SizedBox(width: 16),
+          ],
         ),
-        bottomNavigationBar: BottomNavBar(currentIndex: 0),
-        body: _buildHomeContent(context),
+        centerTitle: true,
+        toolbarHeight: 80,
       ),
+      bottomNavigationBar: BottomNavBar(currentIndex: 0),
+      body: _buildHomeContent(context),
     );
   }
 

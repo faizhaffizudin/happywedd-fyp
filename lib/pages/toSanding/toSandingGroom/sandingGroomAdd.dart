@@ -142,9 +142,16 @@ class _SandingGroomAddState extends State<SandingGroomAdd> {
       runSpacing: 10,
       spacing: 10, // Add spacing between items
       children: [
-        for (var targetLabel in ["Groom", "Bride", "Both"])
-          targetChip(targetLabel, 0xFF00008B,
-              targetLabel == "Both" ? Icons.people : Icons.face),
+        for (var targetLabel in ["Bride", "Groom", "Both"])
+          targetChip(
+            targetLabel,
+            0xFF00008B,
+            targetLabel == "Both"
+                ? Icons.people
+                : targetLabel == "Bride"
+                    ? Icons.face_2
+                    : Icons.face,
+          ),
       ],
     );
   }

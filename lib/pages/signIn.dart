@@ -101,7 +101,7 @@ class _SignInState extends State<SignIn> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "If you do not have an account, ",
+                    "New User?",
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 18,
@@ -116,7 +116,7 @@ class _SignInState extends State<SignIn> {
                       );
                     },
                     child: Text(
-                      "sign up",
+                      " Sign up",
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 18,
@@ -205,9 +205,9 @@ class _SignInState extends State<SignIn> {
               : Text(
                   "Sign In",
                   style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 20,
-                  ),
+                      color: Color.fromARGB(255, 77, 0, 110),
+                      fontSize: 20,
+                      fontWeight: FontWeight.w500),
                 ),
         ),
       ),

@@ -56,7 +56,7 @@ class _SandingGroomItineraryState extends State<SandingGroomItinerary> {
         print("Formatted Date: $formattedDate");
       }
     } catch (e) {
-      print("Error loading Sanding Date: $e");
+      print("Error loading SandingGroom Date: $e");
     }
   }
 
@@ -165,35 +165,52 @@ class _SandingGroomItineraryState extends State<SandingGroomItinerary> {
           centerTitle: true,
           toolbarHeight: 80,
         ),
-        bottomNavigationBar: BottomNavBar(currentIndex: 2),
+        bottomNavigationBar: BottomNavBar(currentIndex: 1),
         body: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 20),
+              SizedBox(height: 10),
               dateSandingGroom != null
-                  ? Center(
-                      child: Column(
-                        children: [
-                          Text(
-                            'Groom Sanding Date:',
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          SizedBox(height: 8),
-                          Text(
-                            dateSandingGroom != null
-                                ? DateFormat('EEEE, dd MMM yyyy')
-                                    .format(dateSandingGroom!)
-                                : 'N/A',
-                            style: TextStyle(
-                              fontSize: 16,
-                            ),
+                  ? Container(
+                      padding: EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: 2,
+                            blurRadius: 5,
+                            offset: Offset(0, 3),
                           ),
                         ],
+                      ),
+                      child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Sanding Groom Date',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Color.fromARGB(255, 77, 0, 110),
+                              ),
+                            ),
+                            SizedBox(height: 8),
+                            Text(
+                              dateSandingGroom != null
+                                  ? DateFormat('EEEE, dd MMM yyyy')
+                                      .format(dateSandingGroom!)
+                                  : 'N/A',
+                              style: TextStyle(
+                                fontSize: 16,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     )
                   : Container(),
@@ -269,10 +286,13 @@ class _SandingGroomItineraryState extends State<SandingGroomItinerary> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text(
-            'Add New Itinerary Item',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
+          title: Center(
+            child: Text(
+              'Add New Itinerary',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Color.fromARGB(255, 77, 0, 110),
+              ),
             ),
           ),
           backgroundColor: Colors.purple[50],
@@ -291,7 +311,7 @@ class _SandingGroomItineraryState extends State<SandingGroomItinerary> {
                     ),
                     maxLines: null,
                     decoration: InputDecoration(
-                      labelText: 'Item Name',
+                      labelText: 'Details',
                       labelStyle: const TextStyle(
                         fontSize: 17,
                         color: Colors.black,
@@ -306,8 +326,8 @@ class _SandingGroomItineraryState extends State<SandingGroomItinerary> {
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(15),
                         borderSide: const BorderSide(
-                          width: 1,
-                          color: Colors.grey,
+                          width: 1.5,
+                          color: Colors.purple,
                         ),
                       ),
                     ),
@@ -330,8 +350,9 @@ class _SandingGroomItineraryState extends State<SandingGroomItinerary> {
                           });
                         }
                       },
-                      child:
-                          Text('${_selectedTime.hour}:${_selectedTime.minute}'),
+                      child: Text(
+                          '${_selectedTime.hour}:${_selectedTime.minute}',
+                          style: TextStyle(color: Colors.white)),
                     ),
                   ],
                 ),
@@ -350,7 +371,7 @@ class _SandingGroomItineraryState extends State<SandingGroomItinerary> {
                 await _saveItineraryItem(); // Save data to Firestore
                 Navigator.pop(context);
               },
-              child: Text('Add'),
+              child: Text('Add', style: TextStyle(color: Colors.white)),
             ),
           ],
         );
@@ -367,10 +388,13 @@ class _SandingGroomItineraryState extends State<SandingGroomItinerary> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text(
-            'Edit Itinerary Item',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
+          title: Center(
+            child: Text(
+              'Edit Itinerary',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Color.fromARGB(255, 77, 0, 110),
+              ),
             ),
           ),
           content: Container(
@@ -388,7 +412,7 @@ class _SandingGroomItineraryState extends State<SandingGroomItinerary> {
                     ),
                     maxLines: null,
                     decoration: InputDecoration(
-                      labelText: 'Item Name',
+                      labelText: 'Details',
                       labelStyle: const TextStyle(
                         fontSize: 17,
                         color: Colors.black,
@@ -427,8 +451,9 @@ class _SandingGroomItineraryState extends State<SandingGroomItinerary> {
                           });
                         }
                       },
-                      child:
-                          Text('${_selectedTime.hour}:${_selectedTime.minute}'),
+                      child: Text(
+                          '${_selectedTime.hour}:${_selectedTime.minute}',
+                          style: TextStyle(color: Colors.white)),
                     ),
                   ],
                 ),
@@ -447,7 +472,7 @@ class _SandingGroomItineraryState extends State<SandingGroomItinerary> {
                 await _saveItineraryItem(); // Save data to Firestore
                 Navigator.pop(context);
               },
-              child: Text('Save'),
+              child: Text('Save', style: TextStyle(color: Colors.white)),
             ),
           ],
         );
