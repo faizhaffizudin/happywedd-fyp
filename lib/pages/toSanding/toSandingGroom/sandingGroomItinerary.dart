@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:happywedd1/bottomNavBar.dart';
+import 'package:intl/intl.dart';
 
 class ItineraryItem {
   String id;
@@ -22,7 +23,7 @@ class SandingGroomItinerary extends StatefulWidget {
 
 class _SandingGroomItineraryState extends State<SandingGroomItinerary> {
   late String userId;
-  DateTime? sandingDate;
+  DateTime? dateSandingGroom;
   List<ItineraryItem> itineraryItems = [];
   TextEditingController _itemNameController = TextEditingController();
   TimeOfDay _selectedTime = TimeOfDay.now();
@@ -32,21 +33,28 @@ class _SandingGroomItineraryState extends State<SandingGroomItinerary> {
   void initState() {
     super.initState();
     userId = widget.userId;
-    _loadSandingDate();
+    _loadDateSandingGroom();
     _loadItineraryItems();
   }
 
-  void _loadSandingDate() async {
+  Future<void> _loadDateSandingGroom() async {
     try {
-      DocumentSnapshot<Map<String, dynamic>> userDoc = await FirebaseFirestore
-          .instance
-          .collection("users")
-          .doc(widget.userId)
-          .get();
+      // Fetch the date from the "sandinggroomDate" subcollection
+      DocumentSnapshot<Map<String, dynamic>> dateSandingGroomDoc =
+          await FirebaseFirestore.instance
+              .collection("users")
+              .doc(widget.userId)
+              .get();
 
       setState(() {
-        sandingDate = userDoc["sandingDate"]?.toDate();
+        dateSandingGroom = dateSandingGroomDoc["dateSandingGroom"]?.toDate();
       });
+
+      if (dateSandingGroom != null) {
+        String formattedDate =
+            DateFormat('EEEE, dd MMM yyyy').format(dateSandingGroom!);
+        print("Formatted Date: $formattedDate");
+      }
     } catch (e) {
       print("Error loading Sanding Date: $e");
     }
@@ -164,14 +172,28 @@ class _SandingGroomItineraryState extends State<SandingGroomItinerary> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(height: 20),
-              sandingDate != null
+              dateSandingGroom != null
                   ? Center(
-                      child: Text(
-                        'Groom Sanding Date: ${sandingDate!.toLocal().toString().split(' ')[0]}',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
+                      child: Column(
+                        children: [
+                          Text(
+                            'Groom Sanding Date:',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          SizedBox(height: 8),
+                          Text(
+                            dateSandingGroom != null
+                                ? DateFormat('EEEE, dd MMM yyyy')
+                                    .format(dateSandingGroom!)
+                                : 'N/A',
+                            style: TextStyle(
+                              fontSize: 16,
+                            ),
+                          ),
+                        ],
                       ),
                     )
                   : Container(),

@@ -2,26 +2,27 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:happywedd1/pages/toNikah/NikahMain.dart';
+import 'package:intl/intl.dart';
 
-class ToNikahView extends StatefulWidget {
+class NikahView extends StatefulWidget {
   final Map<String, dynamic> document;
   final String id;
 
-  ToNikahView({Key? key, required this.document, required this.id})
+  NikahView({Key? key, required this.document, required this.id})
       : super(key: key);
 
   @override
-  _ToNikahViewState createState() => _ToNikahViewState();
+  _NikahViewState createState() => _NikahViewState();
 }
 
-class _ToNikahViewState extends State<ToNikahView> {
+class _NikahViewState extends State<NikahView> {
   late TextEditingController _titleController;
   late TextEditingController _notesController;
   String target = "";
   String category = "";
   bool edit = false;
   String userId = FirebaseAuth.instance.currentUser!.uid;
+  DateTime? dueDate;
 
   @override
   void initState() {
@@ -31,6 +32,8 @@ class _ToNikahViewState extends State<ToNikahView> {
     _notesController = TextEditingController(text: widget.document["notes"]);
     target = widget.document["target"];
     category = widget.document["category"];
+    Timestamp? dueDateTimestamp = widget.document["duedate"];
+    dueDate = dueDateTimestamp != null ? dueDateTimestamp.toDate() : null;
   }
 
   @override
@@ -86,7 +89,7 @@ class _ToNikahViewState extends State<ToNikahView> {
                           FirebaseFirestore.instance
                               .collection("users")
                               .doc(userId)
-                              .collection("nikahList")
+                              .collection("nikahList") // CHANGE
                               .doc(widget.id)
                               .delete()
                               .then((value) => {Navigator.pop(context)});
@@ -117,7 +120,7 @@ class _ToNikahViewState extends State<ToNikahView> {
                       ),
                     ),
                     Text(
-                      "To Nikah",
+                      "To Sanding",
                       style: TextStyle(
                         fontSize: 33,
                         color: Colors.white,
@@ -142,6 +145,8 @@ class _ToNikahViewState extends State<ToNikahView> {
                       height: 12,
                     ),
                     title(),
+                    SizedBox(height: 30),
+                    buildDueDateSection(),
                     SizedBox(
                       height: 30,
                     ),
@@ -159,16 +164,11 @@ class _ToNikahViewState extends State<ToNikahView> {
                     ),
                     Wrap(
                       runSpacing: 10,
+                      spacing: 10,
                       children: [
-                        targetChip("Groom", 0xFFFF6D6E, Icons.face),
-                        SizedBox(
-                          width: 20,
-                        ),
-                        targetChip("Bride", 0xFFFF6D6E, Icons.face_3),
-                        SizedBox(
-                          width: 20,
-                        ),
-                        targetChip("Both", 0xFFFF6D6E, Icons.people),
+                        targetChip("Groom", 0xFF00008B, Icons.face),
+                        targetChip("Bride", 0xFF00008B, Icons.face_3),
+                        targetChip("Both", 0xFF00008B, Icons.people),
                       ],
                     ),
                     SizedBox(
@@ -180,29 +180,15 @@ class _ToNikahViewState extends State<ToNikahView> {
                     ),
                     Wrap(
                       runSpacing: 10,
+                      spacing: 10,
                       children: [
-                        categoryChip("Venue", 0xFFFF6D6E, Icons.home),
-                        SizedBox(
-                          width: 20,
-                        ),
-                        categoryChip("Caterer", 0xFFFF6D6E, Icons.restaurant),
-                        SizedBox(
-                          width: 20,
-                        ),
-                        categoryChip("Vendors", 0xFFFF6D6E, Icons.fastfood),
-                        SizedBox(
-                          width: 20,
-                        ),
-                        categoryChip("Guest List", 0xFFFF6D6E, Icons.groups_2),
-                        SizedBox(
-                          width: 20,
-                        ),
-                        categoryChip("Invitation Card", 0xFFFF6D6E, Icons.rsvp),
-                        SizedBox(
-                          width: 20,
-                        ),
-                        categoryChip("Precautionary Measures", 0xFFFF6D6E,
-                            Icons.healing),
+                        categoryChip("Venue", 0xFF00008B, Icons.home),
+                        categoryChip("Caterer", 0xFF00008B, Icons.restaurant),
+                        categoryChip("Vendors", 0xFF00008B, Icons.fastfood),
+                        categoryChip("Guest List", 0xFF00008B, Icons.groups_2),
+                        categoryChip("Invitation Card", 0xFF00008B, Icons.rsvp),
+                        categoryChip("Safety", 0xFF00008B, Icons.healing),
+                        categoryChip("Others", 0xFF00008B, Icons.category),
                       ],
                     ),
                     SizedBox(
@@ -228,13 +214,14 @@ class _ToNikahViewState extends State<ToNikahView> {
         FirebaseFirestore.instance
             .collection("users")
             .doc(userId)
-            .collection("nikahList")
+            .collection("nikahList") // CHANGE
             .doc(widget.id)
             .update({
           "title": _titleController.text,
           "notes": _notesController.text,
           "target": target,
           "category": category,
+          "duedate": dueDate,
         });
         Navigator.pop(context);
       },
@@ -271,7 +258,7 @@ class _ToNikahViewState extends State<ToNikahView> {
         controller: _notesController,
         enabled: edit,
         style: TextStyle(
-          color: Colors.grey,
+          color: Colors.white,
           fontSize: 17,
         ),
         maxLines: null,
@@ -381,7 +368,7 @@ class _ToNikahViewState extends State<ToNikahView> {
         controller: _titleController,
         enabled: edit,
         style: TextStyle(
-          color: Colors.grey,
+          color: Colors.white,
           fontSize: 17,
         ),
         decoration: InputDecoration(
@@ -408,6 +395,80 @@ class _ToNikahViewState extends State<ToNikahView> {
         fontWeight: FontWeight.w600,
         fontSize: 16.5,
         letterSpacing: 0.2,
+      ),
+    );
+  }
+
+  Widget buildDueDateSection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        label("Due Date"),
+        SizedBox(height: 12),
+        dueDateInput(),
+      ],
+    );
+  }
+
+  Widget dueDateInput() {
+    return InkWell(
+      onTap: () async {
+        DateTime? selectedDate = await showDatePicker(
+          context: context,
+          initialDate: dueDate ?? DateTime.now(),
+          firstDate: DateTime.now(),
+          lastDate: DateTime(2101),
+        );
+
+        if (selectedDate != null) {
+          TimeOfDay? selectedTime = await showTimePicker(
+            context: context,
+            initialTime: TimeOfDay.fromDateTime(dueDate ?? DateTime.now()),
+          );
+
+          if (selectedTime != null) {
+            setState(() {
+              dueDate = DateTime(
+                selectedDate.year,
+                selectedDate.month,
+                selectedDate.day,
+                selectedTime.hour,
+                selectedTime.minute,
+              );
+            });
+          }
+        }
+      },
+      child: Container(
+        height: 55,
+        width: MediaQuery.of(context).size.width,
+        decoration: BoxDecoration(
+          color: Color(0xFF2A2E3D),
+          borderRadius: BorderRadius.circular(15),
+        ),
+        child: Row(
+          children: [
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 20),
+                child: Text(
+                  dueDate != null
+                      ? "${DateFormat('EEEE, dd MMM yyyy').format(dueDate!)}\n${DateFormat('hh:mm').format(dueDate!)}"
+                      : "Select Due Date",
+                  style: TextStyle(
+                    color: dueDate != null ? Colors.white : Colors.grey[600],
+                    fontSize: 17,
+                  ),
+                ),
+              ),
+            ),
+            Icon(
+              Icons.calendar_today,
+              color: Colors.grey,
+            ),
+            SizedBox(width: 20),
+          ],
+        ),
       ),
     );
   }

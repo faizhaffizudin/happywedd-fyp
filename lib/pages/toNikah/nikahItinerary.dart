@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:happywedd1/bottomNavBar.dart';
+import 'package:intl/intl.dart';
 
 class ItineraryItem {
   String id;
@@ -21,7 +22,7 @@ class NikahItinerary extends StatefulWidget {
 
 class _NikahItineraryState extends State<NikahItinerary> {
   late String userId;
-  DateTime? nikahDate;
+  DateTime? dateNikah;
   List<ItineraryItem> itineraryItems = [];
   TextEditingController _itemNameController = TextEditingController();
   TimeOfDay _selectedTime = TimeOfDay.now();
@@ -31,21 +32,28 @@ class _NikahItineraryState extends State<NikahItinerary> {
   void initState() {
     super.initState();
     userId = widget.userId;
-    _loadNikahDate();
+    _loadDateNikah();
     _loadItineraryItems();
   }
 
-  void _loadNikahDate() async {
+  Future<void> _loadDateNikah() async {
     try {
-      DocumentSnapshot<Map<String, dynamic>> userDoc = await FirebaseFirestore
-          .instance
-          .collection("users")
-          .doc(widget.userId)
-          .get();
+      // Fetch the date from the "nikahDate" subcollection
+      DocumentSnapshot<Map<String, dynamic>> dateNikahDoc =
+          await FirebaseFirestore.instance
+              .collection("users")
+              .doc(widget.userId)
+              .get();
 
       setState(() {
-        nikahDate = userDoc["nikahDate"]?.toDate();
+        dateNikah = dateNikahDoc["dateNikah"]?.toDate();
       });
+
+      if (dateNikah != null) {
+        String formattedDate =
+            DateFormat('EEEE, dd MMM yyyy').format(dateNikah!);
+        print("Formatted Date: $formattedDate");
+      }
     } catch (e) {
       print("Error loading Nikah Date: $e");
     }
@@ -57,7 +65,7 @@ class _NikahItineraryState extends State<NikahItinerary> {
           await FirebaseFirestore.instance
               .collection("users")
               .doc(widget.userId)
-              .collection("nikahitinerary")
+              .collection("nikahItinerary")
               .get();
 
       setState(() {
@@ -90,7 +98,7 @@ class _NikahItineraryState extends State<NikahItinerary> {
           FirebaseFirestore.instance
               .collection("users")
               .doc(widget.userId)
-              .collection("nikahitinerary");
+              .collection("nikahItinerary");
 
       if (_selectedItemId.isEmpty) {
         // Create
@@ -123,7 +131,7 @@ class _NikahItineraryState extends State<NikahItinerary> {
       await FirebaseFirestore.instance
           .collection("users")
           .doc(widget.userId)
-          .collection("nikahitinerary")
+          .collection("nikahItinerary")
           .doc(itemId)
           .delete();
 
@@ -162,22 +170,29 @@ class _NikahItineraryState extends State<NikahItinerary> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Text(
-              //   'Your Nikah Itinerary',
-              //   style: TextStyle(
-              //     fontSize: 24,
-              //     fontWeight: FontWeight.bold,
-              //   ),
-              // ),
               SizedBox(height: 20),
-              nikahDate != null
+              dateNikah != null
                   ? Center(
-                      child: Text(
-                        'Nikah Date: ${nikahDate!.toLocal().toString().split(' ')[0]}',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
+                      child: Column(
+                        children: [
+                          Text(
+                            'Nikah Date:',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          SizedBox(height: 8),
+                          Text(
+                            dateNikah != null
+                                ? DateFormat('EEEE, dd MMM yyyy')
+                                    .format(dateNikah!)
+                                : 'N/A',
+                            style: TextStyle(
+                              fontSize: 16,
+                            ),
+                          ),
+                        ],
                       ),
                     )
                   : Container(),
@@ -259,6 +274,7 @@ class _NikahItineraryState extends State<NikahItinerary> {
               fontWeight: FontWeight.bold,
             ),
           ),
+          backgroundColor: Colors.purple[50],
           content: Container(
             height: 160, // Adjust the height as needed
             child: Column(

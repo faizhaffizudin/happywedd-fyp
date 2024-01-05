@@ -121,7 +121,8 @@ class _SandingGroomBudgetState extends State<SandingGroomBudget> {
         children: [
           // Filter dropdown with box-like appearance
           Container(
-            width: MediaQuery.of(context).size.width - 60,
+            // width: MediaQuery.of(context).size.width - 60,
+            width: 240,
             padding: EdgeInsets.all(10),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15),

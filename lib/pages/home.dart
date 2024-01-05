@@ -208,7 +208,7 @@ class CountdownWidget extends StatelessWidget {
         ),
         SizedBox(height: 10),
         Text(
-          "to " + DateFormat('dd MMM yyyy').format(targetDate),
+          "to " + DateFormat('EEEE, dd MMM yyyy').format(targetDate),
           textAlign: TextAlign.center,
           // style: Theme.of(context).textTheme.subtitle1,
           style: TextStyle(

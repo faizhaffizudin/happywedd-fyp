@@ -1,8 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class ListCard extends StatefulWidget {
   final String title;
-  final String time;
+  final Timestamp? duedate; // Assuming Timestamp is the correct type
   final bool check;
   final IconData iconData;
   final Color iconColor;
@@ -11,9 +13,9 @@ class ListCard extends StatefulWidget {
   final int index;
 
   const ListCard({
-    super.key,
+    Key? key,
     required this.title,
-    required this.time,
+    required this.duedate,
     required this.check,
     required this.iconData,
     required this.iconColor,
@@ -27,19 +29,12 @@ class ListCard extends StatefulWidget {
 }
 
 class _ListCardState extends State<ListCard> {
-  // late final String initTitle;
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   initTitle = widget.title;
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Container(
-        width: MediaQuery.of(context).size.width,
-        child: Row(children: [
+      width: MediaQuery.of(context).size.width,
+      child: Row(
+        children: [
           Theme(
             child: Transform.scale(
               scale: 1.5,
@@ -60,52 +55,74 @@ class _ListCardState extends State<ListCard> {
               unselectedWidgetColor: Color(0xff5e616a),
             ),
           ),
-          Expanded(
-              child: Container(
-                  height: 75,
-                  child: Card(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+          Flexible(
+            child: Container(
+              height: 75,
+              child: Card(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                color: Color.fromARGB(255, 53, 41, 95),
+                child: Row(
+                  children: [
+                    SizedBox(width: 10),
+                    Container(
+                      height: 35,
+                      width: 35,
+                      decoration: BoxDecoration(
+                        color: widget.iconBgColor,
+                        borderRadius: BorderRadius.circular(8),
                       ),
-                      color: Color.fromARGB(255, 53, 41, 95),
-                      child: Row(
+                      child: Icon(widget.iconData, color: widget.iconColor),
+                    ),
+                    SizedBox(width: 10),
+                    Flexible(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          SizedBox(
-                            width: 15,
-                          ),
-                          Container(
-                            height: 33,
-                            width: 36,
-                            decoration: BoxDecoration(
-                              color: widget.iconBgColor,
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child:
-                                Icon(widget.iconData, color: widget.iconColor),
-                          ),
-                          SizedBox(
-                            width: 20,
-                          ),
-                          Expanded(
-                              child: Text(widget.title,
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    letterSpacing: 1,
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.white,
-                                  ))),
                           Text(
-                            widget.time,
+                            widget.title,
                             style: TextStyle(
-                              fontSize: 15,
+                              fontSize: 18,
+                              letterSpacing: 1,
+                              fontWeight: FontWeight.w500,
                               color: Colors.white,
                             ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                           ),
-                          SizedBox(
-                            width: 20,
-                          ),
+                          if (widget.duedate != null)
+                            Text(
+                              widget.duedate != null
+                                  ? "Due: " +
+                                      DateFormat('EEE, d MMM yyyy hh:mm')
+                                          .format(widget.duedate!.toDate())
+                                  : "No Due Date",
+                              style: TextStyle(
+                                fontSize: 15,
+                                color: Colors.white,
+                              ),
+                            ),
+                          if (widget.duedate == null)
+                            Text(
+                              "No Due Date",
+                              style: TextStyle(
+                                fontSize: 15,
+                                color: Colors.white,
+                              ),
+                            ),
                         ],
-                      ))))
-        ]));
+                      ),
+                    ),
+                    SizedBox(width: 20),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

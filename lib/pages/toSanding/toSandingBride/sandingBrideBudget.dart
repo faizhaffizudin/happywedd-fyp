@@ -121,7 +121,7 @@ class _SandingBrideBudgetState extends State<SandingBrideBudget> {
         children: [
           // Filter dropdown with box-like appearance
           Container(
-            width: MediaQuery.of(context).size.width - 60,
+            width: 240,
             padding: EdgeInsets.all(10),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15),
@@ -133,13 +133,12 @@ class _SandingBrideBudgetState extends State<SandingBrideBudget> {
             child: Row(
               children: [
                 Text(
-                  'Category:',
+                  'Category: ',
                   style: TextStyle(
                     fontSize: 17,
                     color: Colors.black,
                   ),
                 ),
-                SizedBox(width: 10),
                 // Dropdown to filter by categories
                 DropdownButton<String>(
                   isDense: true,

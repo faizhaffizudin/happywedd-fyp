@@ -48,14 +48,20 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-          primarySwatch: Colors.purple,
-          hintColor: Colors.purpleAccent,
-          elevatedButtonTheme: ElevatedButtonThemeData(
-              style: ElevatedButton.styleFrom(
+        primarySwatch: Colors.purple,
+        hintColor: Colors.purpleAccent,
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
             backgroundColor: Colors.purple,
-          ))
-          // Other theme configurations...
           ),
+        ),
+        inputDecorationTheme: InputDecorationTheme(
+          // Customize the dropdown theme here
+          filled: true,
+          fillColor: Colors.white,
+        ),
+        // Other theme configurations...
+      ),
       home: SplashScreen(),
       debugShowCheckedModeBanner: false, // Make sure this is set to false
     );

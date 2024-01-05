@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:happywedd1/pages/details.dart';
-import 'package:happywedd1/pages/home.dart';
 import 'package:happywedd1/pages/signIn.dart';
 import 'package:happywedd1/services/auth.dart';
 

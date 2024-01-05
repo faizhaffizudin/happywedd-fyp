@@ -167,8 +167,8 @@ class _ProfileState extends State<Profile> {
   }
 
   String _formatTimestamp(DateTime date) {
-    return DateFormat('dd MMM yyyy').format(date);
-    // return DateFormat('EEEE, dd MMM yyyy').format(date);
+    // return DateFormat('dd MMM yyyy').format(date);
+    return DateFormat('EEEE, dd MMM yyyy').format(date);
   }
 
   void _showEditDialog() {
