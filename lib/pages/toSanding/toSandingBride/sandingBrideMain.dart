@@ -166,11 +166,11 @@ class _ToSandingBrideState extends State<ToSandingBride> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(Icons.add, color: Colors.white),
-                    SizedBox(width: 8),
+                    SizedBox(width: 0.5),
                     Text(
-                      "Add Checklist",
+                      "Sanding Checklist",
                       style: TextStyle(
-                        fontSize: 18,
+                        fontSize: 17,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
                       ),

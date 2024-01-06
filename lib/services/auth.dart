@@ -94,4 +94,21 @@ class AuthClass {
       await storage.delete(key: "token");
     } catch (e) {}
   }
+
+   Future<void> changeEmail(String newEmail) async {
+    try {
+      User? user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        await user.updateEmail(newEmail);
+        // You may want to update the email in your Firestore users collection too.
+        await FirebaseFirestore.instance
+            .collection("users")
+            .doc(user.uid)
+            .update({'email': newEmail});
+      }
+    } catch (e) {
+      // Handle errors here (e.g., display an error message).
+      print("Error changing email: $e");
+    }
+  }
 }

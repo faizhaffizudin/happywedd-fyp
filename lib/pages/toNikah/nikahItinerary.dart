@@ -271,7 +271,7 @@ class _NikahItineraryState extends State<NikahItinerary> {
                     children: [
                       Icon(Icons.add, color: Colors.white),
                       Text(
-                        "Add Itinerary",
+                        "Add Nikah Itinerary",
                         style: TextStyle(fontSize: 12, color: Colors.white),
                       )
                     ]))));

@@ -208,6 +208,7 @@ class CountdownWidget extends StatelessWidget {
 }
 
 class ChecklistCompletionWidget extends StatelessWidget {
+  
   final double percentage;
 
   const ChecklistCompletionWidget({Key? key, required this.percentage})

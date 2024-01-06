@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:happywedd1/bottomNavBar.dart';
 import 'package:happywedd1/pages/splashScreen.dart';
 import 'package:happywedd1/services/auth.dart';
+import 'package:happywedd1/services/changeEmail.dart';
 
 class Profile extends StatefulWidget {
   const Profile({Key? key}) : super(key: key);
@@ -42,7 +43,7 @@ class _ProfileState extends State<Profile> {
                 color: Colors.white,
               ),
             ),
-            SizedBox(width: 16),
+              SizedBox(width: 16),
           ],
         ),
         actions: [
@@ -92,6 +93,17 @@ class _ProfileState extends State<Profile> {
                     );
                   },
                   child: Text("Edit Your Profile",
+                      style: TextStyle(color: Colors.white)),
+                ),
+                 ElevatedButton(
+                  onPressed: () {
+                    // Navigate to the ProfileEdit page
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => ChangeEmailPage()),
+                    );
+                  },
+                  child: Text("Edit Your Email",
                       style: TextStyle(color: Colors.white)),
                 ),
               ],
@@ -155,13 +167,13 @@ class _ProfileState extends State<Profile> {
                   ),
                 ),
               ),
-              SizedBox(height: 40),
+              SizedBox(height: 20),
               _buildProfileInfo("Name of the Bride", brideName),
               _buildProfileInfo("Name of the Groom", groomName),
               _buildProfileInfo("Nikah Date", dateNikah),
               _buildProfileInfo("Bride Sanding Date", dateSandingBride),
               _buildProfileInfo("Groom Sanding Date", dateSandingGroom),
-              SizedBox(height: 30),
+              SizedBox(height: 20),
             ],
           );
         } else {

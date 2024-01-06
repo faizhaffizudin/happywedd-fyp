@@ -22,6 +22,20 @@ class _SignUpState extends State<SignUp> {
   bool circular = false;
   AuthClass authClass = AuthClass();
 
+  //  Future<void> sendEnrollmentNotification() async {
+  //   try {
+  //     firebase_auth.User? user = firebaseAuth.currentUser;
+  //     if (user != null) {
+  //       await user.sendEmailVerification();
+  //       print('Multi-factor enrollment notification sent to ${user.email}');
+  //       // You can handle UI updates or further actions upon successful sending of notification
+  //     }
+  //   } catch (e) {
+  //     print('Error sending enrollment notification: $e');
+  //     // Handle errors if any
+  //   }
+  // }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -134,6 +148,9 @@ class _SignUpState extends State<SignUp> {
           setState(() {
             circular = false;
           });
+
+          // await sendEnrollmentNotification(); // Trigger MFA enrollment notification after successful sign-in
+          
           Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(builder: (builder) => DetailsPage()),
