@@ -1,5 +1,6 @@
 class NikahSuggestedTitles {
   static List<String> suggestedTitles = [
+    "Attending Pre-Marriage Course"
     "Prepare Marriage Application Form",
     "Copy of MyKad for bride",
     "Copy of MyKad for groom",
@@ -14,5 +15,6 @@ class NikahSuggestedTitles {
     "Death Certificate of previous spouse (if applicable)",
     "Copy of Divorce Certificate (if applicable)",
     "Copy of Certificate of Reversion to Islam (if applicable)",
+    "Payment for Tok Kadi, witness and others"
   ];
 }
