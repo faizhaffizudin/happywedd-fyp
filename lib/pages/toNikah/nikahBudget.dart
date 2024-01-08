@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:happywedd1/appBar.dart';
 import 'package:happywedd1/bottomNavBar.dart';
 
 class BudgetItem {
@@ -44,25 +45,7 @@ class _NikahBudgetState extends State<NikahBudget> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 239, 226, 255),
-      appBar: AppBar(
-        backgroundColor: Colors.purple[700],
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              "Nikah Budget",
-              style: TextStyle(
-                fontSize: 28,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
-            ),
-            SizedBox(width: 16),
-          ],
-        ),
-        centerTitle: true,
-        toolbarHeight: 80,
-      ),
+      appBar: CustomAppBar(title: 'Nikah Budget'),
       bottomNavigationBar: BottomNavBar(currentIndex: 1),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -121,25 +104,24 @@ class _NikahBudgetState extends State<NikahBudget> {
         children: [
           // Filter dropdown with box-like appearance
           Container(
-            width: 250,
+            width: 240,
             padding: EdgeInsets.all(10),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15),
               border: Border.all(
-                width: 1,
-                color: Colors.grey,
+                width: 1.5,
+                color: Colors.deepPurpleAccent,
               ),
             ),
             child: Row(
               children: [
                 Text(
-                  'Category:',
+                  'Category: ',
                   style: TextStyle(
                     fontSize: 17,
                     color: Colors.black,
                   ),
                 ),
-                SizedBox(width: 10),
                 // Dropdown to filter by categories
                 DropdownButton<String>(
                   isDense: true,
@@ -180,18 +162,20 @@ class _NikahBudgetState extends State<NikahBudget> {
           ),
           SizedBox(height: 20),
           // Display the sum of the budget
-          Text('Sum of Budget: RM${sumOfBudget.toStringAsFixed(2)}',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Color.fromARGB(255, 77, 0, 110),
-              )),
+          Text(
+            'Sum of Budget: RM${sumOfBudget.toStringAsFixed(2)}',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
           SizedBox(height: 20),
           // List of budget items based on the selected filter
           Expanded(
             child: ListView.builder(
               itemCount: budgetItems.length,
               itemBuilder: (context, index) {
+                // Check if the item should be displayed based on the selected filter
                 if (selectedFilter == "All" ||
                     budgetItems[index].category == selectedFilter) {
                   return Card(
@@ -230,7 +214,8 @@ class _NikahBudgetState extends State<NikahBudget> {
                     ),
                   );
                 } else {
-                  return Container(); // Return an empty container for items that should be filtered out
+                  // Return an empty container for items that should be filtered out
+                  return Container();
                 }
               },
             ),
@@ -309,8 +294,8 @@ class _NikahBudgetState extends State<NikahBudget> {
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(15),
                           borderSide: const BorderSide(
-                            width: 1,
-                            color: Colors.grey,
+                            width: 1.5,
+                            color: Colors.deepPurpleAccent,
                           ),
                         ),
                         filled:
@@ -354,8 +339,8 @@ class _NikahBudgetState extends State<NikahBudget> {
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(15),
                           borderSide: const BorderSide(
-                            width: 1,
-                            color: Colors.grey,
+                            width: 1.5,
+                            color: Colors.deepPurpleAccent,
                           ),
                         ),
                       ),
@@ -389,8 +374,8 @@ class _NikahBudgetState extends State<NikahBudget> {
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(15),
                           borderSide: const BorderSide(
-                            width: 1,
-                            color: Colors.grey,
+                            width: 1.5,
+                            color: Colors.deepPurpleAccent,
                           ),
                         ),
                       ),
@@ -551,8 +536,8 @@ class _NikahBudgetState extends State<NikahBudget> {
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(15),
                           borderSide: const BorderSide(
-                            width: 1,
-                            color: Colors.grey,
+                            width: 1.5,
+                            color: Colors.deepPurpleAccent,
                           ),
                         ),
                         filled: true,
@@ -594,8 +579,8 @@ class _NikahBudgetState extends State<NikahBudget> {
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(15),
                           borderSide: const BorderSide(
-                            width: 1,
-                            color: Colors.grey,
+                            width: 1.5,
+                            color: Colors.deepPurpleAccent,
                           ),
                         ),
                       ),
@@ -629,8 +614,8 @@ class _NikahBudgetState extends State<NikahBudget> {
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(15),
                           borderSide: const BorderSide(
-                            width: 1,
-                            color: Colors.grey,
+                            width: 1.5,
+                            color: Colors.deepPurpleAccent,
                           ),
                         ),
                       ),

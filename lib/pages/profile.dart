@@ -35,15 +35,21 @@ class _ProfileState extends State<Profile> {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Expanded(
+              child: SizedBox(
+                  width: 20), // Empty widget to take up the available space
+            ),
             Text(
-              "Edit Profile",
+              "Profile",
               style: TextStyle(
                 fontSize: 28,
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
               ),
             ),
-            SizedBox(width: 16),
+            Expanded(
+              child: SizedBox(), // Empty widget to take up the available space
+            ),
           ],
         ),
         actions: [
@@ -66,6 +72,7 @@ class _ProfileState extends State<Profile> {
         ],
         centerTitle: true,
         toolbarHeight: 80,
+        automaticallyImplyLeading: false,
       ),
       bottomNavigationBar: BottomNavBar(currentIndex: 3),
       body: SafeArea(
@@ -99,6 +106,7 @@ class _ProfileState extends State<Profile> {
                   child: Text("Edit Profile",
                       style: TextStyle(color: Colors.white)),
                 ),
+                SizedBox(height: 7),
                 ElevatedButton(
                   onPressed: () {
                     // Navigate to the ProfileEdit page

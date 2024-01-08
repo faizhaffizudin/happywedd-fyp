@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:happywedd1/appBar.dart';
 import 'package:happywedd1/bottomNavBar.dart';
 import 'package:happywedd1/services/auth.dart';
 import 'package:intl/intl.dart';
@@ -33,25 +34,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 239, 226, 255),
-      appBar: AppBar(
-        backgroundColor: Colors.purple[700],
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              "HappyWedd",
-              style: TextStyle(
-                fontSize: 28,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
-            ),
-            SizedBox(width: 16),
-          ],
-        ),
-        centerTitle: true,
-        toolbarHeight: 80,
-      ),
+      appBar: CustomAppBar(title: "HappyWedd"),
       bottomNavigationBar: BottomNavBar(currentIndex: 0),
       body: _buildHomeContent(context),
     );
@@ -164,7 +147,7 @@ Widget _buildCountdownBox(BuildContext context,
             fontSize: 20,
             fontWeight: FontWeight.w700,
             // color: Colors.purple[700],
-            color: Color.fromARGB(255, 53, 41, 95),
+            color: Color.fromARGB(255, 77, 0, 110),
           ),
         ),
         SizedBox(height: 5),
@@ -199,12 +182,12 @@ class CountdownWidget extends StatelessWidget {
         ),
         SizedBox(height: 10),
         Text(
-          "to " + DateFormat('EEEE, dd MMM yyyy').format(targetDate),
+          "to " + DateFormat('EEEE, dd MMM yyyy').format(targetDate) + "!",
           textAlign: TextAlign.center,
           // style: Theme.of(context).textTheme.subtitle1,
           style: TextStyle(
             fontSize: 18,
-            color: Color.fromARGB(255, 53, 41, 95),
+            color: Color.fromARGB(255, 77, 0, 110),
             fontWeight: FontWeight.w700,
           ),
         ),

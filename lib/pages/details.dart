@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:happywedd1/appBar.dart';
 import 'package:happywedd1/pages/GreetScreen.dart';
 
 class DetailsPage extends StatefulWidget {
@@ -26,25 +27,7 @@ class _DetailsPageState extends State<DetailsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.purple[700],
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              "Fill In Your Details",
-              style: TextStyle(
-                fontSize: 28,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
-            ),
-            SizedBox(width: 16),
-          ],
-        ),
-        centerTitle: true,
-        toolbarHeight: 80,
-      ),
+      appBar: CustomAppBar(title: "Fill In Your Details"),
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.all(20.0),

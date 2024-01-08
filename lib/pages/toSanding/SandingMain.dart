@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:happywedd1/appBar.dart';
 import 'package:happywedd1/bottomNavBar.dart';
 import 'package:happywedd1/pages/toSanding/toSandingBride/sandingBrideMain.dart';
 import 'package:happywedd1/pages/toSanding/toSandingGroom/sandingGroomMain.dart';
-import 'package:happywedd1/pages/toSanding/sandingPackages.dart';
+import 'package:happywedd1/pages/toSanding/weddingPackage/sandingPackages.dart';
 
 class ToSanding extends StatefulWidget {
   ToSanding({Key? key}) : super(key: key);
@@ -16,19 +17,7 @@ class _ToSandingState extends State<ToSanding> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 239, 226, 255),
-      appBar: AppBar(
-        backgroundColor: Colors.purple[700],
-        title: Text(
-          "To Sanding",
-          style: TextStyle(
-            fontSize: 28,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-          ),
-        ),
-        centerTitle: true,
-        toolbarHeight: 80,
-      ),
+      appBar: CustomAppBar(title: "To Sanding"),
       bottomNavigationBar: BottomNavBar(currentIndex: 2),
       body: Center(
         child: Column(
@@ -120,7 +109,7 @@ class _ToSandingState extends State<ToSanding> {
                   );
                 },
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.purple[600],
+                  backgroundColor: Color.fromARGB(255, 86, 45, 97),
                   padding: EdgeInsets.all(16),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
@@ -129,7 +118,12 @@ class _ToSandingState extends State<ToSanding> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SizedBox(width: 10),
+                    // Icon(
+                    //   Icons.face,
+                    //   color: Colors.white,
+                    //   size: 24,
+                    // ),
+                    // SizedBox(width: 10),
                     Text(
                       "View Wedding Packages",
                       style: TextStyle(

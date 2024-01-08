@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:happywedd1/appBar.dart';
 import 'package:happywedd1/bottomNavBar.dart';
 import 'package:happywedd1/pages/profile.dart';
 import 'package:intl/intl.dart';
@@ -63,25 +64,7 @@ class _ProfileEditState extends State<ProfileEdit> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 239, 226, 255),
-      appBar: AppBar(
-        backgroundColor: Colors.purple[700],
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              "Edit Profile",
-              style: TextStyle(
-                fontSize: 28,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
-            ),
-            SizedBox(width: 16),
-          ],
-        ),
-        centerTitle: true,
-        toolbarHeight: 80,
-      ),
+      appBar: CustomAppBar(title: "Edit Profile"),
       bottomNavigationBar: BottomNavBar(currentIndex: 3),
       body: SingleChildScrollView(
         child: Padding(

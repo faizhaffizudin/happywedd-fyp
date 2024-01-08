@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:happywedd1/appBar.dart';
 import 'package:happywedd1/pages/profile.dart';
 
 class ChangePwd extends StatefulWidget {
@@ -15,10 +16,7 @@ class _ChangePwdState extends State<ChangePwd> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Change Password", style: TextStyle(color: Colors.white)),
-        backgroundColor: Colors.purple,
-      ),
+      appBar: CustomAppBar(title: "Change Password"),
       body: Padding(
         padding: EdgeInsets.all(16.0),
         child: Column(
@@ -100,7 +98,8 @@ class _ChangePwdState extends State<ChangePwd> {
                       context: context,
                       builder: (BuildContext context) {
                         return AlertDialog(
-                          title: Text("Password Updated"),
+                          title: Text("Password Updated",
+                              style: TextStyle(fontWeight: FontWeight.bold)),
                           content: Text(
                             "Your password has been updated successfully.",
                             style: TextStyle(color: Colors.black),

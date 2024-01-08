@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:happywedd1/appBar.dart';
 import 'package:happywedd1/pages/signIn.dart';
 
 class ForgotPwd extends StatelessWidget {
@@ -8,10 +9,7 @@ class ForgotPwd extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Forgot Password", style: TextStyle(color: Colors.white)),
-        backgroundColor: Colors.purple, // Match the color with your SignUp page
-      ),
+      appBar: CustomAppBar(title: "Forgot Password"),
       body: Padding(
         padding: EdgeInsets.all(16.0),
         child: Column(
@@ -54,7 +52,8 @@ class ForgotPwd extends StatelessWidget {
                       context: context,
                       builder: (BuildContext context) {
                         return AlertDialog(
-                          title: Text("Password Reset Email Sent"),
+                          title: Text("Password Reset Email Sent",
+                              style: TextStyle(fontWeight: FontWeight.bold)),
                           content: Text(
                             "Please check your email for instructions on how to reset your password.",
                             style: TextStyle(color: Colors.black),
@@ -67,8 +66,8 @@ class ForgotPwd extends StatelessWidget {
                               child: Text("OK"),
                             ),
                           ],
-                          backgroundColor: Colors
-                              .purple, // Match the color with your SignUp page
+                          backgroundColor: Colors.purple[
+                              50], // Match the color with your SignUp page
                         );
                       },
                     );
@@ -103,6 +102,10 @@ class ForgotPwd extends StatelessWidget {
               style: ElevatedButton.styleFrom(
                 primary:
                     Colors.deepPurple, // Match the color with your SignUp page
+                elevation: 8,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15),
+                ),
               ),
             ),
             ElevatedButton(

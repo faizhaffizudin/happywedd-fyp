@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:happywedd1/appBar.dart';
 import 'package:happywedd1/bottomNavBar.dart';
 
 class BudgetItem {
@@ -44,25 +45,7 @@ class _SandingBrideBudgetState extends State<SandingBrideBudget> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 239, 226, 255),
-      appBar: AppBar(
-        backgroundColor: Colors.purple[700],
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              "Sanding Budget",
-              style: TextStyle(
-                fontSize: 28,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
-            ),
-            SizedBox(width: 16),
-          ],
-        ),
-        centerTitle: true,
-        toolbarHeight: 80,
-      ),
+      appBar: CustomAppBar(title: 'Sanding Budget'),
       bottomNavigationBar: BottomNavBar(currentIndex: 2),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

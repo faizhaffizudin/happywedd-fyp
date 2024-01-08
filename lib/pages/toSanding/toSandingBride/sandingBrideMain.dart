@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:happywedd1/appBar.dart';
 import 'package:happywedd1/bottomNavBar.dart';
 import 'package:happywedd1/pages/listCard.dart';
 import 'package:happywedd1/pages/toSanding/toSandingBride/sandingBrideAdd.dart';
@@ -38,19 +39,7 @@ class _ToSandingBrideState extends State<ToSandingBride> {
     return Scaffold(
       backgroundColor: const Color.fromARGB(
           255, 239, 226, 255), // Changed background color to deep purple
-      appBar: AppBar(
-        backgroundColor: Colors.purple[700], // Changed app bar color to purple
-        title: Text(
-          "Bride To Sanding", // Updated the title
-          style: TextStyle(
-            fontSize: 28,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-          ),
-        ),
-        centerTitle: true,
-        toolbarHeight: 80,
-      ),
+      appBar: CustomAppBar(title: 'Bride To Sanding'),
       bottomNavigationBar: BottomNavBar(currentIndex: 2),
       body: SingleChildScrollView(
         child: Column(
@@ -146,7 +135,7 @@ class _ToSandingBrideState extends State<ToSandingBride> {
               ),
             ),
             FractionallySizedBox(
-              widthFactor: 0.55,
+              widthFactor: 0.6,
               child: ElevatedButton(
                 onPressed: () {
                   Navigator.pushReplacement(
@@ -166,11 +155,11 @@ class _ToSandingBrideState extends State<ToSandingBride> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(Icons.add, color: Colors.white),
-                    SizedBox(width: 0.5),
+                    SizedBox(width: 8),
                     Text(
                       "Sanding Checklist",
                       style: TextStyle(
-                        fontSize: 17,
+                        fontSize: 18,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
                       ),

@@ -27,6 +27,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       ),
       centerTitle: true,
       toolbarHeight: 80,
+      automaticallyImplyLeading: false,
     );
   }
 }

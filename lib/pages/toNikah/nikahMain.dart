@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:happywedd1/appBar.dart';
 import 'package:happywedd1/bottomNavBar.dart';
 import 'package:happywedd1/pages/listCard.dart';
 import 'package:happywedd1/pages/toNikah/nikahAdd.dart';
@@ -38,19 +39,7 @@ class _ToNikahState extends State<ToNikah> {
     return Scaffold(
       backgroundColor: const Color.fromARGB(
           255, 239, 226, 255), // Changed background color to deep purple
-      appBar: AppBar(
-        backgroundColor: Colors.purple[700], // Changed app bar color to purple
-        title: Text(
-          "To Nikah", // Updated the title
-          style: TextStyle(
-            fontSize: 28,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-          ),
-        ),
-        centerTitle: true,
-        toolbarHeight: 80,
-      ),
+      appBar: CustomAppBar(title: 'To Nikah'),
       bottomNavigationBar: BottomNavBar(currentIndex: 1),
       body: SingleChildScrollView(
         child: Column(
@@ -59,7 +48,7 @@ class _ToNikahState extends State<ToNikah> {
               children: [
                 SizedBox(height: 20),
                 FractionallySizedBox(
-                  widthFactor: 0.6,
+                  widthFactor: 0.55,
                   child: ElevatedButton(
                     onPressed: () {
                       Navigator.push(
@@ -96,7 +85,7 @@ class _ToNikahState extends State<ToNikah> {
                 ),
                 SizedBox(height: 20),
                 FractionallySizedBox(
-                  widthFactor: 0.55,
+                  widthFactor: 0.5,
                   child: ElevatedButton(
                     onPressed: () {
                       Navigator.push(

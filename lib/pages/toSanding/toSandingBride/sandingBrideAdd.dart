@@ -52,7 +52,11 @@ class _SandingBrideAddState extends State<SandingBrideAdd> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    for (var title in ["Adding", "To Sanding", "Checklist"])
+                    for (var title in [
+                      "Adding Bride",
+                      "To Sanding",
+                      "Checklist"
+                    ])
                       Text(
                         title,
                         style: TextStyle(
@@ -97,7 +101,7 @@ class _SandingBrideAddState extends State<SandingBrideAdd> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        label("Task Title"),
+        label("Task Title (required)"),
         SizedBox(height: 8),
         Container(
           padding: EdgeInsets.all(4),
@@ -114,7 +118,7 @@ class _SandingBrideAddState extends State<SandingBrideAdd> {
                     Icon(Icons.format_list_bulleted, color: Colors.white),
                     SizedBox(width: 8),
                     Text(
-                      "Suggested Task",
+                      "Suggested Tasks",
                       style: TextStyle(color: Colors.white, fontSize: 17),
                     ),
                   ],
@@ -131,7 +135,7 @@ class _SandingBrideAddState extends State<SandingBrideAdd> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        label("Due Date"),
+        label("Due Date (required)"),
         SizedBox(height: 12),
         dueDateInput(),
       ],
@@ -245,7 +249,7 @@ class _SandingBrideAddState extends State<SandingBrideAdd> {
         ),
         child: Center(
           child: Text(
-            "Add Todo",
+            "Add Task",
             style: TextStyle(
                 fontSize: 18, color: Colors.white, fontWeight: FontWeight.w600),
           ),
@@ -394,7 +398,7 @@ class _SandingBrideAddState extends State<SandingBrideAdd> {
       context: context,
       builder: (BuildContext context) {
         return SimpleDialog(
-          title: Text("Suggested Titles"),
+          title: Text("Suggested Tasks"),
           backgroundColor: Colors.white,
           children: suggestedTitles.map((title) {
             return SimpleDialogOption(

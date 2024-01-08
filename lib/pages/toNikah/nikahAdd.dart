@@ -114,7 +114,7 @@ class _NikahAddState extends State<NikahAdd> {
                     Icon(Icons.format_list_bulleted, color: Colors.white),
                     SizedBox(width: 8),
                     Text(
-                      "Recommended Task",
+                      "Recommended Tasks",
                       style: TextStyle(color: Colors.white, fontSize: 17),
                     ),
                   ],
@@ -245,7 +245,7 @@ class _NikahAddState extends State<NikahAdd> {
         ),
         child: Center(
           child: Text(
-            "Add Todo",
+            "Add Task",
             style: TextStyle(
                 fontSize: 18, color: Colors.white, fontWeight: FontWeight.w600),
           ),
