@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:happywedd1/pages/signIn.dart';
+import 'package:happywedd1/services/auth.dart';
 
 class SplashScreen extends StatefulWidget {
   final String text;
-  // final Widget? child;
+
   const SplashScreen({super.key, required this.text});
 
   @override
@@ -11,14 +12,23 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  final AuthClass authClass = AuthClass();
+
   @override
   void initState() {
-    Future.delayed(const Duration(seconds: 3), () {
-      Navigator.pushAndRemoveUntil(context,
-          MaterialPageRoute(builder: (builder) => SignIn()), (route) => false);
-    });
-
     super.initState();
+
+    Future.delayed(const Duration(seconds: 3), () async {
+      // Auto sign-in user
+      await authClass.autoSignIn(context);
+
+      // Navigate to SignIn screen if the user is not signed in
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (builder) => SignIn()),
+        (route) => false,
+      );
+    });
   }
 
   @override
@@ -28,9 +38,10 @@ class _SplashScreenState extends State<SplashScreen> {
         width: double.infinity,
         decoration: BoxDecoration(
           gradient: LinearGradient(
-              colors: [Colors.blue, Colors.purple],
-              begin: Alignment.topRight,
-              end: Alignment.bottomLeft),
+            colors: [Colors.blue, Colors.purple],
+            begin: Alignment.topRight,
+            end: Alignment.bottomLeft,
+          ),
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -59,7 +70,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 color: Colors.white,
                 fontSize: 32,
               ),
-            )
+            ),
           ],
         ),
       ),

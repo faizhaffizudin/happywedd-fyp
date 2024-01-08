@@ -56,7 +56,7 @@ class _GreetScreenState extends State<GreetScreen> {
             Align(
               alignment: Alignment.center,
               child: Text(
-                'Preparing\nYour Account...',
+                'HappyWedd',
                 style: TextStyle(
                   fontStyle: FontStyle.italic,
                   color: Colors.white,

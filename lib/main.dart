@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:happywedd1/pages/greetScreen.dart';
 import 'package:happywedd1/pages/home.dart';
 import 'package:happywedd1/services/auth.dart';
 import 'package:happywedd1/pages/splashScreen.dart';
@@ -26,29 +28,41 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  Widget currentPage = const SplashScreen(
-    text: 'Welcome to\nHappyWedd',
-  );
   AuthClass authClass = AuthClass();
+  final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
   @override
   void initState() {
     super.initState();
-    checkLogin();
+    navigateToNextScreen();
   }
 
-  void checkLogin() async {
-    String? token = await authClass.getToken();
-    if (token != null) {
-      setState(() {
-        currentPage = const HomePage();
-      });
+  Future<void> navigateToNextScreen() async {
+    try {
+      await Firebase.initializeApp();
+
+      User? user = authClass.auth.currentUser;
+
+      if (user != null) {
+        navigatorKey.currentState?.pushReplacement(
+          MaterialPageRoute(builder: (context) => const GreetScreen()),
+        );
+      } else {
+        navigatorKey.currentState?.pushReplacement(
+          MaterialPageRoute(
+              builder: (context) =>
+                  const SplashScreen(text: 'Welcome to\nHappyWedd')),
+        );
+      }
+    } catch (e) {
+      print('Error initializing Firebase: $e');
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorKey: navigatorKey,
       theme: ThemeData(
         primarySwatch: Colors.purple,
         hintColor: Colors.purpleAccent,
@@ -57,17 +71,9 @@ class _MyAppState extends State<MyApp> {
             backgroundColor: Colors.purple,
           ),
         ),
-        // inputDecorationTheme: InputDecorationTheme(
-        //   // Customize the dropdown theme here
-        //   filled: true,
-        //   fillColor: Colors.white,
-        // ),
-        // Other theme configurations...
       ),
-      home: SplashScreen(
-        text: 'Welcome to\nHappyWedd',
-      ),
-      debugShowCheckedModeBanner: false, // Make sure this is set to false
+      home: SplashScreen(text: 'Welcome to\nHappyWedd'),
+      debugShowCheckedModeBanner: false,
     );
   }
 }

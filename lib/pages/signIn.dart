@@ -2,11 +2,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:happywedd1/pages/GreetScreen.dart';
+import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:happywedd1/pages/signUp.dart';
 import 'package:happywedd1/services/auth.dart';
 import 'package:happywedd1/services/forgotPwd.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignIn extends StatefulWidget {
   const SignIn({Key? key});
@@ -21,6 +22,12 @@ class _SignInState extends State<SignIn> {
   final TextEditingController _pwdController = TextEditingController();
   bool circular = false;
   AuthClass authClass = AuthClass();
+
+  @override
+  void initState() {
+    super.initState();
+    tryAutoSignIn();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -293,5 +300,44 @@ class _SignInState extends State<SignIn> {
         ),
       ),
     );
+  }
+
+  void tryAutoSignIn() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? userEmail = prefs.getString('user_email');
+    String? userPassword = prefs.getString('user_password');
+
+    if (userEmail != null && userPassword != null) {
+      setState(() {
+        circular = true;
+      });
+
+      try {
+        // Use your AuthClass for signing in
+        await authClass.signIn(userEmail, userPassword);
+
+        setState(() {
+          circular = false;
+        });
+
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (builder) => GreetScreen()),
+          (route) => false,
+        );
+      } catch (e) {
+        String errorMessage =
+            "An error occurred during auto sign-in. Please try again.";
+
+        // Handle errors, e.g., if the saved credentials are no longer valid
+        print('Auto sign-in error: $e');
+        final snackbar = SnackBar(content: Text(errorMessage));
+        ScaffoldMessenger.of(context).showSnackBar(snackbar);
+
+        setState(() {
+          circular = false;
+        });
+      }
+    }
   }
 }

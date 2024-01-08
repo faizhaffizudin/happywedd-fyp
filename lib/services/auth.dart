@@ -1,9 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:happywedd1/pages/home.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:happywedd1/pages/home.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthClass {
   static const List<String> scopes = <String>[
@@ -17,6 +18,38 @@ class AuthClass {
 
   FirebaseAuth auth = FirebaseAuth.instance;
   final storage = const FlutterSecureStorage();
+
+  Future<bool> isUserSignedIn() async {
+    User? user = auth.currentUser;
+    return user != null;
+  }
+
+  Future<void> autoSignIn(BuildContext context) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? userEmail = prefs.getString('user_email');
+    String? userPassword = prefs.getString('user_password');
+
+    if (userEmail != null && userPassword != null) {
+      try {
+        UserCredential userCredential = await auth.signInWithEmailAndPassword(
+          email: userEmail,
+          password: userPassword,
+        );
+
+        // Store user data in Firestore
+        await storeUserDataInFirestore(userCredential);
+
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (builder) => const HomePage()),
+          (route) => false,
+        );
+      } catch (e) {
+        // Handle errors, e.g., if the saved credentials are no longer valid
+        print('Auto sign-in error: $e');
+      }
+    }
+  }
 
   Future<void> googleSignIn(BuildContext context) async {
     try {
@@ -95,7 +128,7 @@ class AuthClass {
     } catch (e) {}
   }
 
-   Future<void> changeEmail(String newEmail) async {
+  Future<void> changeEmail(String newEmail) async {
     try {
       User? user = FirebaseAuth.instance.currentUser;
       if (user != null) {
@@ -111,4 +144,6 @@ class AuthClass {
       print("Error changing email: $e");
     }
   }
+
+  signIn(String userEmail, String userPassword) {}
 }
