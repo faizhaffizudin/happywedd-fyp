@@ -145,7 +145,7 @@ class _ToNikahState extends State<ToNikah> {
               ),
             ),
             FractionallySizedBox(
-              widthFactor: 0.5,
+              widthFactor: 0.55,
               child: ElevatedButton(
                 onPressed: () {
                   Navigator.push(
@@ -200,20 +200,19 @@ class _ToNikahState extends State<ToNikah> {
                       ),
                     );
                   }
- 
-    // Convert the documents to a list and sort by due date
-    List<DocumentSnapshot> sortedList = snapshot.data!.docs;
-    sortedList.sort((a, b) {
-    Timestamp timestampA = a['duedate'];
-    Timestamp timestampB = b['duedate'];
-    return timestampA.compareTo(timestampB);
-    });
+
+                  // Convert the documents to a list and sort by due date
+                  List<DocumentSnapshot> sortedList = snapshot.data!.docs;
+                  sortedList.sort((a, b) {
+                    Timestamp timestampA = a['duedate'];
+                    Timestamp timestampB = b['duedate'];
+                    return timestampA.compareTo(timestampB);
+                  });
                   return ListView.builder(
                     shrinkWrap: true,
                     physics: ClampingScrollPhysics(), // Added this line
                     itemCount: snapshot.data?.docs.length,
                     itemBuilder: (context, index) {
-                      
                       IconData iconData;
                       Color iconColor;
                       Map<String, dynamic> document =

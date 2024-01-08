@@ -146,7 +146,7 @@ class _ToSandingBrideState extends State<ToSandingBride> {
               ),
             ),
             FractionallySizedBox(
-              widthFactor: 0.5,
+              widthFactor: 0.55,
               child: ElevatedButton(
                 onPressed: () {
                   Navigator.pushReplacement(

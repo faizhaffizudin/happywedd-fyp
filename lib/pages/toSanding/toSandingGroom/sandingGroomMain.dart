@@ -146,7 +146,7 @@ class _ToSandingGroomState extends State<ToSandingGroom> {
               ),
             ),
             FractionallySizedBox(
-              widthFactor: 0.5,
+              widthFactor: 0.55,
               child: ElevatedButton(
                 onPressed: () {
                   Navigator.push(

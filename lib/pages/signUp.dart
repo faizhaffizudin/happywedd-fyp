@@ -47,7 +47,7 @@ class _SignUpState extends State<SignUp> {
             gradient: LinearGradient(
               colors: [
                 Color(0xFF7F4EFF),
-                Color(0xFF5D37F7),
+                Color.fromARGB(255, 83, 43, 243),
               ],
             ),
           ),
@@ -150,7 +150,7 @@ class _SignUpState extends State<SignUp> {
           });
 
           // await sendEnrollmentNotification(); // Trigger MFA enrollment notification after successful sign-in
-          
+
           Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(builder: (builder) => DetailsPage()),

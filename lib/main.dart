@@ -26,7 +26,9 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  Widget currentPage = const SplashScreen();
+  Widget currentPage = const SplashScreen(
+    text: 'Welcome to\nHappyWedd',
+  );
   AuthClass authClass = AuthClass();
 
   @override
@@ -62,7 +64,9 @@ class _MyAppState extends State<MyApp> {
         // ),
         // Other theme configurations...
       ),
-      home: SplashScreen(),
+      home: SplashScreen(
+        text: 'Welcome to\nHappyWedd',
+      ),
       debugShowCheckedModeBanner: false, // Make sure this is set to false
     );
   }

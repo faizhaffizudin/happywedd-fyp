@@ -6,7 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:happywedd1/bottomNavBar.dart';
 import 'package:happywedd1/pages/splashScreen.dart';
 import 'package:happywedd1/services/auth.dart';
-import 'package:happywedd1/services/changeEmail.dart';
+import 'package:happywedd1/services/changePwd.dart';
 
 class Profile extends StatefulWidget {
   const Profile({Key? key}) : super(key: key);
@@ -43,7 +43,7 @@ class _ProfileState extends State<Profile> {
                 color: Colors.white,
               ),
             ),
-              SizedBox(width: 16),
+            SizedBox(width: 16),
           ],
         ),
         actions: [
@@ -54,7 +54,11 @@ class _ProfileState extends State<Profile> {
               await authClass.logOut();
               Navigator.pushAndRemoveUntil(
                 context,
-                MaterialPageRoute(builder: (builder) => const SplashScreen()),
+                MaterialPageRoute(
+                  builder: (builder) => const SplashScreen(
+                    text: 'Welcome to\nHappyWedd',
+                  ),
+                ),
                 (route) => false,
               );
             },
@@ -92,18 +96,18 @@ class _ProfileState extends State<Profile> {
                       MaterialPageRoute(builder: (context) => ProfileEdit()),
                     );
                   },
-                  child: Text("Edit Your Profile",
+                  child: Text("Edit Profile",
                       style: TextStyle(color: Colors.white)),
                 ),
-                 ElevatedButton(
+                ElevatedButton(
                   onPressed: () {
                     // Navigate to the ProfileEdit page
                     Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(builder: (context) => ChangeEmailPage()),
+                      MaterialPageRoute(builder: (context) => ChangePwd()),
                     );
                   },
-                  child: Text("Edit Your Email",
+                  child: Text("Change Password",
                       style: TextStyle(color: Colors.white)),
                 ),
               ],

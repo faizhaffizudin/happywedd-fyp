@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:happywedd1/pages/signIn.dart';
 
 class SplashScreen extends StatefulWidget {
+  final String text;
   // final Widget? child;
-  const SplashScreen({super.key});
+  const SplashScreen({super.key, required this.text});
 
   @override
   State<SplashScreen> createState() => _SplashScreenState();
@@ -32,23 +33,35 @@ class _SplashScreenState extends State<SplashScreen> {
               end: Alignment.bottomLeft),
         ),
         child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
-              Icon(
-                Icons.people,
-                size: 80,
-                color: Colors.white,
-              ),
-              SizedBox(height: 20),
-              Text(
-                'Welcome to HappyWedd',
-                style: TextStyle(
-                  fontStyle: FontStyle.italic,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                border: Border.all(
                   color: Colors.white,
-                  fontSize: 32,
+                  width: 5, // Adjust the border width as needed
                 ),
-              )
-            ]),
+                borderRadius: BorderRadius.all(
+                  Radius.circular(10), // Adjust the border radius as needed
+                ),
+              ),
+              child: Image.asset(
+                'assets/happyweddlogo.png',
+                width: 80,
+                height: 80,
+              ),
+            ),
+            SizedBox(height: 20),
+            Text(
+              'Welcome to\nHappyWedd',
+              style: TextStyle(
+                fontStyle: FontStyle.italic,
+                color: Colors.white,
+                fontSize: 32,
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

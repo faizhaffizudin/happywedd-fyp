@@ -150,8 +150,6 @@ class _SignInState extends State<SignIn> {
             circular = false;
           });
 
-          
-
           Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(builder: (builder) => GreetScreen()),

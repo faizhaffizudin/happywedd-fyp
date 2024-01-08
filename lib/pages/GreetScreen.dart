@@ -34,23 +34,35 @@ class _GreetScreenState extends State<GreetScreen> {
               end: Alignment.bottomLeft),
         ),
         child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
-              Icon(
-                Icons.people,
-                size: 80,
-                color: Colors.white,
-              ),
-              SizedBox(height: 20),
-              Text(
-                'Preparing your Account...',
-                style: TextStyle(
-                  fontStyle: FontStyle.italic,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                border: Border.all(
                   color: Colors.white,
-                  fontSize: 32,
+                  width: 5, // Adjust the border width as needed
                 ),
-              )
-            ]),
+                borderRadius: BorderRadius.all(
+                  Radius.circular(10), // Adjust the border radius as needed
+                ),
+              ),
+              child: Image.asset(
+                'assets/happyweddlogo.png',
+                width: 80,
+                height: 80,
+              ),
+            ),
+            SizedBox(height: 20),
+            Text(
+              'Preparing\nYour Account...',
+              style: TextStyle(
+                fontStyle: FontStyle.italic,
+                color: Colors.white,
+                fontSize: 32,
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

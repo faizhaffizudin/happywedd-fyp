@@ -69,7 +69,7 @@ class _ProfileEditState extends State<ProfileEdit> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              "Sanding Itinerary",
+              "Edit Profile",
               style: TextStyle(
                 fontSize: 28,
                 fontWeight: FontWeight.bold,
