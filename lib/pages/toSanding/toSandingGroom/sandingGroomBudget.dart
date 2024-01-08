@@ -121,26 +121,24 @@ class _SandingGroomBudgetState extends State<SandingGroomBudget> {
         children: [
           // Filter dropdown with box-like appearance
           Container(
-            // width: MediaQuery.of(context).size.width - 60,
             width: 240,
             padding: EdgeInsets.all(10),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15),
               border: Border.all(
-                width: 1,
-                color: Colors.grey,
+                width: 1.5,
+                color: Colors.deepPurpleAccent,
               ),
             ),
             child: Row(
               children: [
                 Text(
-                  'Category:',
+                  'Category: ',
                   style: TextStyle(
                     fontSize: 17,
                     color: Colors.black,
                   ),
                 ),
-                SizedBox(width: 10),
                 // Dropdown to filter by categories
                 DropdownButton<String>(
                   isDense: true,
@@ -213,11 +211,22 @@ class _SandingGroomBudgetState extends State<SandingGroomBudget> {
                           ),
                         ],
                       ),
-                      trailing: IconButton(
-                        icon: Icon(Icons.delete),
-                        onPressed: () {
-                          _deleteBudgetItem(budgetItems[index].id);
-                        },
+                      trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          IconButton(
+                            icon: Icon(Icons.edit),
+                            onPressed: () {
+                              _showEditItemDialog(budgetItems[index]);
+                            },
+                          ),
+                          IconButton(
+                            icon: Icon(Icons.delete),
+                            onPressed: () {
+                              _deleteBudgetItem(budgetItems[index].id);
+                            },
+                          ),
+                        ],
                       ),
                     ),
                   );
@@ -253,13 +262,16 @@ class _SandingGroomBudgetState extends State<SandingGroomBudget> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text(
-            'Add New Budget Item',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
+          title: Center(
+            child: Text(
+              'Add New Budget',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Color.fromARGB(255, 77, 0, 110),
+              ),
             ),
           ),
-          backgroundColor: Colors.purple[50],
+          // backgroundColor: Colors.purple[50],
           content: SingleChildScrollView(
             child: Container(
               width: 100,
@@ -299,8 +311,8 @@ class _SandingGroomBudgetState extends State<SandingGroomBudget> {
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(15),
                           borderSide: const BorderSide(
-                            width: 1,
-                            color: Colors.grey,
+                            width: 1.5,
+                            color: Colors.deepPurpleAccent,
                           ),
                         ),
                         filled:
@@ -329,7 +341,7 @@ class _SandingGroomBudgetState extends State<SandingGroomBudget> {
                       ),
                       maxLines: null,
                       decoration: InputDecoration(
-                        labelText: 'Item Name',
+                        labelText: 'Details',
                         labelStyle: const TextStyle(
                           fontSize: 17,
                           color: Colors.black,
@@ -344,8 +356,8 @@ class _SandingGroomBudgetState extends State<SandingGroomBudget> {
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(15),
                           borderSide: const BorderSide(
-                            width: 1,
-                            color: Colors.grey,
+                            width: 1.5,
+                            color: Colors.deepPurpleAccent,
                           ),
                         ),
                       ),
@@ -379,8 +391,8 @@ class _SandingGroomBudgetState extends State<SandingGroomBudget> {
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(15),
                           borderSide: const BorderSide(
-                            width: 1,
-                            color: Colors.grey,
+                            width: 1.5,
+                            color: Colors.deepPurpleAccent,
                           ),
                         ),
                       ),
@@ -402,7 +414,7 @@ class _SandingGroomBudgetState extends State<SandingGroomBudget> {
                 await _saveBudgetItem(selectedCategory);
                 Navigator.pop(context);
               },
-              child: Text('Add'),
+              child: Text('Add', style: TextStyle(color: Colors.white)),
             ),
           ],
         );
@@ -470,6 +482,207 @@ class _SandingGroomBudgetState extends State<SandingGroomBudget> {
       _loadBudgetItems();
     } catch (e) {
       print("Error deleting Budget Item: $e");
+    }
+  }
+
+  void _showEditItemDialog(BudgetItem budgetItem) {
+    _itemNameController.text = budgetItem.itemName;
+    _budgetController.text = budgetItem.budget.toString();
+
+    List<String> categories = [
+      "Venue",
+      "Vendors",
+      "Caterer",
+      "Invitation Card",
+      "Safety",
+      "Others",
+    ];
+
+    String selectedCategory = budgetItem.category;
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Center(
+            child: Text(
+              'Edit Budget Item',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Color.fromARGB(255, 77, 0, 110),
+              ),
+            ),
+          ),
+          // backgroundColor: Colors.purple[50],
+          content: SingleChildScrollView(
+            child: Container(
+              width: 100,
+              height: 250, // Adjust the height as needed
+              child: Column(
+                children: [
+                  SizedBox(
+                    width: 150,
+                    height: 70,
+                    child: DropdownButtonFormField<String>(
+                      isExpanded: true,
+                      value: selectedCategory,
+                      items: categories.map((category) {
+                        return DropdownMenuItem<String>(
+                          value: category,
+                          child: Text(category),
+                        );
+                      }).toList(),
+                      onChanged: (value) {
+                        setState(() {
+                          selectedCategory = value!;
+                        });
+                      },
+                      decoration: InputDecoration(
+                        labelText: 'Category',
+                        labelStyle: const TextStyle(
+                          fontSize: 17,
+                          color: Colors.black,
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          borderSide: BorderSide(
+                            width: 1.5,
+                            color: Colors.amber,
+                          ),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          borderSide: const BorderSide(
+                            width: 1.5,
+                            color: Colors.deepPurpleAccent,
+                          ),
+                        ),
+                        filled: true,
+                        fillColor: Colors.white,
+                      ),
+                      isDense: true,
+                      style: TextStyle(
+                        fontSize: 17,
+                        color: Colors.black,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      dropdownColor: Colors.white,
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width - 60,
+                    height: 70,
+                    child: TextFormField(
+                      controller: _itemNameController,
+                      style: TextStyle(
+                        fontSize: 17,
+                        color: Colors.black,
+                      ),
+                      maxLines: null,
+                      decoration: InputDecoration(
+                        labelText: 'Details',
+                        labelStyle: const TextStyle(
+                          fontSize: 17,
+                          color: Colors.black,
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          borderSide: BorderSide(
+                            width: 1.5,
+                            color: Colors.amber,
+                          ),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          borderSide: const BorderSide(
+                            width: 1.5,
+                            color: Colors.deepPurpleAccent,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width - 60,
+                    height: 70,
+                    child: TextFormField(
+                      controller: _budgetController,
+                      keyboardType: TextInputType.number,
+                      style: TextStyle(
+                        fontSize: 17,
+                        color: Colors.black,
+                      ),
+                      maxLines: null,
+                      decoration: InputDecoration(
+                        labelText: 'Budget (RM)',
+                        labelStyle: const TextStyle(
+                          fontSize: 17,
+                          color: Colors.black,
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          borderSide: BorderSide(
+                            width: 1.5,
+                            color: Colors.amber,
+                          ),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          borderSide: const BorderSide(
+                            width: 1.5,
+                            color: Colors.deepPurpleAccent,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text('Cancel'),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                await _updateBudgetItem(budgetItem.id, selectedCategory);
+                Navigator.pop(context);
+              },
+              child: Text('Save', style: TextStyle(color: Colors.white)),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> _updateBudgetItem(String itemId, String category) async {
+    try {
+      await _firestore
+          .collection("users")
+          .doc(widget.userId)
+          .collection("sandinggroomBudget")
+          .doc(itemId)
+          .update({
+        "category": category,
+        "itemName": _itemNameController.text,
+        "budget": double.parse(_budgetController.text),
+      });
+
+      setState(() {
+        _itemNameController.clear();
+        _budgetController.clear();
+      });
+
+      _loadBudgetItems();
+    } catch (e) {
+      print("Error updating Budget Item: $e");
     }
   }
 }

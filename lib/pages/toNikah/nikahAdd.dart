@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:happywedd1/pages/toNikah/nikahMain.dart';
 import 'package:happywedd1/pages/toNikah/nikahSuggestedTitles.dart';
 import 'package:intl/intl.dart';
 
@@ -96,7 +97,7 @@ class _NikahAddState extends State<NikahAdd> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        label("Task Title"),
+        label("Task Title (required)"),
         SizedBox(height: 8),
         Container(
           padding: EdgeInsets.all(4),
@@ -130,7 +131,7 @@ class _NikahAddState extends State<NikahAdd> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        label("Due Date"),
+        label("Due Date (required)"),
         SizedBox(height: 12),
         dueDateInput(),
       ],
@@ -200,20 +201,40 @@ class _NikahAddState extends State<NikahAdd> {
   Widget submitBtn() {
     return InkWell(
       onTap: () async {
+        if (_titleController.text.isEmpty) {
+          showErrorMessage('Task Title is required.');
+          return;
+        }
+        if (dueDate == null) {
+          showErrorMessage('Due Date is required.');
+          return;
+        }
+
         String userId =
             FirebaseAuth.instance.currentUser?.uid ?? "default_user_id";
-        FirebaseFirestore.instance
-            .collection("users")
-            .doc(userId)
-            .collection("nikahList") // CHANGE
-            .add({
+
+        Map<String, dynamic> taskData = {
           "title": _titleController.text,
           "notes": _notesController.text,
           "target": target,
           "category": category,
-          "duedate": dueDate,
-        });
-        Navigator.pop(context);
+        };
+
+        // Add dueDate only if it's not null
+        if (dueDate != null) {
+          taskData["duedate"] = Timestamp.fromDate(dueDate!);
+        }
+
+        FirebaseFirestore.instance
+            .collection("users")
+            .doc(userId)
+            .collection("nikahList")
+            .add(taskData);
+
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => ToNikah()),
+        );
       },
       child: Container(
         height: 56,
@@ -229,6 +250,15 @@ class _NikahAddState extends State<NikahAdd> {
                 fontSize: 18, color: Colors.white, fontWeight: FontWeight.w600),
           ),
         ),
+      ),
+    );
+  }
+
+  void showErrorMessage(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        duration: Duration(seconds: 3),
       ),
     );
   }
@@ -364,7 +394,7 @@ class _NikahAddState extends State<NikahAdd> {
       context: context,
       builder: (BuildContext context) {
         return SimpleDialog(
-          title: Text("Suggested Titles"),
+          title: Text("Recommended Tasks by Islamic Religious Department"),
           backgroundColor: Colors.white,
           children: suggestedTitles.map((title) {
             return SimpleDialogOption(

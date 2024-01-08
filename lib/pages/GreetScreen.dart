@@ -53,12 +53,16 @@ class _GreetScreenState extends State<GreetScreen> {
               ),
             ),
             SizedBox(height: 20),
-            Text(
-              'Preparing\nYour Account...',
-              style: TextStyle(
-                fontStyle: FontStyle.italic,
-                color: Colors.white,
-                fontSize: 32,
+            Align(
+              alignment: Alignment.center,
+              child: Text(
+                'Preparing\nYour Account...',
+                style: TextStyle(
+                  fontStyle: FontStyle.italic,
+                  color: Colors.white,
+                  fontSize: 32,
+                ),
+                textAlign: TextAlign.center,
               ),
             )
           ],

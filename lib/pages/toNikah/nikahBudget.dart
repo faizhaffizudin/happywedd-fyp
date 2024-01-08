@@ -180,20 +180,18 @@ class _NikahBudgetState extends State<NikahBudget> {
           ),
           SizedBox(height: 20),
           // Display the sum of the budget
-          Text(
-            'Sum of Budget: RM${sumOfBudget.toStringAsFixed(2)}',
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
+          Text('Sum of Budget: RM${sumOfBudget.toStringAsFixed(2)}',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Color.fromARGB(255, 77, 0, 110),
+              )),
           SizedBox(height: 20),
           // List of budget items based on the selected filter
           Expanded(
             child: ListView.builder(
               itemCount: budgetItems.length,
               itemBuilder: (context, index) {
-                // Check if the item should be displayed based on the selected filter
                 if (selectedFilter == "All" ||
                     budgetItems[index].category == selectedFilter) {
                   return Card(
@@ -212,17 +210,27 @@ class _NikahBudgetState extends State<NikahBudget> {
                           ),
                         ],
                       ),
-                      trailing: IconButton(
-                        icon: Icon(Icons.delete),
-                        onPressed: () {
-                          _deleteBudgetItem(budgetItems[index].id);
-                        },
+                      trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          IconButton(
+                            icon: Icon(Icons.edit),
+                            onPressed: () {
+                              _showEditItemDialog(budgetItems[index]);
+                            },
+                          ),
+                          IconButton(
+                            icon: Icon(Icons.delete),
+                            onPressed: () {
+                              _deleteBudgetItem(budgetItems[index].id);
+                            },
+                          ),
+                        ],
                       ),
                     ),
                   );
                 } else {
-                  // Return an empty container for items that should be filtered out
-                  return Container();
+                  return Container(); // Return an empty container for items that should be filtered out
                 }
               },
             ),
@@ -252,13 +260,16 @@ class _NikahBudgetState extends State<NikahBudget> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text(
-            'Add New Budget Item',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
+          title: Center(
+            child: Text(
+              'Add New Budget',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Color.fromARGB(255, 77, 0, 110),
+              ),
             ),
           ),
-          backgroundColor: Colors.purple[50],
+          // backgroundColor: Colors.purple[50],
           content: SingleChildScrollView(
             child: Container(
               width: 100,
@@ -328,7 +339,7 @@ class _NikahBudgetState extends State<NikahBudget> {
                       ),
                       maxLines: null,
                       decoration: InputDecoration(
-                        labelText: 'Item Name',
+                        labelText: 'Details',
                         labelStyle: const TextStyle(
                           fontSize: 17,
                           color: Colors.black,
@@ -401,7 +412,7 @@ class _NikahBudgetState extends State<NikahBudget> {
                 await _saveBudgetItem(selectedCategory);
                 Navigator.pop(context);
               },
-              child: Text('Add'),
+              child: Text('Add', style: TextStyle(color: Colors.white)),
             ),
           ],
         );
@@ -469,6 +480,207 @@ class _NikahBudgetState extends State<NikahBudget> {
       _loadBudgetItems();
     } catch (e) {
       print("Error deleting Budget Item: $e");
+    }
+  }
+
+  void _showEditItemDialog(BudgetItem budgetItem) {
+    _itemNameController.text = budgetItem.itemName;
+    _budgetController.text = budgetItem.budget.toString();
+
+    List<String> categories = [
+      "Venue",
+      "Vendors",
+      "Caterer",
+      "Invitation Card",
+      "Safety",
+      "Others",
+    ];
+
+    String selectedCategory = budgetItem.category;
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Center(
+            child: Text(
+              'Edit Budget Item',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Color.fromARGB(255, 77, 0, 110),
+              ),
+            ),
+          ),
+          // backgroundColor: Colors.purple[50],
+          content: SingleChildScrollView(
+            child: Container(
+              width: 100,
+              height: 250, // Adjust the height as needed
+              child: Column(
+                children: [
+                  SizedBox(
+                    width: 150,
+                    height: 70,
+                    child: DropdownButtonFormField<String>(
+                      isExpanded: true,
+                      value: selectedCategory,
+                      items: categories.map((category) {
+                        return DropdownMenuItem<String>(
+                          value: category,
+                          child: Text(category),
+                        );
+                      }).toList(),
+                      onChanged: (value) {
+                        setState(() {
+                          selectedCategory = value!;
+                        });
+                      },
+                      decoration: InputDecoration(
+                        labelText: 'Category',
+                        labelStyle: const TextStyle(
+                          fontSize: 17,
+                          color: Colors.black,
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          borderSide: BorderSide(
+                            width: 1.5,
+                            color: Colors.amber,
+                          ),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          borderSide: const BorderSide(
+                            width: 1,
+                            color: Colors.grey,
+                          ),
+                        ),
+                        filled: true,
+                        fillColor: Colors.white,
+                      ),
+                      isDense: true,
+                      style: TextStyle(
+                        fontSize: 17,
+                        color: Colors.black,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      dropdownColor: Colors.white,
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width - 60,
+                    height: 70,
+                    child: TextFormField(
+                      controller: _itemNameController,
+                      style: TextStyle(
+                        fontSize: 17,
+                        color: Colors.black,
+                      ),
+                      maxLines: null,
+                      decoration: InputDecoration(
+                        labelText: 'Details',
+                        labelStyle: const TextStyle(
+                          fontSize: 17,
+                          color: Colors.black,
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          borderSide: BorderSide(
+                            width: 1.5,
+                            color: Colors.amber,
+                          ),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          borderSide: const BorderSide(
+                            width: 1,
+                            color: Colors.grey,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width - 60,
+                    height: 70,
+                    child: TextFormField(
+                      controller: _budgetController,
+                      keyboardType: TextInputType.number,
+                      style: TextStyle(
+                        fontSize: 17,
+                        color: Colors.black,
+                      ),
+                      maxLines: null,
+                      decoration: InputDecoration(
+                        labelText: 'Budget (RM)',
+                        labelStyle: const TextStyle(
+                          fontSize: 17,
+                          color: Colors.black,
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          borderSide: BorderSide(
+                            width: 1.5,
+                            color: Colors.amber,
+                          ),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          borderSide: const BorderSide(
+                            width: 1,
+                            color: Colors.grey,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text('Cancel'),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                await _updateBudgetItem(budgetItem.id, selectedCategory);
+                Navigator.pop(context);
+              },
+              child: Text('Save', style: TextStyle(color: Colors.white)),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> _updateBudgetItem(String itemId, String category) async {
+    try {
+      await _firestore
+          .collection("users")
+          .doc(widget.userId)
+          .collection("nikahBudget")
+          .doc(itemId)
+          .update({
+        "category": category,
+        "itemName": _itemNameController.text,
+        "budget": double.parse(_budgetController.text),
+      });
+
+      setState(() {
+        _itemNameController.clear();
+        _budgetController.clear();
+      });
+
+      _loadBudgetItems();
+    } catch (e) {
+      print("Error updating Budget Item: $e");
     }
   }
 }

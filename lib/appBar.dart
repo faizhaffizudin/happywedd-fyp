@@ -23,10 +23,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               color: Colors.white,
             ),
           ),
-          SizedBox(width: 16),
         ],
       ),
       centerTitle: true,
+      toolbarHeight: 80,
     );
   }
 }
