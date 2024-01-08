@@ -1,7 +1,7 @@
 class NikahSuggestedTitles {
   static List<String> suggestedTitles = [
-    "Attending Pre-Marriage Course"
-        "Submit Marriage Application Form (SPPIM)",
+    "Attending Pre-Marriage Course",
+    "Submit Marriage Application Form (SPPIM)",
     "Copy of MyKad for bride",
     "Copy of MyKad for groom",
     "Copy of MyKad for witness 1",
