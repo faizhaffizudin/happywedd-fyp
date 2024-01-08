@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:happywedd1/pages/toSanding/sandingSuggestedTitles.dart';
+import 'package:happywedd1/pages/toSanding/toSandingGroom/sandingGroomMain.dart';
 import 'package:intl/intl.dart';
 
 class SandingGroomAdd extends StatefulWidget {
@@ -200,20 +201,40 @@ class _SandingGroomAddState extends State<SandingGroomAdd> {
   Widget submitBtn() {
     return InkWell(
       onTap: () async {
+        if (_titleController.text.isEmpty) {
+          showErrorMessage('Task Title is required.');
+          return;
+        }
+        if (dueDate == null) {
+          showErrorMessage('Due Date is required.');
+          return;
+        }
+
         String userId =
             FirebaseAuth.instance.currentUser?.uid ?? "default_user_id";
-        FirebaseFirestore.instance
-            .collection("users")
-            .doc(userId)
-            .collection("sandinggroomList") // CHANGE
-            .add({
+
+        Map<String, dynamic> taskData = {
           "title": _titleController.text,
           "notes": _notesController.text,
           "target": target,
           "category": category,
-          "duedate": dueDate,
-        });
-        Navigator.pop(context);
+        };
+
+        // Add dueDate only if it's not null
+        if (dueDate != null) {
+          taskData["duedate"] = Timestamp.fromDate(dueDate!);
+        }
+
+        FirebaseFirestore.instance
+            .collection("users")
+            .doc(userId)
+            .collection("sandinggroomList")
+            .add(taskData);
+
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => ToSandingGroom()),
+        );
       },
       child: Container(
         height: 56,
@@ -229,6 +250,15 @@ class _SandingGroomAddState extends State<SandingGroomAdd> {
                 fontSize: 18, color: Colors.white, fontWeight: FontWeight.w600),
           ),
         ),
+      ),
+    );
+  }
+
+  void showErrorMessage(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        duration: Duration(seconds: 3),
       ),
     );
   }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:happywedd1/bottomNavBar.dart';
 import 'package:happywedd1/pages/toSanding/toSandingBride/sandingBrideMain.dart';
 import 'package:happywedd1/pages/toSanding/toSandingGroom/sandingGroomMain.dart';
-import 'package:happywedd1/pages/toSanding/weddingPackage/sandingPackages.dart';
+import 'package:happywedd1/pages/toSanding/sandingPackages.dart';
 
 class ToSanding extends StatefulWidget {
   ToSanding({Key? key}) : super(key: key);
