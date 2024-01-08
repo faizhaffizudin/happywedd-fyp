@@ -260,13 +260,16 @@ class _NikahBudgetState extends State<NikahBudget> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text(
-            'Add New Budget Item',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
+          title: Center(
+            child: Text(
+              'Add New Budget',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Color.fromARGB(255, 77, 0, 110),
+              ),
             ),
           ),
-          backgroundColor: Colors.purple[50],
+          // backgroundColor: Colors.purple[50],
           content: SingleChildScrollView(
             child: Container(
               width: 100,
@@ -336,7 +339,7 @@ class _NikahBudgetState extends State<NikahBudget> {
                       ),
                       maxLines: null,
                       decoration: InputDecoration(
-                        labelText: 'Item Name',
+                        labelText: 'Details',
                         labelStyle: const TextStyle(
                           fontSize: 17,
                           color: Colors.black,
@@ -499,13 +502,16 @@ class _NikahBudgetState extends State<NikahBudget> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text(
-            'Edit Budget Item',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
+          title: Center(
+            child: Text(
+              'Edit Budget Item',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Color.fromARGB(255, 77, 0, 110),
+              ),
             ),
           ),
-          backgroundColor: Colors.purple[50],
+          // backgroundColor: Colors.purple[50],
           content: SingleChildScrollView(
             child: Container(
               width: 100,
@@ -573,7 +579,7 @@ class _NikahBudgetState extends State<NikahBudget> {
                       ),
                       maxLines: null,
                       decoration: InputDecoration(
-                        labelText: 'Item Name',
+                        labelText: 'Details',
                         labelStyle: const TextStyle(
                           fontSize: 17,
                           color: Colors.black,

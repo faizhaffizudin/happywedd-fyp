@@ -165,7 +165,7 @@ class _SandingGroomItineraryState extends State<SandingGroomItinerary> {
           centerTitle: true,
           toolbarHeight: 80,
         ),
-        bottomNavigationBar: BottomNavBar(currentIndex: 1),
+        bottomNavigationBar: BottomNavBar(currentIndex: 2),
         body: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
@@ -295,7 +295,7 @@ class _SandingGroomItineraryState extends State<SandingGroomItinerary> {
               ),
             ),
           ),
-          backgroundColor: Colors.purple[50],
+          // backgroundColor: Colors.purple[50],
           content: Container(
             height: 160, // Adjust the height as needed
             child: Column(
@@ -327,7 +327,7 @@ class _SandingGroomItineraryState extends State<SandingGroomItinerary> {
                         borderRadius: BorderRadius.circular(15),
                         borderSide: const BorderSide(
                           width: 1.5,
-                          color: Colors.purple,
+                          color: Colors.deepPurple,
                         ),
                       ),
                     ),
@@ -427,8 +427,8 @@ class _SandingGroomItineraryState extends State<SandingGroomItinerary> {
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(15),
                         borderSide: const BorderSide(
-                          width: 1,
-                          color: Colors.grey,
+                          width: 1.5,
+                          color: Colors.deepPurple,
                         ),
                       ),
                     ),

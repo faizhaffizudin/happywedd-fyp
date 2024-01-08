@@ -295,7 +295,7 @@ class _SandingBrideItineraryState extends State<SandingBrideItinerary> {
               ),
             ),
           ),
-          backgroundColor: Colors.purple[50],
+          // backgroundColor: Colors.purple[50],
           content: Container(
             height: 160, // Adjust the height as needed
             child: Column(
@@ -327,7 +327,7 @@ class _SandingBrideItineraryState extends State<SandingBrideItinerary> {
                         borderRadius: BorderRadius.circular(15),
                         borderSide: const BorderSide(
                           width: 1.5,
-                          color: Colors.purple,
+                          color: Colors.deepPurple,
                         ),
                       ),
                     ),
@@ -427,8 +427,8 @@ class _SandingBrideItineraryState extends State<SandingBrideItinerary> {
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(15),
                         borderSide: const BorderSide(
-                          width: 1,
-                          color: Colors.grey,
+                          width: 1.5,
+                          color: Colors.deepPurple,
                         ),
                       ),
                     ),

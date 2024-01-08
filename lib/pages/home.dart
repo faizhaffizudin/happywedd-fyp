@@ -141,24 +141,31 @@ Widget _buildCountdownBox(BuildContext context,
   return Container(
     width: MediaQuery.of(context).size.width,
     padding: EdgeInsets.all(20),
-    margin: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+    margin: EdgeInsets.symmetric(vertical: 7, horizontal: 7),
     decoration: BoxDecoration(
-      color: Colors.white,
-      border: Border.all(color: Colors.purple),
-      borderRadius: BorderRadius.circular(10),
-    ),
+        color: Colors.white,
+        // border: Border.all(color: Colors.purple),
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            spreadRadius: 2,
+            blurRadius: 5,
+            offset: Offset(0, 3),
+          ),
+        ]),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
           title,
           textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.headline6,
-          // style: TextStyle(
-          //   fontSize: 24,
-          //   fontWeight: FontWeight.bold,
-          //   color: Colors.purple[700],
-          // ),
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.w700,
+            // color: Colors.purple[700],
+            color: Color.fromARGB(255, 53, 41, 95),
+          ),
         ),
         SizedBox(height: 5),
         countdown,
@@ -182,10 +189,10 @@ class CountdownWidget extends StatelessWidget {
     return Column(
       children: [
         Text(
-          "${years}y ${months}m ${days}d",
+          "${years}year ${months}month ${days}day",
           textAlign: TextAlign.center,
           style: TextStyle(
-            fontSize: 32,
+            fontSize: 28,
             fontWeight: FontWeight.bold,
             color: Colors.deepOrange,
           ),
@@ -197,7 +204,7 @@ class CountdownWidget extends StatelessWidget {
           // style: Theme.of(context).textTheme.subtitle1,
           style: TextStyle(
             fontSize: 18,
-            color: Colors.purple,
+            color: Color.fromARGB(255, 53, 41, 95),
             fontWeight: FontWeight.w700,
           ),
         ),
@@ -207,44 +214,43 @@ class CountdownWidget extends StatelessWidget {
   }
 }
 
-class ChecklistCompletionWidget extends StatelessWidget {
-  
-  final double percentage;
+// class ChecklistCompletionWidget extends StatelessWidget {
+//   final double percentage;
 
-  const ChecklistCompletionWidget({Key? key, required this.percentage})
-      : super(key: key);
+//   const ChecklistCompletionWidget({Key? key, required this.percentage})
+//       : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      // Wrap in Center widget
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            "Checklist Completion",
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-              color: Colors.purple[700],
-            ),
-          ),
-          SizedBox(height: 10),
-          Text(
-            "$percentage% completed",
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 32,
-              fontWeight: FontWeight.bold,
-              color: Colors.purple[700],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return Center(
+//       // Wrap in Center widget
+//       child: Column(
+//         mainAxisAlignment: MainAxisAlignment.center,
+//         children: [
+//           Text(
+//             "Checklist Completion",
+//             textAlign: TextAlign.center,
+//             style: TextStyle(
+//               fontSize: 24,
+//               fontWeight: FontWeight.bold,
+//               color: Colors.purple[700],
+//             ),
+//           ),
+//           SizedBox(height: 10),
+//           Text(
+//             "$percentage% completed",
+//             textAlign: TextAlign.center,
+//             style: TextStyle(
+//               fontSize: 32,
+//               fontWeight: FontWeight.bold,
+//               color: Colors.purple[700],
+//             ),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }
 
 class Select {
   String id;
