@@ -333,7 +333,7 @@ class _NikahItineraryState extends State<NikahItinerary> {
                         }
                       },
                       child: Text(
-                          '${_selectedTime.hour}:${_selectedTime.minute}',
+                          '${_selectedTime.hour.toString().padLeft(2, '0')}:${_selectedTime.minute.toString().padLeft(2, '0')}',
                           style: TextStyle(color: Colors.white)),
                     ),
                   ],
@@ -434,7 +434,7 @@ class _NikahItineraryState extends State<NikahItinerary> {
                         }
                       },
                       child: Text(
-                          '${_selectedTime.hour}:${_selectedTime.minute}',
+                          '${_selectedTime.hour.toString().padLeft(2, '0')}:${_selectedTime.minute.toString().padLeft(2, '0')}',
                           style: TextStyle(color: Colors.white)),
                     ),
                   ],

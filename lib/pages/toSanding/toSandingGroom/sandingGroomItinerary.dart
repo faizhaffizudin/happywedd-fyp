@@ -334,7 +334,7 @@ class _SandingGroomItineraryState extends State<SandingGroomItinerary> {
                         }
                       },
                       child: Text(
-                          '${_selectedTime.hour}:${_selectedTime.minute}',
+                          '${_selectedTime.hour.toString().padLeft(2, '0')}:${_selectedTime.minute.toString().padLeft(2, '0')}',
                           style: TextStyle(color: Colors.white)),
                     ),
                   ],
@@ -435,7 +435,7 @@ class _SandingGroomItineraryState extends State<SandingGroomItinerary> {
                         }
                       },
                       child: Text(
-                          '${_selectedTime.hour}:${_selectedTime.minute}',
+                          '${_selectedTime.hour.toString().padLeft(2, '0')}:${_selectedTime.minute.toString().padLeft(2, '0')}',
                           style: TextStyle(color: Colors.white)),
                     ),
                   ],
