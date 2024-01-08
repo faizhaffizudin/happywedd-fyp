@@ -4,8 +4,13 @@ class SandingSuggestedTitles {
     "Plan budget",
     "Plan itinerary",
     "Book venue",
-    "Book photographer",
+    "Book photographer and videographer",
     "Book caterer",
+    "Book make up artist",
+    "Book henna artist",
+    "Book wedding package",
+    "Apply leave for wedding",
     "Book homestay for family and friends",
+    "Fitting wedding dress",
   ];
 }
